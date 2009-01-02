@@ -14,7 +14,7 @@ According to [http://www.metagraphics.com/index.htm?page=pubs/mgct_language-port
 
 
 = utf namespace =
-The `char8_t` data type is defined as a `char`. Therefore, the compiler can't distinguish between a `char8_t *` string and a `char *` string. EASL works by assuming a `char8_t *` string is UTF-8 encoded, whereas a `char *` string is an archaic ANSI string.
+The `char8_t` data type is defined as a `char`. Therefore, the compiler can't distinguish between a `char8_t *` string and a `char *` string. EASL works by assuming a `char8_t *` string is UTF-8 encoded, whereas a `char *` string is an archaic ANSI string. Because of this, UTF encoded string routines are placed in a separate namespace.
 
 Basically, if any operation depends on a `char8_t *`, `char16_t *` or `char32_t *` string, it will be placed in the `esl::utf` namespace.
 
