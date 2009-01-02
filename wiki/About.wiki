@@ -50,3 +50,82 @@ Converted String: Hello, World!
 In this example, a simple `wchar_t` string is created ("Hello, World!") and it is converted to a char string. The first thing this example does is determines how many `char`'s we need to allocate for the destination string using `esl::strconvertsize()`. We then do the actual conversion with `esl::strconvert()`.
 
 
+== Example 2 ==
+This example demonstrates the generic API of the library.
+
+Code:
+{{{
+#include "easl.h"
+#include <iostream>
+
+int main()
+{
+    char str1[1024];
+    esl::strcpy(str1, "Hello, World!");
+
+    wchar_t *str2 = new wchar_t[1024];
+    esl::strcpy(str2, L"Hello!", 1024);
+
+    std::cout << "String 1 length:  " << esl::strlen(str1) << std::endl;
+    std::cout << "String 1 content: " << str1 << std::endl << std::endl;
+
+    std::wcout << L"String 2 length:  " << esl::strlen(str2) << std::endl;
+    std::wcout << L"String 2 content: " << str2 << std::endl;
+
+    delete [] str2;
+
+    return 0;
+}
+}}}
+
+Output
+{{{
+String 1 length:  13
+String 1 content: Hello, World!
+
+String 2 length:  6
+String 2 content: Hello!
+}}}
+
+This example demonstrates how the API remains the same for each type of string encoding. The first string is allocated with a static array, so the size of the buffer does not need to be specified in `strcpy()`. The second string is allocated as a dynamic array, so the size of the array must be specified explicitly.
+
+
+== Example 3 ==
+This example demonstrates the use of UTF encoded strings.
+
+Code:
+{{{
+#include "easl.h"
+#include <iostream>
+
+int main()
+{
+    // UTF-8 string. Compatible with ASCII.
+    const esl::char8_t *source = "Hello, World!";
+
+    // Convert to UTF-16
+    esl::char16_t *dest = 
+        new esl::char16_t[esl::utf::strconvertsize<esl::char16_t>(source)];
+    esl::utf::strconvert(dest, source);
+
+    // Now convert back to wchar_t.
+    wchar_t *final_dest = new wchar_t[esl::utf::strconvertsize<wchar_t>(dest)];
+    esl::utf::strconvert(final_dest, dest);
+
+    std::wcout << L"String: " << final_dest << std::endl;
+
+    delete [] dest;
+    delete [] final_dest;
+
+    return 0;
+}
+}}}
+
+Output
+{{{
+String: Hello, World!
+}}}
+
+This example first converts a UTF-8 encoded string to a UTF-16 string. It then converts the UTF-16 string to a traditional `wchar_t` string.
+
+The `utf` namespace is required because the compiler can not distinguish between `char8_t` and `char`. Strings declared as `char8_t *` are assumed to be UTF-8 encoded, whereas `char *` strings are assumed to be traditional byte strings.
