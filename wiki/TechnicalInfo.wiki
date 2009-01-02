@@ -1,0 +1,21 @@
+#summary Technical Information
+
+= Introduction =
+
+This page will discuss some technical issues with EASL. This is mostly to do with string encoding.
+
+
+= wchar_t =
+The `wchar_t *` style strings aren't sufficient for reliable cross platform Unicode support. On Windows, a `wchar_t` is two bytes, whereas (I think) Linux assumes it to be four bytes.
+
+The way it works in EASL is that the size of a `wchar_t` will determine how EASL assumes a `wchar_t *` string is encoded. When `wchar_t` is 8 bits (not likely), it is assumed that the string is encoded as UTF-8. When `wchar_t` is 16 bits, UTF-16 is assumed. When it is 32 bits, UTF-32 is assumed.
+
+According to [http://www.metagraphics.com/index.htm?page=pubs/mgct_language-portable-code.htm this article], these assumptions should work reliably on Windows platforms. I'm assuming the same can be said for other operating systems.
+
+
+= utf namespace =
+The `char8_t` data type is defined as a `char`. Therefore, the compiler can't distinguish between a `char8_t *` string and a `char *` string. EASL works by assuming a `char8_t *` string is UTF-8 encoded, whereas a `char *` string is an archaic ANSI string.
+
+Basically, if any operation depends on a `char8_t *`, `char16_t *` or `char32_t *` string, it will be placed in the `esl::utf` namespace.
+
+`wchar_t *` style strings can be found in both the `esl` and `esl::utf` namespaces, depending on the operation. It the function works on only `wchar_t *` strings, it is placed in the `esl` namespace. On the other hand, if it works with a `char*_t *` string, it will be in the `esl::utf` namespace. ANSI `char *` string manipulation routines are only found in the `esl` namespace.
