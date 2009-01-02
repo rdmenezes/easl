@@ -1,13 +1,52 @@
 #summary About Easy-As String Library
 
 = Introduction =
+Easy-As String Library (EASL) is a C++ header library for working with strings.
 
-Add your content here.
+It's primary goal is to ease the pain with using Unicode strings in C++. It has support for UTF-8, UTF-16 and UTF-32 string encodings.
 
 
-= Details =
+= Features =
+Some of the notable features of the library include:
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+  * Low level C-style string manipulation functions
+  * Higher level C++ style string class
+  * UTF encoded string manipulation routines
+  * Support for traditional strings (`char` and `wchar_t`)
+  * Generic API for all string encodings
+  * Conversions between different encodings
+
+
+= Examples =
+Below are some simple examples demonstrating the use of EASL.
+
+== Example 1 ==
+This example demonstrates a simple (and useless), conversion from a `wchar_t` string to a `char` string.
+
+Code:
+{{{
+#include "easl.h"
+#include <iostream>
+
+int main()
+{
+    const wchar_t *source = L"Hello, World!";
+
+    size_t size = esl::strconvertsize<char>(source);
+    char *dest = new char[size];
+    esl::strconvert(dest, source);
+
+    std::cout << "Converted String: " << dest << std::endl;
+
+    return 0;
+}
+}}}
+
+Output:
+{{{
+Converted String: Hello, World!
+}}}
+
+In this example, a simple `wchar_t` string is created ("Hello, World!") and it is converted to a char string. The first thing this example does is determines how many `char`'s we need to allocate for the destination string using `esl::strconvertsize()`. We then do the actual conversion with `esl::strconvert()`.
+
+
