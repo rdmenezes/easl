@@ -12,6 +12,13 @@ The way it works in EASL is that the size of a `wchar_t` will determine how EASL
 
 According to [http://www.metagraphics.com/index.htm?page=pubs/mgct_language-portable-code.htm this article], these assumptions should work reliably on Windows platforms. I'm assuming the same can be said for other operating systems.
 
+The table below outlines the assumptions EASL makes on the encoding used by a `wchar_t *` string based on the size of a `wchar_t`.
+
+|| *`sizeof(wchar_t)`* || *UTF Encoding* ||
+||          1          ||     UTF-8      ||
+||          2          ||     UTF-16     ||
+||          4          ||     UTF-32     ||
+
 
 = utf namespace =
 The `char8_t` data type is defined as a `char`. Therefore, the compiler can't distinguish between a `char8_t *` string and a `char *` string. EASL works by assuming a `char8_t *` string is UTF-8 encoded, whereas a `char *` string is an archaic ANSI string. Because of this, UTF encoded string routines are placed in a separate namespace.
