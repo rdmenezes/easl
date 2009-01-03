@@ -1,4 +1,4 @@
-#summary Examples
+#summary EASL usage examples
 
 = Introduction =
 This page will show some examples of how to use EASL.
@@ -41,7 +41,7 @@ String 2 length:  6
 String 2 content: Hello!
 }}}
 
-Here the generic API is put to use. We can see that the same function is called for both types of strings. So there is not more `strcpy()`/`wcscpy()` juggling!
+Here the generic API is put to use. We can see that the same function is called for both types of strings. So no more `strcpy()`/`wcscpy()` juggling!
 
 We've created one string with a static array and another with a dynamic array. We use the same technique as the standard C++ library by not requiring us to specify the size of the destination buffer for the static array. The size must be explicitly specified for the dynamic array, however.
 
@@ -64,6 +64,8 @@ int main()
 
     std::wcout << L"Converted String: " << dest << std::endl;
 
+    delete [] dest;
+
     return 0;
 }
 }}}
@@ -76,3 +78,42 @@ Converted String: Hello, World!
 Here we are converting a `char *` string ("Hello, World!") to a `wchar_t *` string. We first need to determine how many `wchar_t`'s we need to allocate in order to store the converted string with a null terminator using `esl::strconvertsize()`. This is a function template that needs the type we are converting to to be specified explicitly.
 
 Once the memory for the new string has been allocated, we can perform the actual conversion with `esl::strconvert()`.
+
+
+= Example 3: Simple UTF Operations =
+This example demonstrates some simple operations for working with UTF encoded strings. It demonstrates some useful operations for working with UTF encoded strings such as iterating through each character in the string.
+
+Code:
+{{{
+#include <easl/easl.h>
+#include <iostream>
+
+int main()
+{
+    // UTF-8 string. Compatible with ASCII.
+    const esl::char8_t *str = "I'm a UTF-8 string!";
+
+    // Iterate through each character.
+    const esl::char8_t *temp = str;
+    esl::char32_t ch;
+    while ((ch = esl::utf::strnextchar(temp)) != NULL)
+    {
+        std::cout << static_cast<esl::char8_t>(ch);
+    }
+
+    std::cout << std::endl;
+
+    std::cout << "Number of char8_t's in str1: " << 
+        esl::utf::strlen(str) << std::endl;
+
+    std::cout << "Number of characters in str1: " << 
+        esl::utf::strchrcount(str) << std::endl << std::endl;
+}
+}}}
+
+Output:
+{{{
+I'm a UTF-8 string!
+Number of char8_t's in str1: 19
+Number of characters in str1: 19
+}}}
