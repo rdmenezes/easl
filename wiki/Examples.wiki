@@ -120,6 +120,45 @@ Number of characters in str1: 19
 
 Here we take a UTF-8 encoded string and perform some operations on it. The first thing we do is iterate through each character in the string with `esl::utf::strnextchar()`. We need to create a temporary pointer for the iterator so that we can reference the original string reliably.
 
-We then demonstrate how the number of basic character units can be retrieved as well as the number of characters. `strcpy()` will always return the number of character units, and not necessarily the number of characters. `strchrcount()` will always return the number of characters.
+We then demonstrate how the number of basic character units can be retrieved as well as the number of characters. `strcpy()` will always return the number of character units, and not necessarily the number of characters. `strchrcount()` will always return the number of characters. In this example, a "basic character unit" is a `char8_t`; for a `char16_t *` string, this would be a `char16_t`, etc.
 
 The beauty of this example is that the original string can be changed to any other UTF encoding (UTF-16 or UTF-32) and the program will still work without any modifications to the rest of the code.
+
+
+= Example 4: Simple UTF Conversion =
+This example will show how easy it is to convert a string between different UTF character encodings and then back to a `wchar_t *` string.
+
+Code:
+{{{
+#include <easl/easl.h>
+#include <iostream>
+
+int main()
+{
+    // UTF-8 string. Compatible with ASCII.
+    const esl::char8_t *source = "Hello, World!";
+
+    // Convert to UTF-16
+    esl::char16_t *dest = 
+        new esl::char16_t[esl::utf::strconvertsize<esl::char16_t>(source)];
+    esl::utf::strconvert(dest, source);
+
+    // Now convert back to wchar_t.
+    wchar_t *final_dest = new wchar_t[esl::utf::strconvertsize<wchar_t>(dest)];
+    esl::utf::strconvert(final_dest, dest);
+
+    std::wcout << L"String: " << final_dest << std::endl;
+
+    delete [] dest;
+    delete [] final_dest;
+
+    return 0;
+}
+}}}
+
+Output
+{{{
+String: Hello, World!
+}}}
+
+This example first converts a UTF-8 encoded string to a UTF-16 string. It then converts the UTF-16 string to a traditional `wchar_t` string. We can see that the process for converting between UTF encodings is the same as converting between `char *` and `wchar_t *` strings.
