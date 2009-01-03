@@ -43,7 +43,7 @@ String 2 content: Hello!
 
 Here the generic API is put to use. We can see that the same function is called for both types of strings. So there is not more `strcpy()`/`wcscpy()` juggling!
 
-We've creating one string with a static array and another with a dynamic array. We use the same technique as the standard C++ library by not requiring us to specify the size of the destination buffer for the static array. The size must be explicitly specified for the dynamic array, however.
+We've created one string with a static array and another with a dynamic array. We use the same technique as the standard C++ library by not requiring us to specify the size of the destination buffer for the static array. The size must be explicitly specified for the dynamic array, however.
 
 
 = Example 2: Simple Conversion =
@@ -73,6 +73,6 @@ Output:
 Converted String: Hello, World!
 }}}
 
-He we are converting a `char *` string ("Hello, World!") to a `wchar_t *` string. We first need to determine how many `wchar_t`'s we need to allocate in order to store the converted string with a null terminator using `esl::strconvertsize()`. This is a function template that needs the type we are converting to to be specified explicitly.
+Here we are converting a `char *` string ("Hello, World!") to a `wchar_t *` string. We first need to determine how many `wchar_t`'s we need to allocate in order to store the converted string with a null terminator using `esl::strconvertsize()`. This is a function template that needs the type we are converting to to be specified explicitly.
 
 Once the memory for the new string has been allocated, we can perform the actual conversion with `esl::strconvert()`.
