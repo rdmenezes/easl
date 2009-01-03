@@ -40,6 +40,9 @@ EASL has support for UTF encoded strings. The support encodings are UTF-8, UTF-1
 
 So, a string declared as `char8_t *` is encoded in UTF-8; a `char16_t *` string is encoded as UTF-16 and a `char32_t *` string is encoded as UTF-32.
 
-Any function working with a UTF encoded string type is contained in the `esl::utf` namespace. The `esl` namespace contains only those functions that work on `char *` and `wchar_t` strings.
+Any function working with a UTF encoded string type is contained in the `esl::utf` namespace. The `esl` namespace contains only those functions that work on `char *` and `wchar_t *` strings. These functions are only wrappers around the C standard functions.
+
+== `wchar_t` and UTF ==
+EASL assumes that any string contained as a `wchar_t` is UTF encoded. However, different platforms designate `wchar_t`'s with different sizes. On Windows, a `wchar_t` is 16-bit. On Linux, it's 32-bit. The specific encoding that EASL assumes depends on the size of a `wchar_t`. The table below illustrates the assumptions EASL makes.
 
 
