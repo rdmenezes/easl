@@ -1,0 +1,24 @@
+#summary Getting started with EASL.
+
+= Introduction =
+This page will get you up and running using EASL.
+
+
+= Installing =
+Getting access to the library is as simple as following these steps.
+
+  # Download the source code package from here.
+  # Extract the "easl" folder from inside the package to somewhere on the hard disk.
+  # Configure you compiler to look for header file in the folder that the "easl" folder was extracted into.
+  # Start using the library.
+
+
+= Using EASL =
+EASL is a header library, so you need only include certain header files to begin using the library. There is no need to link against particular libraries.
+
+To begin using EASL, simply include the file `<easl/easl.h>`, like so:
+{{{
+#include <easl/easl.h>
+}}}
+
+All of the functionality in EASL is under the `esl` namespace. Anything to do with UTF encoded strings is contained within an additional namespace called `utf`. The `utf` namespace itself is in the `esl` namespace, so it is more accurately the `esl::utf` namespace.
