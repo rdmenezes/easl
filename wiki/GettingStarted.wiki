@@ -45,4 +45,13 @@ Any function working with a UTF encoded string type is contained in the `esl::ut
 == `wchar_t` and UTF ==
 EASL assumes that any string contained as a `wchar_t` is UTF encoded. However, different platforms designate `wchar_t`'s with different sizes. On Windows, a `wchar_t` is 16-bit. On Linux, it's 32-bit. The specific encoding that EASL assumes depends on the size of a `wchar_t`. The table below illustrates the assumptions EASL makes.
 
+|| *`sizeof(wchar_t)`* || *UTF Encoding* ||
+||          1          ||     UTF-8      ||
+||          2          ||     UTF-16     ||
+||          4          ||     UTF-32     ||
+
+More information about `wchar_t` and UTF encodings can be found in the [TechnicalInfo Technical Information] wiki.
+
+
+= Examples =
 
