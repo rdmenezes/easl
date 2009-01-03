@@ -51,7 +51,7 @@ This example demonstrates EASL's ability to convert between different types of s
 
 Code:
 {{{
-#include "easl.h"
+#include <easl/easl.h>
 #include <iostream>
 
 int main()
@@ -72,3 +72,7 @@ Output:
 {{{
 Converted String: Hello, World!
 }}}
+
+He we are converting a `char *` string ("Hello, World!") to a `wchar_t *` string. We first need to determine how many `wchar_t`'s we need to allocate in order to store the converted string with a null terminator using `esl::strconvertsize()`. This is a function template that needs the type we are converting to to be specified explicitly.
+
+Once the memory for the new string has been allocated, we can perform the actual conversion with `esl::strconvert()`.
