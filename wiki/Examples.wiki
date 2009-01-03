@@ -117,3 +117,9 @@ I'm a UTF-8 string!
 Number of char8_t's in str1: 19
 Number of characters in str1: 19
 }}}
+
+Here we take a UTF-8 encoded string and perform some operations on it. The first thing we do is iterate through each character in the string with `esl::utf::strnextchar()`. We need to create a temporary pointer for the iterator so that we can reference the original string reliably.
+
+We then demonstrate how the number of basic character units can be retrieved as well as the number of characters. `strcpy()` will always return the number of character units, and not necessarily the number of characters. `strchrcount()` will always return the number of characters.
+
+The beauty of this example is that the original string can be changed to any other UTF encoding (UTF-16 or UTF-32) and the program will still work without any modifications to the rest of the code.
