@@ -54,4 +54,4 @@ More information about `wchar_t` and UTF encodings can be found in the [Technica
 
 
 = Examples =
-Learning how to use EASL is best described with some examples. Check the Examples wiki for a full suite of examples on using EASL.
+Learning how to use EASL is best described with some examples. Check the [Examples] wiki for a full suite of examples on using EASL.
