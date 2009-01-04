@@ -25,43 +25,53 @@ namespace easl
 *   \remarks
 *       Both strings must be NULL terminated. By default, the comparison is case sensitive.
 */
-template <typename T>
-bool strequal(const T *str1, const T *str2, bool caseSensitive = true)
+template <typename T, typename U>
+bool strequal(const T *str1, const U *str2, bool caseSensitive = true)
 {
+    if (str1 == NULL || str2 == NULL)
+    {
+        return false;
+    }
+
+    // We'll need to grab the next character from each string and make it
+    // lower case and then compare.
+    uchar32_t ch1 = strnextchar(str1);
+    uchar32_t ch2 = strnextchar(str2);
+
     if (caseSensitive)
     {
-        return easl::strcmp(str1, str2) == 0;
-    }
-    else
-    {
-        if (str1 == NULL || str2 == NULL)
-        {
-            return false;
-        }
-
-        // We'll need to grab the next character from each string and make it
-        // lower case and then compare.
-        uchar32_t ch1 = strnextchar(str1);
-        uchar32_t ch2 = strnextchar(str2);
         while (ch1 != NULL && ch2 != NULL)
         {
-            if (tolower(ch1) != tolower(ch2))
-			{
-				return false;
-			}
+            if (ch1 != ch2)
+            {
+                return false;
+            }
 
             ch1 = strnextchar(str1);
             ch2 = strnextchar(str2);
         }
-
-		// If both strings aren't at their null terminators, they must be different.
-		if (ch1 != 0 || ch2 != 0)
-		{
-			return false;
-		}
-
-		return true;
     }
+    else
+    {
+        while (ch1 != NULL && ch2 != NULL)
+        {
+            if (tolower(ch1) != tolower(ch2))
+		    {
+			    return false;
+		    }
+
+            ch1 = strnextchar(str1);
+            ch2 = strnextchar(str2);
+        }
+    }
+
+    // If both strings aren't at their null terminators, they must be different.
+    if (ch1 != 0 || ch2 != 0)
+    {
+	    return false;
+    }
+
+	return true;
 }
 
 /**
@@ -763,6 +773,32 @@ inline size_t strconvert(char32_t *dest, const char32_t *src)
 
     return copied_chars + 1;
 }
+inline size_t strconvert(wchar_t *dest, const wchar_t *src)
+{
+    size_t copied_chars = 0;
+
+    // We need only copy the source to the destination.
+    while (*src != NULL)
+    {
+        if (dest != NULL)
+        {
+            *dest = *src;
+            ++dest;
+        }
+
+        ++src;
+        ++copied_chars;
+    }
+
+    // Null terminate.
+    if (dest != NULL)
+    {
+        *dest = NULL;
+    }
+
+    return copied_chars + 1;
+}
+
 
 template <typename T>
 size_t strconvert(wchar_t *dest, const T *src)
@@ -898,6 +934,11 @@ template <> size_t strconvertsize<wchar_t>(const char16_t *str)
 template <> size_t strconvertsize<wchar_t>(const char32_t *str)
 {
     return strconvert((wchar_t *)NULL, str);
+}
+
+template <> size_t strconvertsize<wchar_t>(const wchar_t *str)
+{
+    return strconvert(NULL, str);
 }
 
 template <typename T>

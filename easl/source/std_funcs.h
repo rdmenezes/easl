@@ -111,12 +111,7 @@ template <> inline int strcmp(const wchar_t *str1, const wchar_t *str2)
 template <typename T>
 inline errno_t strcpy(T *dest, const T *src, size_t destSize)
 {
-    if (dest == NULL || src == NULL)
-    {
-        return EINVAL;
-    }
-
-    if (destSize == 0)
+    if (dest == NULL || src == NULL || destSize == 0)
     {
         return EINVAL;
     }
@@ -168,10 +163,28 @@ inline errno_t strcpy(T (&dest)[destSize], const T *src)
 *   \param  src      [in]   The string to append to the destination string.
 *   \param  destSize [in]   The size in T's of the buffer pointed to by \c dest.
 *   \return                 Zero is successful; an error on failure.
+*
+*   \remarks
+*       The destination buffer must be NULL terminated to indicate the end of the string.
 */
 template <typename T>
 inline errno_t strcat(T *dest, const T *src, size_t destSize)
 {
+    if (dest == NULL || src == NULL || destSize == 0)
+    {
+        return EINVAL;
+    }
+
+    // We need to get to the end of the destination string.
+    while (*dest != NULL)
+    {
+        ++dest;
+        --destSize;
+    };
+
+    // Now simply copy the string over.
+    easl::strcpy(dest, src, destSize);
+
     return 0;
 }
 #ifdef EASL_ONLY_ASCII
