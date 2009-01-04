@@ -1,7 +1,6 @@
 #summary Technical Information
 
 = Introduction =
-
 This page will discuss some technical issues with EASL that developers should be aware of.
 
 
@@ -20,13 +19,9 @@ The table below outlines the assumptions EASL makes on the encoding used by a `w
 ||          4          ||     UTF-32     ||
 
 
-= utf namespace =
-The `char8_t` data type is defined as a `char`. Therefore, the compiler can't distinguish between a `char8_t *` string and a `char *` string. EASL works by assuming a `char8_t *` string is UTF-8 encoded, whereas a `char *` string is an archaic ANSI string. Because of this, UTF encoded string routines are placed in a separate namespace.
-
-Basically, if any operation depends on a `char8_t *`, `char16_t *` or `char32_t *` string, it will be placed in the `esl::utf` namespace.
-
-`wchar_t *` style strings can be found in both the `esl` and `esl::utf` namespaces, depending on the operation. It the function works on only `wchar_t *` strings, it is placed in the `esl` namespace. On the other hand, if it works with a `char*_t *` string, it will be in the `esl::utf` namespace. ANSI `char *` string manipulation routines are only found in the `esl` namespace.
-
-
 = Null Termination =
 The low level string routines use null termination for determining the position of the end of a string. The null terminator should be the same size as a basic character unit. A "basic character unit" is a `wchar_t` in a `wchar_t *` string, a `char32_t` in a `char32_t *` string, etc.
+
+
+= Locale =
+EASL uses the locale defined by the C standard function `setlocal()` for locale dependent operations. Currently there is only limited support for locales other than English. At the moment EASL doesn't provide it's own `setlocale()` function, but it's likely to have much better support for locales in the future.
