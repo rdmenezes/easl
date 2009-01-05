@@ -35,6 +35,12 @@ ICU also has much better localization support. Localization will slowly be impro
 
 ICU is probably a "better" solution at the moment, but this will change as EASL becomes much more stable and adds additional features; in particular better localization.
 
+If you're looking for an easy to use API, then EASL is definitely the way to go. Much of the library is based on templates, so there is only a single generic API for every type of character encoding. For example, converting a UTF-16 string to a UTF-8 string in EASL can be done in a single line:
+
+{{{
+easl::string utf8_string(some_utf16_string);
+}}}
+
 = Examples =
 Below are some simple examples demonstrating the use of EASL.
 
