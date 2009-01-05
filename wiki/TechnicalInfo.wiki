@@ -3,7 +3,7 @@
 = Introduction =
 This page will discuss some technical issues with EASL that developers should be aware of.
 
-= char* strings =
+= `char *` strings =
 A `char *` type string is always interpreted as a UTF-8 encoded string. Programs using ASCII-only strings should be able to make use of EASL without any real hassles. On the other hand, calling the `str*()` functions with `char *` strings manipulated with EASL is not very well defined for the time being.
 
 = wchar_t =
