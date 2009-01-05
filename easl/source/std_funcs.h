@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <errno.h>
+#include <assert.h>
 #include "setup.h"
 #include "types.h"
 
@@ -33,6 +34,8 @@ namespace easl
 template <typename T>
 inline size_t strlen(const T *str)
 {
+    assert(str != NULL);
+
     const T *temp = str;
 
     while (*temp != NULL)
@@ -44,10 +47,14 @@ inline size_t strlen(const T *str)
 }
 template <> inline size_t strlen(const char *str)
 {
+    assert(str != NULL);
+
     return ::strlen(str);
 }
 template <> inline size_t strlen(const wchar_t *str)
 {
+    assert(str != NULL);
+
     return ::wcslen(str);
 }
 
@@ -62,6 +69,9 @@ template <> inline size_t strlen(const wchar_t *str)
 template <typename T>
 inline int strcmp(const T *str1, const T *str2)
 {
+    assert(str1 != NULL);
+    assert(str2 != NULL);
+
     int ret = 0;
 
     for (;;)
@@ -91,6 +101,9 @@ inline int strcmp(const T *str1, const T *str2)
 #ifdef EASL_ONLY_ASCII
 template <> inline int strcmp(const char *str1, const char *str2)
 {
+    assert(str2 != NULL);
+    assert(str2 != NULL);
+
     // NOTE: If the comparison is character by character and not byte by byte, we can't
     // use this method unless we're doing english only.
     return ::strcmp(str1, str2);
@@ -98,6 +111,9 @@ template <> inline int strcmp(const char *str1, const char *str2)
 #endif
 template <> inline int strcmp(const wchar_t *str1, const wchar_t *str2)
 {
+    assert(str2 != NULL);
+    assert(str2 != NULL);
+
     return ::wcscmp(str1, str2);
 }
 
