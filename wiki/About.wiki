@@ -9,12 +9,23 @@ It's primary goal is to ease the pain with using Unicode strings in C++. It has 
 = Features =
 Some of the notable features of the library include:
 
+  * Very easy to use!
   * Low level C-style string manipulation functions
   * Higher level C++ style string class
   * UTF encoded string manipulation routines
   * Support for traditional strings (`char` and `wchar_t`)
   * Generic API for all string encodings
   * Conversions between different encodings
+
+= Non-Features =
+Some of the features EASL does not and never will do. If your program needs any of the functionality listed below, EASL is not useful:
+
+  * Non-Unicode string manipulation
+      * No support for UCS-2, etc. Only supports UTF-8, UTF-16 and UTF-32
+
+
+= Who is EASL For? =
+EASL is useful for anyone who needs Unicode support in their applications. 
 
 
 = Examples =
