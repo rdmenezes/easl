@@ -16,7 +16,9 @@ namespace easl
 typedef fast_string<TCHAR> string;
 #else
 
-#ifdef EASL_DEFAULT_STRING_UTF32
+#ifdef EASL_DEFAULT_STRING_WCHAR
+typedef slow_string<wchar_t> string;
+#elif  EASL_DEFAULT_STRING_UTF32
 typedef slow_string<char32_t> string;
 #elif  EASL_DEFAULT_STRING_UTF16
 typedef slow_string<char16_t> string;

@@ -35,7 +35,7 @@ public:
     */
     slow_string() : m_data(NULL)
     {
-        this->m_assign(NULL);
+        this->assign((const T *)NULL);
     }
 
     /**
@@ -52,11 +52,16 @@ public:
     *   \brief              Constructor.
     *   \param  str [in]    The string to initialise this string to.
     */
+    slow_string(const slow_string<T> &str) : m_data(NULL)
+    {
+        this->assign(str.c_str());
+    }
     template <typename U>
     slow_string(const slow_string<U> &str) : m_data(NULL)
     {
         this->assign(str.c_str());
     }
+
 
     /**
     *   \brief  Destructor.
@@ -113,7 +118,7 @@ public:
     template <typename U>
     slow_string<T> & assign(const U *str, size_t len = 0)
     {
-        if (this->m_data == (const T *)str)
+        if (this->m_data == (const T *)str && this->m_data != NULL)
         {
             return *this;
         }
@@ -180,6 +185,40 @@ public:
             // Delete our previous data.
             delete [] old_data;
         }
+
+        return *this;
+    }
+
+    /**
+    *   \brief                  Appends an individual character to the string
+    *   \param  character [in]  The character to append.
+    *   \return                 A reference to this string.
+    */
+    slow_string<T> & append(uchar32_t character)
+    {
+        // First we need to determine how many T's to increase the buffer by.
+        unsigned short added_size = easl::get_char_size<T>(character);
+
+        // We also need the length of this string.
+        size_t this_size = this->length();
+
+        // Now grab our current pointer so we can copy it into our new memory space later.
+        T *old_data = this->m_data;
+
+        // Now we can allocate some more memory.
+        this->m_data = new T[this_size + added_size + 1];
+        
+        // Copy our old data back into the string.
+        memcpy(this->m_data, old_data, sizeof(T) * this_size);
+
+        // Now we need to write this character to the string.
+        easl::write_char(this->m_data + this_size, character, added_size);
+
+        // Null terminate the string.
+        this->m_data[this_size + added_size] = 0;
+
+        // Delete our previous data.
+        delete [] old_data;
 
         return *this;
     }
@@ -272,6 +311,16 @@ public:
         return this->append(str.c_str());
     }
 
+    /**
+    *   \brief                  Appends a character to this string.
+    *   \param  character [in]  The character to append.
+    *   \return                 A reference to this string.
+    */
+    slow_string<T> & operator +=(uchar32_t character)
+    {
+        return this->append(character);
+    }
+
 
     /**
     *   \brief              Creates a new string equal to another string appended to this string.
@@ -288,6 +337,17 @@ public:
     /// \copydoc    slow_string::operator +(const U *)
     template <typename U>
     slow_string<T> operator +(const slow_string<U> &str) const
+    {
+        slow_string<T> new_str(*this);
+        return new_str += str;
+    }
+
+    /**
+    *   \brief                  Creates a new string equal to a character appended to this string.
+    *   \param  character [in]  The character to be appended to the end of the new string.
+    *   \return                 A new string equal to this string with the input character appeneded to the end.
+    */
+    slow_string<T> operator +(uchar32_t character) const
     {
         slow_string<T> new_str(*this);
         return new_str += str;
