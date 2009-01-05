@@ -25,43 +25,53 @@ namespace easl
 *   \remarks
 *       Both strings must be NULL terminated. By default, the comparison is case sensitive.
 */
-template <typename T>
-bool strequal(const T *str1, const T *str2, bool caseSensitive = true)
+template <typename T, typename U>
+bool strequal(const T *str1, const U *str2, bool caseSensitive = true)
 {
+    if (str1 == NULL || str2 == NULL)
+    {
+        return false;
+    }
+
+    // We'll need to grab the next character from each string and make it
+    // lower case and then compare.
+    uchar32_t ch1 = strnextchar(str1);
+    uchar32_t ch2 = strnextchar(str2);
+
     if (caseSensitive)
     {
-        return easl::strcmp(str1, str2) == 0;
-    }
-    else
-    {
-        if (str1 == NULL || str2 == NULL)
-        {
-            return false;
-        }
-
-        // We'll need to grab the next character from each string and make it
-        // lower case and then compare.
-        uchar32_t ch1 = strnextchar(str1);
-        uchar32_t ch2 = strnextchar(str2);
         while (ch1 != NULL && ch2 != NULL)
         {
-            if (tolower(ch1) != tolower(ch2))
-			{
-				return false;
-			}
+            if (ch1 != ch2)
+            {
+                return false;
+            }
 
             ch1 = strnextchar(str1);
             ch2 = strnextchar(str2);
         }
-
-		// If both strings aren't at their null terminators, they must be different.
-		if (ch1 != 0 || ch2 != 0)
-		{
-			return false;
-		}
-
-		return true;
     }
+    else
+    {
+        while (ch1 != NULL && ch2 != NULL)
+        {
+            if (tolower(ch1) != tolower(ch2))
+		    {
+			    return false;
+		    }
+
+            ch1 = strnextchar(str1);
+            ch2 = strnextchar(str2);
+        }
+    }
+
+    // If both strings aren't at their null terminators, they must be different.
+    if (ch1 != 0 || ch2 != 0)
+    {
+	    return false;
+    }
+
+	return true;
 }
 
 /**
@@ -93,7 +103,7 @@ inline uchar32_t strnextchar(const char *&str)
     // We need to determine the additional bytes that we need to read in order
     // to reconstruct the final character. We can calculate the total number of
     // bytes used for the character by adding 1 to the returned value.
-    unsigned short extra_bytes = g_trailingBytesForUTF8[*source];
+    unsigned short extra_bytes = g_trailingBytesForUTF8[(unsigned char)*source];
 
     // We need to make sure that the null terminator is not encounted one once
     // of these bytes. If it is, we need to return 0.
@@ -117,12 +127,12 @@ inline uchar32_t strnextchar(const char *&str)
     // used in the sample code by Unicode, Inc.
     switch (extra_bytes)
     {
-    case 5: ch += *source++; ch <<= 6;
-    case 4: ch += *source++; ch <<= 6;
-    case 3: ch += *source++; ch <<= 6;
-    case 2: ch += *source++; ch <<= 6;
-    case 1: ch += *source++; ch <<= 6;
-    case 0: ch += *source++;
+    case 5: ch += (unsigned char)*source++; ch <<= 6;
+    case 4: ch += (unsigned char)*source++; ch <<= 6;
+    case 3: ch += (unsigned char)*source++; ch <<= 6;
+    case 2: ch += (unsigned char)*source++; ch <<= 6;
+    case 1: ch += (unsigned char)*source++; ch <<= 6;
+    case 0: ch += (unsigned char)*source++;
     }
 
     // Now we need to subtract a value from the character depending on the number
@@ -212,6 +222,12 @@ inline uchar32_t strnextchar(const wchar_t *&str)
     }
 }
 
+template <typename T>
+inline uchar32_t strnextchar(T *&str)
+{
+    return easl::strnextchar((const T *&)str);
+}
+
 
 /**
 *   \brief              Converts a string in a particular format to another format.
@@ -288,54 +304,19 @@ inline size_t strconvert(char *dest, const char16_t *src)
     uchar32_t ch = 0;
     while ((ch = strnextchar(src)) != NULL)
     {
-        // This variable will store the number of bytes that will be required to
-        // store the character.
-        unsigned short num_bytes;
-
-         // Now we need to figure out how many bytes are required to store this character.
-        if (ch < 0x80)
-        {
-            num_bytes = 1;
-        }
-        else if (ch < 0x800)
-        {
-            num_bytes = 2;
-        }
-        else if (ch < 0x10000)
-        {
-            num_bytes = 3;
-        }
-        else if (ch < 0x110000)
-        {
-            num_bytes = 4;
-        }
-        else
-        {
-            num_bytes = 3;
-            ch = UNI_REPLACEMENT_CHAR;
-        }
+        // Determine the number of bytes that are required to store this character.
+        unsigned short num_bytes = get_char_size<char>(ch);        
 
         // If our destination is NULL, we don't want to set any characters, but we
         // do want to get the number of char32_t's that we'll need to use for the
         // destination buffer.
         if (dest != NULL)
         {
-            dest += num_bytes;
+            // Now write our character to our string.
+            write_char(dest, ch, num_bytes);
 
-            // TODO: We might want to do some sort of overflow check here. The only real
-            // way to do this is to have another parameter detailing the size of the
-            // destination buffer.
-
-            // Now we need to copy all of our bytes over. We use the fall-through switch
-            // like the one in the code by Unicode, Inc.
-            switch (num_bytes)
-            {
-            case 4: *--dest = static_cast<char>(((ch | 0x80) & 0xBF)); ch >>= 6;
-            case 3: *--dest = static_cast<char>(((ch | 0x80) & 0xBF)); ch >>= 6;
-            case 2: *--dest = static_cast<char>(((ch | 0x80) & 0xBF)); ch >>= 6;
-            case 1: *--dest = static_cast<char>((ch | g_firstByteMark[num_bytes]));
-            }
-
+            // The position of the pointer is not modified, so we need to move in front of
+            // the character that we just wrote.
             dest += num_bytes;
         }
 
@@ -375,54 +356,19 @@ inline size_t strconvert(char *dest, const char32_t *src)
     uchar32_t ch = 0;
     while ((ch = strnextchar(src)) != NULL)
     {
-        // This variable will store the number of bytes that will be required to
-        // store the character.
-        unsigned short num_bytes;
-
-         // Now we need to figure out how many bytes are required to store this character.
-        if (ch < 0x80)
-        {
-            num_bytes = 1;
-        }
-        else if (ch < 0x800)
-        {
-            num_bytes = 2;
-        }
-        else if (ch < 0x10000)
-        {
-            num_bytes = 3;
-        }
-        else if (ch < 0x110000)
-        {
-            num_bytes = 4;
-        }
-        else
-        {
-            num_bytes = 3;
-            ch = UNI_REPLACEMENT_CHAR;
-        }
+        // Determine the number of bytes that are required to store this character.
+        unsigned short num_bytes = get_char_size<char>(ch);
 
         // If our destination is NULL, we don't want to set any characters, but we
         // do want to get the number of char32_t's that we'll need to use for the
         // destination buffer.
         if (dest != NULL)
         {
-            dest += num_bytes;
+            // Now write our character to our string.
+            write_char(dest, ch, num_bytes);
 
-            // TODO: We might want to do some sort of overflow check here. The only real
-            // way to do this is to have another parameter detailing the size of the
-            // destination buffer.
-
-            // Now we need to copy all of our bytes over. We use the fall-through switch
-            // like the one in the code by Unicode, Inc.
-            switch (num_bytes)
-            {
-            case 4: *--dest = static_cast<char>(((ch | 0x80) & 0xBF)); ch >>= 6;
-            case 3: *--dest = static_cast<char>(((ch | 0x80) & 0xBF)); ch >>= 6;
-            case 2: *--dest = static_cast<char>(((ch | 0x80) & 0xBF)); ch >>= 6;
-            case 1: *--dest = static_cast<char>((ch | g_firstByteMark[num_bytes]));
-            }
-
+            // The position of the pointer is not modified, so we need to move in front of
+            // the character that we just wrote.
             dest += num_bytes;
         }
 
@@ -763,6 +709,32 @@ inline size_t strconvert(char32_t *dest, const char32_t *src)
 
     return copied_chars + 1;
 }
+inline size_t strconvert(wchar_t *dest, const wchar_t *src)
+{
+    size_t copied_chars = 0;
+
+    // We need only copy the source to the destination.
+    while (*src != NULL)
+    {
+        if (dest != NULL)
+        {
+            *dest = *src;
+            ++dest;
+        }
+
+        ++src;
+        ++copied_chars;
+    }
+
+    // Null terminate.
+    if (dest != NULL)
+    {
+        *dest = NULL;
+    }
+
+    return copied_chars + 1;
+}
+
 
 template <typename T>
 size_t strconvert(wchar_t *dest, const T *src)
@@ -802,34 +774,6 @@ size_t strconvert(T *dest, const wchar_t *src)
     }
 }
 
-/**
-*   \brief              Retrieves the number of characters in the given string.
-*   \param  str [in]    The string to check.
-*   \return             The number of characters that make up the string; or 0 if an error occurs.
-*
-*   \remarks
-*       The input string must be null terminated. The null terminator should be the same size
-*       as that of the strings internal character.
-*       \par
-*       This function does not return the number of bytes in the string. Rather, it calculates
-*       the number of characters in the string, not including the null terminator.
-*/
-template <typename T>
-size_t strchrcount(const T *str)
-{
-#ifdef EASL_ONLY_ASCII
-    return easl::strlen(str);
-#else
-    size_t count = 0;
-    uchar32_t ch;
-    while ((ch = easl::strnextchar(str)) != NULL)
-    {
-        ++count;
-    }
-
-    return count;
-#endif
-}
 
 /**
 *   \brief              Determines the size that a destination buffer must be to convert the specified string.
@@ -900,6 +844,11 @@ template <> size_t strconvertsize<wchar_t>(const char32_t *str)
     return strconvert((wchar_t *)NULL, str);
 }
 
+template <> size_t strconvertsize<wchar_t>(const wchar_t *str)
+{
+    return strconvert(NULL, str);
+}
+
 template <typename T>
 size_t strconvertsize(const wchar_t *str)
 {
@@ -916,8 +865,74 @@ size_t strconvertsize(const wchar_t *str)
         return strconvertsize<T>(reinterpret_cast<const char32_t *>(str));
     }
 }
-
 #endif
+
+
+/**
+*   \brief              Skips over the BOM of the string if it has one.
+*   \param  str [in]    The string whose BOM should be skipped over.
+*   \return             The BOM if the string has one, or 0 if it doesn't.
+*
+*   \remarks
+*       This function will move the input pointer to a point just past the BOM if
+*       one is present. If there is no BOM, the pointer is not moved.
+*/
+template <typename T>
+uchar32_t strskipbom(const T *&str)
+{
+    const T *temp = str;
+    if (easl::strnextchar(temp) == 0xFEFF)
+    {
+        str = temp;
+        return 0xFEFF;
+    }
+
+    return 0;
+}
+template <typename T>
+uchar32_t strskipbom(T *&str)
+{
+    return strskipbom((const T *&)str);
+}
+
+/**
+*   \brief              Attaches the BOM to the start of the specified string.
+*   \param  str [in]    The string to attach the BOM to.
+*/
+template <typename T>
+void strattachbom(T *str)
+{
+}
+
+
+/**
+*   \brief              Retrieves the number of characters in the given string.
+*   \param  str [in]    The string to check.
+*   \return             The number of characters that make up the string; or 0 if an error occurs.
+*
+*   \remarks
+*       The input string must be null terminated. The null terminator should be the same size
+*       as that of the strings internal character.
+*       \par
+*       This function does not return the number of bytes in the string. Rather, it calculates
+*       the number of characters in the string, not including the null terminator.
+*/
+template <typename T>
+size_t strchrcount(const T *str)
+{
+#ifdef EASL_ONLY_ASCII
+    return easl::strlen(str);
+#else
+    size_t count = 0;
+    uchar32_t ch;
+    while ((ch = easl::strnextchar(str)) != NULL)
+    {
+        ++count;
+    }
+
+    return count;
+#endif
+}
 
 
 

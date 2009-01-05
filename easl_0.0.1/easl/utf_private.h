@@ -181,6 +181,122 @@ inline bool is_legal_utf8(const char *str, unsigned short length)
 }
 
 /**
+*   \brief                      Determines the number of T's required to store a given character in the specified encoding.
+*   \param  character [in, out] The character to determine the size of.
+*   \return                     The number of T's required to store the specified character.
+*
+*   \remarks
+*       If \c character is invalid, the function will set it to the replacement character.
+*/
+template <typename T>
+unsigned short get_char_size(uchar32_t &character)
+{
+    return 1;
+}
+template <> unsigned short get_char_size<char>(uchar32_t &character)
+{
+    if (character < 0x80)
+    {
+        return 1;
+    }
+    else if (character < 0x800)
+    {
+        return 2;
+    }
+    else if (character < 0x10000)
+    {
+        return 3;
+    }
+    else if (character < 0x110000)
+    {
+        return 4;
+    }
+    else
+    {
+        character = UNI_REPLACEMENT_CHAR;
+        return 3;
+    }
+}
+template <> unsigned short get_char_size<char16_t>(uchar32_t &character)
+{
+    if (character <= UNI_MAX_BMP)
+    {
+        return 1;
+    }
+    
+    return 2;
+}
+template <> unsigned short get_char_size<wchar_t>(uchar32_t &character)
+{
+    if (sizeof(wchar_t) == 1)
+    {
+        return get_char_size<char>(character);
+    }
+    else if (sizeof(wchar_t) == 2)
+    {
+        return get_char_size<char16_t>(character);
+    }
+
+    return get_char_size<char32_t>(character);
+}
+
+/**
+*   \brief                  Writes a character to the specified string.
+*   \param  str       [in]  The string to write the character to.
+*   \param  character [in]  The character to write to the string.
+*   \return                 True if the character is written successfully; false otherwise.
+*
+*   \remarks
+*       This function will not modify the input string. This must be done manually.
+*/
+bool write_char(char *str, uchar32_t character, unsigned short numBytes)
+{
+    str += numBytes;
+
+    // TODO: We might want to do some sort of overflow check here. The only real
+    // way to do this is to have another parameter detailing the size of the
+    // destination buffer.
+
+    // Now we need to copy all of our bytes over. We use the fall-through switch
+    // like the one in the code by Unicode, Inc.
+    switch (numBytes)
+    {
+    case 4: *--str = static_cast<char>(((character | 0x80) & 0xBF)); character >>= 6;
+    case 3: *--str = static_cast<char>(((character | 0x80) & 0xBF)); character >>= 6;
+    case 2: *--str = static_cast<char>(((character | 0x80) & 0xBF)); character >>= 6;
+    case 1: *--str = static_cast<char>((character | g_firstByteMark[numBytes]));
+    }
+
+    return true;
+}
+bool write_char(char16_t *str, uchar32_t character, unsigned short numBytes)
+{
+    if (numBytes == 1)
+    {
+        *str = static_cast<char16_t>(character);
+        return true;
+    }
+    else if (numBytes == 2)
+    {
+        // We have a surrogate pair.
+        character -= g_halfBase;
+
+        *str++ = static_cast<char16_t>((character >> g_halfShift) + UNI_SUR_HIGH_START);
+        *str++ = static_cast<char16_t>((character & g_halfMask) + UNI_SUR_LOW_START);
+
+        return true;
+    }
+
+    return false;
+}
+bool write_char(char32_t *str, uchar32_t character, unsigned short numBytes)
+{
+    *str = character;
+
+    return true;
+}
+
+/**
 *   \brief                  Validates a UTF-32 character.
 *   \param  character [in]  The character to validate.
 *   \return                 The validated character.
@@ -200,7 +316,7 @@ inline uchar32_t validate_utf32_char(char32_t character)
         // to an illegal character code.
         if (character >= UNI_SUR_HIGH_START && character <= UNI_SUR_LOW_END)
         {
-            // The character is illegal, so replace it will our replacement character.
+            // The character is illegal, so replace it with our replacement character.
             return UNI_REPLACEMENT_CHAR;
         }
         else
@@ -211,7 +327,7 @@ inline uchar32_t validate_utf32_char(char32_t character)
     else
     {
         // If we've made it here, the final character is larger than the maximum value
-        // defined by unicode (0x10FFFF).
+        // defined by Unicode (0x10FFFF).
         return UNI_REPLACEMENT_CHAR;
     }
 

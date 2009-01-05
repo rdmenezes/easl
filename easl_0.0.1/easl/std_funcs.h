@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <errno.h>
+#include <assert.h>
 #include "setup.h"
 #include "types.h"
 
@@ -33,6 +34,8 @@ namespace easl
 template <typename T>
 inline size_t strlen(const T *str)
 {
+    assert(str != NULL);
+
     const T *temp = str;
 
     while (*temp != NULL)
@@ -44,10 +47,14 @@ inline size_t strlen(const T *str)
 }
 template <> inline size_t strlen(const char *str)
 {
+    assert(str != NULL);
+
     return ::strlen(str);
 }
 template <> inline size_t strlen(const wchar_t *str)
 {
+    assert(str != NULL);
+
     return ::wcslen(str);
 }
 
@@ -62,6 +69,9 @@ template <> inline size_t strlen(const wchar_t *str)
 template <typename T>
 inline int strcmp(const T *str1, const T *str2)
 {
+    assert(str1 != NULL);
+    assert(str2 != NULL);
+
     int ret = 0;
 
     for (;;)
@@ -91,6 +101,9 @@ inline int strcmp(const T *str1, const T *str2)
 #ifdef EASL_ONLY_ASCII
 template <> inline int strcmp(const char *str1, const char *str2)
 {
+    assert(str2 != NULL);
+    assert(str2 != NULL);
+
     // NOTE: If the comparison is character by character and not byte by byte, we can't
     // use this method unless we're doing english only.
     return ::strcmp(str1, str2);
@@ -98,6 +111,9 @@ template <> inline int strcmp(const char *str1, const char *str2)
 #endif
 template <> inline int strcmp(const wchar_t *str1, const wchar_t *str2)
 {
+    assert(str2 != NULL);
+    assert(str2 != NULL);
+
     return ::wcscmp(str1, str2);
 }
 
@@ -111,12 +127,7 @@ template <> inline int strcmp(const wchar_t *str1, const wchar_t *str2)
 template <typename T>
 inline errno_t strcpy(T *dest, const T *src, size_t destSize)
 {
-    if (dest == NULL || src == NULL)
-    {
-        return EINVAL;
-    }
-
-    if (destSize == 0)
+    if (dest == NULL || src == NULL || destSize == 0)
     {
         return EINVAL;
     }
@@ -168,10 +179,28 @@ inline errno_t strcpy(T (&dest)[destSize], const T *src)
 *   \param  src      [in]   The string to append to the destination string.
 *   \param  destSize [in]   The size in T's of the buffer pointed to by \c dest.
 *   \return                 Zero is successful; an error on failure.
+*
+*   \remarks
+*       The destination buffer must be NULL terminated to indicate the end of the string.
 */
 template <typename T>
 inline errno_t strcat(T *dest, const T *src, size_t destSize)
 {
+    if (dest == NULL || src == NULL || destSize == 0)
+    {
+        return EINVAL;
+    }
+
+    // We need to get to the end of the destination string.
+    while (*dest != NULL)
+    {
+        ++dest;
+        --destSize;
+    };
+
+    // Now simply copy the string over.
+    easl::strcpy(dest, src, destSize);
+
     return 0;
 }
 #ifdef EASL_ONLY_ASCII
