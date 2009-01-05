@@ -13,7 +13,6 @@ Some of the notable features of the library include:
   * Low level C-style string manipulation functions
   * Higher level C++ style string class
   * UTF encoded string manipulation routines
-  * Support for traditional strings (`char` and `wchar_t`)
   * Generic API for all string encodings
   * Conversions between different encodings
 
