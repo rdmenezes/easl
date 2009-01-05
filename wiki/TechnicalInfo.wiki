@@ -3,6 +3,8 @@
 = Introduction =
 This page will discuss some technical issues with EASL that developers should be aware of.
 
+= char* strings =
+A `char *` type string is always interpreted as a UTF-8 encoded string. Programs using ASCII-only strings should be able to make use of EASL without any real hassles. On the other hand, calling the `str*()` functions with `char *` strings manipulated with EASL is not very well defined for the time being.
 
 = wchar_t =
 The `wchar_t *` style strings aren't sufficient for reliable cross platform Unicode support. On Windows, a `wchar_t` is two bytes, whereas (I think) Linux assumes it to be four bytes.
@@ -14,9 +16,9 @@ According to [http://www.metagraphics.com/index.htm?page=pubs/mgct_language-port
 The table below outlines the assumptions EASL makes on the encoding used by a `wchar_t *` string based on the size of a `wchar_t`.
 
 || *`sizeof(wchar_t)`* || *UTF Encoding* ||
-||          1          ||     UTF-8      ||
-||          2          ||     UTF-16     ||
-||          4          ||     UTF-32     ||
+|| 1                   ||     UTF-8      ||
+|| 2                   ||     UTF-16     ||
+|| 4                   ||     UTF-32     ||
 
 
 = Null Termination =
