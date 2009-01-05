@@ -15,15 +15,15 @@ Code:
 int main()
 {
     char str1[1024];
-    esl::strcpy(str1, "Hello, World!");
+    easl::strcpy(str1, "Hello, World!");
 
     wchar_t *str2 = new wchar_t[1024];
-    esl::strcpy(str2, L"Hello!", 1024);
+    easl::strcpy(str2, L"Hello!", 1024);
 
-    std::cout << "String 1 length:  " << esl::strlen(str1) << std::endl;
+    std::cout << "String 1 length:  " << easl::strlen(str1) << std::endl;
     std::cout << "String 1 content: " << str1 << std::endl << std::endl;
 
-    std::wcout << L"String 2 length:  " << esl::strlen(str2) << std::endl;
+    std::wcout << L"String 2 length:  " << easl::strlen(str2) << std::endl;
     std::wcout << L"String 2 content: " << str2 << std::endl;
 
     delete [] str2;
@@ -58,9 +58,9 @@ int main()
 {
     const char *source = "Hello, World!";
 
-    size_t size = esl::strconvertsize<wchar_t>(source);
+    size_t size = easl::strconvertsize<wchar_t>(source);
     wchar_t *dest = new wchar_t[size];
-    esl::strconvert(dest, source);
+    easl::strconvert(dest, source);
 
     std::wcout << L"Converted String: " << dest << std::endl;
 
@@ -91,23 +91,23 @@ Code:
 int main()
 {
     // UTF-8 string. Compatible with ASCII.
-    const esl::char8_t *str = "I'm a UTF-8 string!";
+    const char *str = "I'm a UTF-8 string!";
 
     // Iterate through each character.
-    const esl::char8_t *temp = str;
-    esl::char32_t ch;
-    while ((ch = esl::utf::strnextchar(temp)) != NULL)
+    const char *temp = str;
+    easl::char32_t ch;
+    while ((ch = easl::strnextchar(temp)) != NULL)
     {
-        std::cout << static_cast<esl::char8_t>(ch);
+        std::cout << static_cast<char>(ch);
     }
 
     std::cout << std::endl;
 
-    std::cout << "Number of char8_t's in str1: " << 
-        esl::utf::strlen(str) << std::endl;
+    std::cout << "Number of char's in str1: " << 
+        easl::strlen(str) << std::endl;
 
     std::cout << "Number of characters in str1: " << 
-        esl::utf::strchrcount(str) << std::endl << std::endl;
+        easl:::strchrcount(str) << std::endl << std::endl;
 }
 }}}
 
@@ -136,16 +136,16 @@ Code:
 int main()
 {
     // UTF-8 string. Compatible with ASCII.
-    const esl::char8_t *source = "Hello, World!";
+    const easl::char *source = "Hello, World!";
 
     // Convert to UTF-16
     esl::char16_t *dest = 
-        new esl::char16_t[esl::utf::strconvertsize<esl::char16_t>(source)];
-    esl::utf::strconvert(dest, source);
+        new easl::char16_t[easl::strconvertsize<easl::char16_t>(source)];
+    easl::strconvert(dest, source);
 
     // Now convert back to wchar_t.
-    wchar_t *final_dest = new wchar_t[esl::utf::strconvertsize<wchar_t>(dest)];
-    esl::utf::strconvert(final_dest, dest);
+    wchar_t *final_dest = new wchar_t[easl::strconvertsize<wchar_t>(dest)];
+    easl::strconvert(final_dest, dest);
 
     std::wcout << L"String: " << final_dest << std::endl;
 
