@@ -7,7 +7,7 @@ This page will get you up and running using EASL.
 = Installing =
 Getting access to the library is as simple as following these steps.
 
-  # Download the source code package.
+  # [http://easl.googlecode.com/files/easl_0.0.1.zip Download] the source code package.
   # Extract the "easl" folder from inside the package to somewhere on the hard disk.
   # Configure you compiler to look for header file in the folder that the "easl" folder was extracted into.
   # Start using the library.
@@ -21,37 +21,34 @@ To begin using EASL, simply include the file `<easl/easl.h>`, like so:
 #include <easl/easl.h>
 }}}
 
-All of the functionality in EASL is under the `esl` namespace. Anything to do with UTF encoded strings is contained within an additional namespace called `utf`. The `utf` namespace itself is in the `esl` namespace, so it is more accurately the `esl::utf` namespace.
+All of the functionality in EASL is under the `easl` namespace.
 
 EASL is made up of two main sections: a low level, C-like function section; and a higher level C++ `std::string`-like section. Having the library structured like this gives developers the most flexibility.
 
-The C-like string manipulation routines work mostly the same as the standard C library equivalents. One major difference is that there is no difference in the name of the function for different string encodings. For example, to copy a string you simply use the `esl::strcpy()` function for all types of string encodings - `char *` and `wchar_t *` alike.
-
-Note that for UTF encoded strings, all string manipulation routines are found in the `esl::utf` namespace. So, with the example above, you would use `esl::utf::strcpy()` instead.
+The C-like string manipulation routines work mostly the same as the standard C library equivalents. One major difference is that there is no difference in the name of the function for different string encodings. For example, to copy a string you simply use the `easl::strcpy()` function for all types of string encodings - `char *` and `wchar_t *` alike.
 
 
 = Using UTF Encoding =
-EASL has support for UTF encoded strings. The support encodings are UTF-8, UTF-16 and UTF-32. The table below illustrates the data types to use for the different encodings:
+EASL has support for UTF encoded strings. The supported encodings are UTF-8, UTF-16 and UTF-32. The table below illustrates the data types to use for the different encodings:
 
 || *String Data Type* || *Encoding* ||
-|| `char8_t *`        || UTF-8      ||
+|| `char *`           || UTF-8      ||
 || `char16_t *`       || UTF-16     ||
 || `char32_t *`       || UTF-32     ||
 
-So, a string declared as `char8_t *` is encoded in UTF-8; a `char16_t *` string is encoded as UTF-16 and a `char32_t *` string is encoded as UTF-32.
+So, a string declared as `char *` is encoded in UTF-8; a `char16_t *` string is encoded as UTF-16 and a `char32_t *` string is encoded as UTF-32.
 
-Any function working with a UTF encoded string type is contained in the `esl::utf` namespace. The `esl` namespace contains only those functions that work on `char *` and `wchar_t *` strings. These functions are only wrappers around the C standard functions.
 
 == `wchar_t` and UTF ==
 EASL assumes that any string contained as a `wchar_t` is UTF encoded. However, different platforms designate `wchar_t`'s with different sizes. On Windows, a `wchar_t` is 16-bit. On Linux, it's 32-bit. The specific encoding that EASL assumes depends on the size of a `wchar_t`. The table below illustrates the assumptions EASL makes.
 
 || *`sizeof(wchar_t)`* || *UTF Encoding* ||
-||          1          ||     UTF-8      ||
-||          2          ||     UTF-16     ||
-||          4          ||     UTF-32     ||
+|| 1                   ||     UTF-8      ||
+|| 2                   ||     UTF-16     ||
+|| 4                   ||     UTF-32     ||
 
 More information about `wchar_t` and UTF encodings can be found in the [TechnicalInfo Technical Information] wiki.
 
 
 = Examples =
-Learning how to use EASL is best described with some examples. Check the [Examples] wiki for a full suite of examples on using EASL.
+Learning how to use EASL is best described with some examples. Check the [Examples] wiki for some good examples on using EASL.
