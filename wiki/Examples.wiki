@@ -164,7 +164,7 @@ String: Hello, World!
 This example first converts a UTF-8 encoded string to a UTF-16 string. It then converts the UTF-16 string to a traditional `wchar_t` string. We can see that the process for converting between UTF encodings is the same as converting between `char *` and `wchar_t *` strings.
 
 
-== Example 5 ==
+= Example 5: String Class =
 This simple example demonstrates the use of EASL's `std::string`-like string class.
 
 Code:
