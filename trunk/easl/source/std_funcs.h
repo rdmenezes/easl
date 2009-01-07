@@ -1,5 +1,5 @@
 /**
-*   \file  std_funcs.h
+*   \file   std_funcs.h
 *   \author Dave Reid
 *   \brief  Header file for the C-style string function wrappers.
 */

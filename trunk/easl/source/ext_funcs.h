@@ -153,7 +153,7 @@ inline uchar32_t strnextchar(const char16_t *&str)
     const char16_t *source = str;
 
     // The character that we'll eventually be returning.
-    uchar32_t ch = *source++;
+    uchar32_t ch = (uchar32_t)(uchar16_t)*source++;
 
     // We need to check if we have a surrogate pair. If we do, we need to do a conversion.
     // We only want to do this if the character we just retrieved wasn't a null terminator,
@@ -168,7 +168,7 @@ inline uchar32_t strnextchar(const char16_t *&str)
             {
                 // Grab our next 16-bits. This must be the low surrogate. If it isn't, we
                 // have an error and need to return 0.
-                char32_t ch2 = *source;
+                uchar32_t ch2 = (uchar32_t)(uchar16_t)*source;
 
                 if (ch2 >= UNI_SUR_LOW_START && ch2 <= UNI_SUR_LOW_END)
                 {
@@ -896,12 +896,106 @@ uchar32_t strskipbom(T *&str)
 }
 
 /**
-*   \brief              Attaches the BOM to the start of the specified string.
-*   \param  str [in]    The string to attach the BOM to.
+*   \brief                  Attaches the BOM to the start of the specified string.
+*   \param  str [in, out]   The string to attach the BOM to.
+*
+*   \remarks
+*       There must be enough room in the string buffer to store the BOM. In order
+*       to determine how many T's are required to store the BOM, call getcharsize().
 */
 template <typename T>
 void strattachbom(T *str)
 {
+    // We need to determine how many T's our BOM is going to take up.
+    unsigned short size = get_char_size<T>((uchar32_t)0xFEFF);
+
+    // Now we can move all of our character down one spot. First we need to get to
+    // the end.
+    T *temp = str;
+    while (*temp != NULL)
+    {
+        ++temp;
+    }
+    
+    // temp is now positioned at the NULL terminator, so now we need to work our way backwards.
+    while (temp != str)
+    {
+        for (unsigned short i = 0; i < size; ++i)
+        {
+            *(temp + size) = *temp--;
+
+            if (temp == str)
+            {
+                *(temp + size) = *temp;
+                break;
+            }
+        }
+    }
+
+    // Now we can set the BOM.
+    write_char(str, 0xFEFF, size);
+}
+
+/**
+*   \brief                  Removes the BOM from the specified string if one is present.
+*   \param  str [in, out]   The string to remove the BOM from.
+*/
+template <typename T>
+void strremovebom(T *str)
+{
+    T *temp = str;
+    if (strskipbom(temp) != 0)
+    {
+        // If we've made it here, the BOM was present, so we now want to
+        // move our string down some spots.
+        size_t bom_size = temp - str;
+
+        while (*temp != NULL)
+        {
+            for (size_t i = 0; i < bom_size; ++i)
+            {
+                if (*temp == NULL)
+                {
+                    break;
+                }
+
+                *str = *temp;
+
+                ++str;
+                ++temp;
+            }
+        }
+
+        // Null terminate it.
+        *str = NULL;
+    }
+}
+
+/**
+*   \brief              Retrieves the BOM from a given string.
+*   \param  str [in]    The string to retrieve the BOM from.
+*   \return             0xFEFF if the BOM if found, 0 otherwise.
+*
+*   \remarks
+*       This function will not modify the input string in any way. To retrieve the
+*       BOM and move passed it, use strskipbom() instead.
+*/
+template <typename T>
+uchar32_t strgetbom(const T *str)
+{
+    const T *temp;
+    if (easl::strnextchar(temp) == 0xFEFF)
+    {
+        return 0xFEFF;
+    }
+
+    return 0;
+}
+
+template <typename T>
+uchar32_t strgetbom(T *str)
+{
+    return strgetbom((const T *)str);
 }
 
 
