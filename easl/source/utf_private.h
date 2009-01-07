@@ -16,6 +16,8 @@
 namespace easl
 {
 
+#define UNICODE_BOM             0xFEFF
+
 #define UNI_REPLACEMENT_CHAR    (uchar32_t)0x0000FFFD
 #define UNI_MAX_BMP             (uchar32_t)0x0000FFFF
 #define UNI_MAX_UTF16           (uchar32_t)0x0010FFFF
@@ -68,7 +70,7 @@ static const unsigned char g_firstByteMark[7] = {0x00, 0x00, 0xC0, 0xE0, 0xF0, 0
 
 /**
 *   \brief              Determines if the next UTF-8 character in the specified string is legal.
-*   \param  str [in]    The string whose first character needs to be checked.
+*   \param  str    [in] The string whose first character needs to be checked.
 *   \param  length [in] The length of the character in the string.
 *   \return             True if the character is legal; false otherwise.
 */
@@ -240,6 +242,13 @@ template <> unsigned short get_char_size<wchar_t>(uchar32_t &character)
     return get_char_size<char32_t>(character);
 }
 
+template <typename T>
+unsigned short get_char_size(const uchar32_t &character)
+{
+    uchar32_t ch = character;
+    return get_char_size<T>(ch);
+}
+
 /**
 *   \brief                  Writes a character to the specified string.
 *   \param  str       [in]  The string to write the character to.
@@ -249,9 +258,9 @@ template <> unsigned short get_char_size<wchar_t>(uchar32_t &character)
 *   \remarks
 *       This function will not modify the input string. This must be done manually.
 */
-bool write_char(char *str, uchar32_t character, unsigned short numBytes)
+bool write_char(char *str, uchar32_t character, unsigned short count)
 {
-    str += numBytes;
+    str += count;
 
     // TODO: We might want to do some sort of overflow check here. The only real
     // way to do this is to have another parameter detailing the size of the
@@ -259,24 +268,24 @@ bool write_char(char *str, uchar32_t character, unsigned short numBytes)
 
     // Now we need to copy all of our bytes over. We use the fall-through switch
     // like the one in the code by Unicode, Inc.
-    switch (numBytes)
+    switch (count)
     {
     case 4: *--str = static_cast<char>(((character | 0x80) & 0xBF)); character >>= 6;
     case 3: *--str = static_cast<char>(((character | 0x80) & 0xBF)); character >>= 6;
     case 2: *--str = static_cast<char>(((character | 0x80) & 0xBF)); character >>= 6;
-    case 1: *--str = static_cast<char>((character | g_firstByteMark[numBytes]));
+    case 1: *--str = static_cast<char>((character | g_firstByteMark[count]));
     }
 
     return true;
 }
-bool write_char(char16_t *str, uchar32_t character, unsigned short numBytes)
+bool write_char(char16_t *str, uchar32_t character, unsigned short count)
 {
-    if (numBytes == 1)
+    if (count == 1)
     {
         *str = static_cast<char16_t>(character);
         return true;
     }
-    else if (numBytes == 2)
+    else if (count == 2)
     {
         // We have a surrogate pair.
         character -= g_halfBase;
@@ -289,11 +298,26 @@ bool write_char(char16_t *str, uchar32_t character, unsigned short numBytes)
 
     return false;
 }
-bool write_char(char32_t *str, uchar32_t character, unsigned short numBytes)
+bool write_char(char32_t *str, uchar32_t character, unsigned short count)
 {
     *str = character;
 
     return true;
+}
+bool write_char(wchar_t *str, uchar32_t character, unsigned short count)
+{
+    if (sizeof(wchar_t) == 1)
+    {
+        return write_char((char *)str, character, count);
+    }
+    else if (sizeof(wchar_t) == 2)
+    {
+        return write_char((char16_t *)str, character, count);
+    }
+    else
+    {
+        return write_char((char32_t *)str, character, count);
+    }
 }
 
 /**
