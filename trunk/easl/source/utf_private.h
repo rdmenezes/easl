@@ -24,14 +24,14 @@ namespace easl
 #define UNI_MAX_UTF32           (uchar32_t)0x7FFFFFFF
 #define UNI_MAX_LEGAL_UTF32     (uchar32_t)0x0010FFFF
 
-#define UNI_SUR_HIGH_START  (uchar32_t)0xD800
-#define UNI_SUR_HIGH_END    (uchar32_t)0xDBFF
-#define UNI_SUR_LOW_START   (uchar32_t)0xDC00
-#define UNI_SUR_LOW_END     (uchar32_t)0xDFFF
+#define UNI_SUR_HIGH_START      (uchar32_t)0xD800
+#define UNI_SUR_HIGH_END        (uchar32_t)0xDBFF
+#define UNI_SUR_LOW_START       (uchar32_t)0xDC00
+#define UNI_SUR_LOW_END         (uchar32_t)0xDFFF
 
-static const uchar32_t g_halfShift = 10;
-static const uchar32_t g_halfBase = 0x0010000UL;
-static const uchar32_t g_halfMask = 0x3FFUL;
+#define UNI_HALF_SHIFT          (uchar32_t)10
+#define UNI_HALF_BASE           (uchar32_t)0x0010000UL
+#define UNI_HALF_MASK           (uchar32_t)0x3FFUL
 
 /*
  * Index into the table below with the first byte of a UTF-8 sequence to
@@ -191,11 +191,11 @@ inline bool is_legal_utf8(const char *str, unsigned short length)
 *       If \c character is invalid, the function will set it to the replacement character.
 */
 template <typename T>
-unsigned short get_char_size(uchar32_t &character)
+size_t get_char_size(uchar32_t &character)
 {
     return 1;
 }
-template <> unsigned short get_char_size<char>(uchar32_t &character)
+template <> size_t get_char_size<char>(uchar32_t &character)
 {
     if (character < 0x80)
     {
@@ -219,7 +219,7 @@ template <> unsigned short get_char_size<char>(uchar32_t &character)
         return 3;
     }
 }
-template <> unsigned short get_char_size<char16_t>(uchar32_t &character)
+template <> size_t get_char_size<char16_t>(uchar32_t &character)
 {
     if (character <= UNI_MAX_BMP)
     {
@@ -228,7 +228,7 @@ template <> unsigned short get_char_size<char16_t>(uchar32_t &character)
     
     return 2;
 }
-template <> unsigned short get_char_size<wchar_t>(uchar32_t &character)
+template <> size_t get_char_size<wchar_t>(uchar32_t &character)
 {
     if (sizeof(wchar_t) == 1)
     {
@@ -243,7 +243,7 @@ template <> unsigned short get_char_size<wchar_t>(uchar32_t &character)
 }
 
 template <typename T>
-unsigned short get_char_size(const uchar32_t &character)
+size_t get_char_size(const uchar32_t &character)
 {
     uchar32_t ch = character;
     return get_char_size<T>(ch);
@@ -258,7 +258,7 @@ unsigned short get_char_size(const uchar32_t &character)
 *   \remarks
 *       This function will not modify the input string. This must be done manually.
 */
-bool write_char(char *str, uchar32_t character, unsigned short count)
+bool write_char(char *str, uchar32_t character, size_t count)
 {
     str += count;
 
@@ -278,7 +278,7 @@ bool write_char(char *str, uchar32_t character, unsigned short count)
 
     return true;
 }
-bool write_char(char16_t *str, uchar32_t character, unsigned short count)
+bool write_char(char16_t *str, uchar32_t character, size_t count)
 {
     if (count == 1)
     {
@@ -288,23 +288,23 @@ bool write_char(char16_t *str, uchar32_t character, unsigned short count)
     else if (count == 2)
     {
         // We have a surrogate pair.
-        character -= g_halfBase;
+        character -= UNI_HALF_BASE;
 
-        *str++ = static_cast<char16_t>((character >> g_halfShift) + UNI_SUR_HIGH_START);
-        *str++ = static_cast<char16_t>((character & g_halfMask) + UNI_SUR_LOW_START);
+        *str++ = static_cast<char16_t>((character >> UNI_HALF_SHIFT) + UNI_SUR_HIGH_START);
+        *str++ = static_cast<char16_t>((character & UNI_HALF_MASK) + UNI_SUR_LOW_START);
 
         return true;
     }
 
     return false;
 }
-bool write_char(char32_t *str, uchar32_t character, unsigned short count)
+bool write_char(char32_t *str, uchar32_t character, size_t count)
 {
     *str = character;
 
     return true;
 }
-bool write_char(wchar_t *str, uchar32_t character, unsigned short count)
+bool write_char(wchar_t *str, uchar32_t character, size_t count)
 {
     if (sizeof(wchar_t) == 1)
     {
