@@ -1,13 +1,15 @@
 /**
 *   \brief  strabsolute.h
 *   \author Dave Reid
-*   \brief  Header file for the strabsolute() implementation.
+*   \brief  Header file for the absolute() implementation.
 */
 #ifndef __EASL_STRABSOLUTE_H_
 #define __EASL_STRABSOLUTE_H_
 
+#include "../../string.h"
 #include "../../strnextchar.h"
-#include "../../_private.h"
+#include "../../_private.h"         // easl/_private.h"
+#include "_private.h"               // easl/ext/paths/_private.h
 
 // Defines the directory slash for platforms.
 #if (PLATFORM == PLATFORM_WINDOWS)
@@ -20,103 +22,6 @@ namespace easl
 {
 namespace paths
 {
-
-template <typename T>
-struct _SubDirPair
-{
-    const T *start;
-    const T *end;
-};
-
-template <typename T>
-void _split_path(_SubDirPair<T> (&dest)[128], size_t &count, const T *path)
-{
-    // Our current sub directory. There is always at least one sub directory.
-    _SubDirPair<T> current_pair;
-    current_pair.start = path;
-
-    // We need to ensure that our counter is at 0.
-    count = 0;
-
-    const T *temp = path;
-    uchar32_t ch;
-    while ((ch = easl::strnextchar(temp)) != NULL)
-    {
-        if (ch == '\\' || ch == '/')
-        {
-            current_pair.end = path;
-            dest[count++] = current_pair;
-
-            // We need to return straight away if we have too many sub directories.
-            if (count == 128)
-            {
-                return;
-            }
-
-            // Now we can start our new pair.
-            current_pair.start = temp;
-        }
-        
-        path = temp;
-    }
-
-    // We need to add our last pair to the list.
-    current_pair.end = temp;
-    dest[count++] = current_pair;
-}
-
-/**
-*   \brief              Determines if the specified string pair is equal to ".."
-*   \param  dir [in]    The directory pair to check.
-*   \return             True if the string is equal to ".."
-*/
-template <typename T>
-bool _pair_is_parent_dir(const _SubDirPair<T> &dir)
-{
-    const T *temp = dir.start;
-    uchar32_t ch1 = easl::strnextchar(temp);
-    uchar32_t ch2 = easl::strnextchar(temp);
-    if (temp == dir.end && ch1 == '.' && ch2 == '.')
-    {
-        return true;
-    }
-
-    return false;
-}
-
-/**
-*   \brief              Copies a directory pair to a string.
-*   \param  dest [out]  Pointer to the buffer that the string pair will be copied to.
-*   \param  pair [in]   The pair that will be copied to the destination buffer.
-*   \return             The number of T's that are copied over.
-*/
-template <typename T>
-size_t _copy_pair_to_str(T *dest, const _SubDirPair<T> &pair)
-{
-    // Stores the number of T's that we're copying over.
-    size_t count = 0;
-
-    if (pair.start != pair.end)
-    {
-        const T *temp = pair.start;
-        while (temp != pair.end)
-        {
-            // Grab the next character.
-            uchar32_t ch = easl::strnextchar(temp);
-
-            // Grab the size of the character so we can modify the final count.
-            size_t char_size = easl::get_char_size<T>(ch);
-            count += char_size;
-
-            // Now write the character.
-            write_char(dest, ch, char_size);
-
-            dest += char_size;
-        }
-    }
-
-    return count;
-}
 
 
 /**
@@ -134,11 +39,10 @@ size_t _copy_pair_to_str(T *dest, const _SubDirPair<T> &pair)
 *       This function does not check if the resulting path is a valid directory.
 */
 template <typename T>
-size_t strabsolute(T *dest, const T *path, const T *base)
+size_t absolute(T *dest, const T *path, const T *base)
 {
     assert(path != NULL);
     assert(base != NULL);
-
 
     // We need to retrieve the sub directories from each path.
     _SubDirPair<T> path_dirs[128];
@@ -229,6 +133,47 @@ size_t strabsolute(T *dest, const T *path, const T *base)
 
     return count;
 }
+
+
+template <typename T>
+void absolute(slow_string<T> &dest, const T *path, const T *base)
+{
+    T *&temp = dest.c_str();
+
+    dest = new T[absolute((T *)NULL, path, base)];
+    absolute(temp, path, base);
+}
+
+
+string8 absolute(const char *path, const char *base)
+{
+    string8 dest;
+    absolute(dest, path, base);
+
+    return dest;
+}
+string16 absolute(const char16_t *path, const char16_t *base)
+{
+    string16 dest;
+    absolute(dest, path, base);
+
+    return dest;
+}
+string32 absolute(const char32_t *path, const char32_t *base)
+{
+    string32 dest;
+    absolute(dest, path, base);
+
+    return dest;
+}
+wstring absolute(const wchar_t *path, const wchar_t *base)
+{
+    wstring dest;
+    absolute(dest, path, base);
+
+    return dest;
+}
+
 
 }
 }

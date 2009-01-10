@@ -1,7 +1,7 @@
 /**
-*   \brief  strgetfileext.h
+*   \brief  getfileext.h
 *   \author Dave Reid
-*   \brief  Header file for the strgetfileext() implementation.
+*   \brief  Header file for the getfileext() implementation.
 */
 #ifndef __EASL_PATHS_STRGETFILEEXT_H_
 #define __EASL_PATHS_STRGETFILEEXT_H_
@@ -35,7 +35,7 @@ namespace paths
 *       function because it must scan a larger string if the full file path is specified.
 */
 template <typename T>
-size_t strgetfileext(T *dest, const T *src)
+size_t getfileext(T *dest, const T *src)
 {
     assert(src != NULL);
 
@@ -78,7 +78,7 @@ size_t strgetfileext(T *dest, const T *src)
 }
 
 template <typename T>
-void strgetfileext(slow_string<T> &dest, const T *src)
+void getfileext(slow_string<T> &dest, const T *src)
 {
     assert(src != NULL);
 
@@ -109,31 +109,31 @@ void strgetfileext(slow_string<T> &dest, const T *src)
 }
 
 
-string8 strgetfileext(const char *src)
+string8 getfileext(const char *src)
 {
     string8 ret;
-    strgetfileext(ret, src);
+    getfileext(ret, src);
 
     return ret;
 }
-string16 strgetfileext(const char16_t *src)
+string16 getfileext(const char16_t *src)
 {
     string16 ret;
-    strgetfileext(ret, src);
+    getfileext(ret, src);
 
     return ret;
 }
-string32 strgetfileext(const char32_t *src)
+string32 getfileext(const char32_t *src)
 {
     string32 ret;
-    strgetfileext(ret, src);
+    getfileext(ret, src);
 
     return ret;
 }
-wstring strgetfileext(const wchar_t *src)
+wstring getfileext(const wchar_t *src)
 {
     wstring ret;
-    strgetfileext(ret, src);
+    getfileext(ret, src);
 
     return ret;
 }
