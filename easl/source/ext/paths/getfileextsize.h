@@ -1,12 +1,12 @@
 /**
-*   \brief  strgetfileextsize.h
+*   \brief  getfileextsize.h
 *   \author Dave Reid
-*   \brief  Header file for the strgetfileextsize() implementation.
+*   \brief  Header file for the getfileextsize() implementation.
 */
 #ifndef __EASL_PATH_STRGETFILEEXTSIZE_H_
 #define __EASL_PATH_STRGETFILEEXTSIZE_H_
 
-#include "strgetfileext.h"
+#include "getfileext.h"
 
 namespace easl
 {
@@ -19,9 +19,9 @@ namespace paths
 *   \return             The number of T's that must be allocated in order to store the extension of \c src.
 */
 template <typename T>
-size_t strgetfileextsize(const T *str)
+size_t getfileextsize(const T *str)
 {
-    return strgetfileext(str, (T *)NULL);
+    return getfileext((T *)NULL, str);
 }
 
 }

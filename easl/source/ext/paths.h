@@ -6,8 +6,9 @@
 #ifndef __EASL_PATHS_H_
 #define __EASL_PATHS_H_
 
-#include "paths/strgetfileext.h"
-#include "paths/strgetfileextsize.h"
-#include "paths/strabsolute.h"
+#include "paths/getfileext.h"
+#include "paths/getfileextsize.h"
+#include "paths/absolute.h"
+#include "paths/absolutesize.h"
 
 #endif // __EASL_PATHS_H_
