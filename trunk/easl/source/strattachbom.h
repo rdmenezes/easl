@@ -7,7 +7,7 @@
 #define __EASL_STRATTACHBOM_H_
 
 #include "types.h"
-#include "utf_private.h"
+#include "_private.h"
 
 namespace easl
 {

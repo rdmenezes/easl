@@ -7,7 +7,7 @@
 #define __EASL_CONVERT_H_
 
 #include "types.h"
-#include "utf_private.h"
+#include "_private.h"
 #include "strnextchar.h"
 
 namespace easl

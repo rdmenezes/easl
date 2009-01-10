@@ -12,6 +12,11 @@
 #define BITS32              0x00000020
 #define BITS64              0x00000040
 
+// The different platforms (Windows, Linux, Mac, etc)
+#define PLATFORM_WINDOWS	0x01000000
+#define PLATFORM_LINUX		0x02000000
+#define PLATFORM_OSX		0x04000000
+
 // The different compilers.
 // Visual C
 #define COMPILER_VC			0x10000000
@@ -102,6 +107,20 @@
 
 #endif	// __GNUC__
 #endif	// COMPILER
+
+
+// Find our platform
+#ifndef PLATFORM
+
+#if defined(_MSC_VER) || defined(__CYGWIN32__) || defined(__MINGW32__)
+#define PLATFORM	PLATFORM_WINDOWS
+#elif defined(__linux__)
+#define PLATFORM	PLATFORM_LINUX
+#elif defined(__APPLE__) && defined(__MACH__)
+#define	PLATFORM	PLATFORM_OSX
+#endif
+
+#endif	// PLATFORM
 
 
 #endif // __EASL_SETUP_H_
