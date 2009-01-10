@@ -46,12 +46,12 @@ public:
     *   \brief              Constructor.
     *   \param  str [in]    The string to initialise this string to.
     */
-#ifdef EASL_OPTION_NO_GENERIC_ASSIGN
     slow_string(const T *str) : m_data(NULL)
     {
         this->assign(str);
     }
-#else
+
+#ifndef EASL_OPTION_NO_GENERIC_ASSIGN
     template <typename U>
     slow_string(const U *str) : m_data(NULL)
     {
@@ -129,7 +129,6 @@ public:
     *       If the length of the input string is known, set \c len to the length of the string.
     *       This will prevent this string from manually retrieving the length of the string.
     */
-#ifdef EASL_OPTION_NO_GENERIC_ASSIGN
     slow_string<T> & assign(const T *str, size_t len = 0)
     {
         if (this->m_data == (const T *)str && this->m_data != NULL)
@@ -160,7 +159,8 @@ public:
 
         return *this;
     }
-#else
+
+#ifndef EASL_OPTION_NO_GENERIC_ASSIGN
     template <typename U>
     slow_string<T> & assign(const U *str, size_t len = 0)
     {
@@ -205,7 +205,6 @@ public:
     *       The \c len parameter should specify the number of U's in \c str and not
     *       the number of characters.
     */
-#ifdef EASL_OPTION_NO_GENERIC_MANIPULATION
     slow_string<T> & append(const T *str, size_t len = 0)
     {
         if (str != NULL)
@@ -238,7 +237,8 @@ public:
 
         return *this;
     }
-#else
+
+#ifndef EASL_OPTION_NO_GENERIC_MANIPULATION
     template <typename U>
     slow_string<T> & append(const U *str, size_t len = 0)
     {
@@ -357,7 +357,6 @@ public:
     *   \param  str [in]    The string to assign to this string.
     *   \return             A reference to this string.
     */
-#ifdef EASL_OPTION_NO_GENERIC_ASSIGN
     slow_string<T> & operator =(const T *str)
     {
         return this->assign(str);
@@ -366,7 +365,8 @@ public:
     {
         return this->assign(str.c_str());
     }
-#else
+
+#ifndef EASL_OPTION_NO_GENERIC_ASSIGN
     template <typename U>
     slow_string<T> & operator =(const U *str)
     {
@@ -390,7 +390,6 @@ public:
     *   \remarks
     *       The comparison is case sensitive. "Some String" does not equal "some string".
     */
-#ifdef EASL_OPTION_NO_GENERIC_COMPARISON
     bool operator ==(const T *str) const
     {
         return easl::strequal(this->m_data, str);
@@ -399,7 +398,8 @@ public:
     {
         return easl::strequal(this->m_data, str.c_str());
     }
-#else
+
+#ifndef EASL_OPTION_NO_GENERIC_COMPARISON
     template <typename U>
     bool operator ==(const U *str) const
     {
@@ -420,7 +420,6 @@ public:
     *   \param  str [in]    The string to append to this string.
     *   \return             A reference to this string.
     */
-#ifdef EASL_OPTION_NO_GENERIC_MANIPULATION
     slow_string<T> & operator +=(const T *str)
     {
         return this->append(str);
@@ -429,7 +428,8 @@ public:
     {
         return this->append(str.c_str());
     }
-#else
+
+#ifndef EASL_OPTION_NO_GENERIC_MANIPULATION
     template <typename U>
     slow_string<T> & operator +=(const U *str)
     {
@@ -460,7 +460,6 @@ public:
     *   \param  str [in]    The string to be appended to the end of the new string.
     *   \return             A new string equal to this string with the input string appeneded to the end.
     */
-#ifdef EASL_OPTION_NO_GENERIC_MANIPULATION
     slow_string<T> operator +(const T *str) const
     {
         slow_string<T> new_str(*this);
@@ -471,7 +470,8 @@ public:
         slow_string<T> new_str(*this);
         return new_str += str;
     }
-#else
+
+#ifndef EASL_OPTION_NO_GENERIC_MANIPULATION
     template <typename U>
     slow_string<T> operator +(const U *str) const
     {

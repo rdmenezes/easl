@@ -1,5 +1,5 @@
 /**
-*   \file   utf_private.h
+*   \file   _private.h
 *   \author Dave Reid
 *   \brief  Header file for private UTF encoded string functionality.
 *
