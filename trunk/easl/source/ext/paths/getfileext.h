@@ -7,7 +7,7 @@
 #define __EASL_PATHS_STRGETFILEEXT_H_
 
 #include <assert.h>
-#include "../../strnextchar.h"
+#include "../../nextchar.h"
 #include "../../string.h"
 
 namespace easl
@@ -46,7 +46,7 @@ size_t getfileext(T *dest, const T *src)
     // we reach the end of the file will be the last one.
     const T *last_pos = NULL;
     uchar32_t ch;
-    while ((ch = easl::strnextchar(src)) != NULL)
+    while ((ch = easl::nextchar(src)) != NULL)
     {
         if (ch == '.')
         {
@@ -89,7 +89,7 @@ void getfileext(slow_string<T> &dest, const T *src)
     // we reach the end of the file will be the last one.
     const T *last_pos = NULL;
     uchar32_t ch;
-    while ((ch = easl::strnextchar(src)) != NULL)
+    while ((ch = easl::nextchar(src)) != NULL)
     {
         if (ch == '.')
         {

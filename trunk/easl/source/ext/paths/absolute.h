@@ -1,22 +1,16 @@
 /**
-*   \brief  strabsolute.h
+*   \brief  absolute.h
 *   \author Dave Reid
 *   \brief  Header file for the absolute() implementation.
 */
 #ifndef __EASL_STRABSOLUTE_H_
 #define __EASL_STRABSOLUTE_H_
 
+#include <assert.h>
 #include "../../string.h"
-#include "../../strnextchar.h"
+#include "../../nextchar.h"
 #include "../../_private.h"         // easl/_private.h"
 #include "_private.h"               // easl/ext/paths/_private.h
-
-// Defines the directory slash for platforms.
-#if (PLATFORM == PLATFORM_WINDOWS)
-#define EASL_PATH_SLASH     '\\'
-#else
-#define EASL_PATH_SLASH     '/'
-#endif
 
 namespace easl
 {
@@ -36,7 +30,7 @@ namespace paths
 *       convert the path to an absolute path, the function will return 1 and \c dest will recieve
 *       an empty string.
 *       \par
-*       This function does not check if the resulting path is a valid directory.
+*       This function does not check if the resulting path is a valid or existing directory or file.
 */
 template <typename T>
 size_t absolute(T *dest, const T *path, const T *base)
@@ -79,17 +73,19 @@ size_t absolute(T *dest, const T *path, const T *base)
             // return 0.
             if (final_path_count == 0)
             {
-                return 0;
+                if (dest != NULL)
+                {
+                    *dest = 0;
+                }
+
+                return 1;
             }
 
             --final_path_count;
         }
         else
         {
-            if (path_dirs[i].end - path_dirs[i].start != 0)
-            {
-                final_path_dirs[final_path_count++] = path_dirs[i];
-            }
+            final_path_dirs[final_path_count++] = path_dirs[i];
         }
     }
 
@@ -109,8 +105,7 @@ size_t absolute(T *dest, const T *path, const T *base)
             // Now we need to write a slash to divide our sub directories. We first need to know the
             // size of the character we are writing so we can move the pointer forward. If we're writing
             // the last sub directory and it is _not_ an empty string, we don't want to add the slash.
-            if ((i != final_path_count - 1) && ((final_path_dirs[i].end - final_path_dirs[i].start) != 1) &&
-                (final_path_dirs[i].end - final_path_dirs[i].start != 0))
+            if ((i != final_path_count - 1) && ((final_path_dirs[i].end - final_path_dirs[i].start) != 1))
             {
                 size_t char_size = get_char_size<T>(EASL_PATH_SLASH);
 

@@ -1,5 +1,5 @@
 /**
-*   \brief  strgetfileextsize.h
+*   \brief  absolutesize.h
 *   \author Dave Reid
 *   \brief  Header file for the absolutesize() implementation.
 */

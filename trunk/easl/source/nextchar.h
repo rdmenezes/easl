@@ -1,5 +1,5 @@
 /**
-*   \file   strnextchar.h
+*   \file   nextchar.h
 *   \author Dave Reid
 *   \brief  Header file for the nextchar() family of functions.
 */
@@ -21,7 +21,7 @@ namespace easl
 *       If this function returns NULL, the null terminator was retrieved. When this occurs, the string
 *       is _not_ moved forward to the next character (there is no characters after the null terminator).
 */
-uchar32_t strnextchar_utf8(const char *&str)
+uchar32_t nextchar_utf8(const char *&str)
 {
 #ifdef EASL_ONLY_ASCII
     char32_t ch = *str;
@@ -87,7 +87,7 @@ uchar32_t strnextchar_utf8(const char *&str)
 #endif
 }
 
-uchar32_t strnextchar_utf16(const char16_t *&str)
+uchar32_t nextchar_utf16(const char16_t *&str)
 {
 #ifdef EASL_ONLY_ASCII
     char32_t ch = *str;
@@ -146,7 +146,7 @@ uchar32_t strnextchar_utf16(const char16_t *&str)
 #endif
 }
 
-uchar32_t strnextchar_utf32(const char32_t *&str)
+uchar32_t nextchar_utf32(const char32_t *&str)
 {
     char32_t ch = *str;
 
@@ -170,36 +170,36 @@ uchar32_t strnextchar_utf32(const char32_t *&str)
 *       If this function returns NULL, the null terminator was retrieved. When this occurs, the string
 *       is _not_ moved forward to the next character (there is no characters after the null terminator).
 */
-inline uchar32_t strnextchar(const char *&str)
+inline uchar32_t nextchar(const char *&str)
 {
-    return strnextchar_utf8(str);
+    return nextchar_utf8(str);
 }
-inline uchar32_t strnextchar(const char16_t *&str)
+inline uchar32_t nextchar(const char16_t *&str)
 {
-    return strnextchar_utf16(str);
+    return nextchar_utf16(str);
 }
-inline uchar32_t strnextchar(const char32_t *&str)
+inline uchar32_t nextchar(const char32_t *&str)
 {
-    return strnextchar_utf32(str);
+    return nextchar_utf32(str);
 }
-inline uchar32_t strnextchar(const wchar_t *&str)
+inline uchar32_t nextchar(const wchar_t *&str)
 {
     if (sizeof(wchar_t) == 2)
     {
-        return strnextchar_utf16((const char16_t *&)str);
+        return nextchar_utf16((const char16_t *&)str);
     }
     else if (sizeof(wchar_t) == 4)
     {
-        return strnextchar_utf32((const char32_t *&)str);
+        return nextchar_utf32((const char32_t *&)str);
     }
 
-    return strnextchar_utf8((const char *&)str);
+    return nextchar_utf8((const char *&)str);
 }
 
 template <typename T>
-inline uchar32_t strnextchar(T *&str)
+inline uchar32_t nextchar(T *&str)
 {
-    return strnextchar((const T *&)str);
+    return nextchar((const T *&)str);
 }
 
 }

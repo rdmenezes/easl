@@ -1,12 +1,12 @@
 /**
-*   \file   strskipbom.h
+*   \file   skipbom.h
 *   \author Dave Reid
-*   \brief  Header file for strskipbom() implementations.
+*   \brief  Header file for skipbom() implementations.
 */
-#ifndef __EASL_STRSKIPBOM_H_
-#define __EASL_STRSKIPBOM_H_
+#ifndef __EASL_SKIPBOM_H_
+#define __EASL_SKIPBOM_H_
 
-#include "strnextchar.h"
+#include "nextchar.h"
 
 namespace easl
 {
@@ -21,10 +21,10 @@ namespace easl
 *       one is present. If there is no BOM, the pointer is not moved.
 */
 template <typename T>
-uchar32_t strskipbom(const T *&str)
+uchar32_t skipbom(const T *&str)
 {
     const T *temp = str;
-    if (easl::strnextchar(temp) == 0xFEFF)
+    if (easl::nextchar(temp) == 0xFEFF)
     {
         str = temp;
         return 0xFEFF;
@@ -33,11 +33,11 @@ uchar32_t strskipbom(const T *&str)
     return 0;
 }
 template <typename T>
-uchar32_t strskipbom(T *&str)
+uchar32_t skipbom(T *&str)
 {
-    return strskipbom((const T *&)str);
+    return skipbom((const T *&)str);
 }
 
 }
 
-#endif // __EASL_STRSKIPBOM_H_
+#endif // __EASL_SKIPBOM_H_

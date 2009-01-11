@@ -1,12 +1,12 @@
 /**
-*   \file   strremovebom.h
+*   \file   removebom.h
 *   \author Dave Reid
-*   \brief  Header file for strremovebom() implementations.
+*   \brief  Header file for removebom() implementations.
 */
-#ifndef __EASL_STRREMOVEBOM_H_
-#define __EASL_STRREMOVEBOM_H_
+#ifndef __EASL_REMOVEBOM_H_
+#define __EASL_REMOVEBOM_H_
 
-#include "strskipbom.h"
+#include "skipbom.h"
 
 namespace easl
 {
@@ -16,10 +16,10 @@ namespace easl
 *   \param  str [in, out]   The string to remove the BOM from.
 */
 template <typename T>
-void strremovebom(T *str)
+void removebom(T *str)
 {
     T *temp = str;
-    if (strskipbom(temp) != 0)
+    if (skipbom(temp) != 0)
     {
         // If we've made it here, the BOM was present, so we now want to
         // move our string down some spots.
@@ -48,4 +48,4 @@ void strremovebom(T *str)
 
 }
 
-#endif // __EASL_STRREMOVEBOM_H_
+#endif // __EASL_REMOVEBOM_H_

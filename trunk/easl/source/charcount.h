@@ -1,12 +1,12 @@
 /**
-*   \file   strchrcount.h
+*   \file   charcount.h
 *   \author Dave Reid
 *   \brief  Header file for strchrcount() implementations.
 */
-#ifndef __EASL_CHARACTER_H_
-#define __EASL_CHARACTER_H_
+#ifndef __EASL_CHARCOUNT_H_
+#define __EASL_CHARCOUNT_H_
 
-#include "strnextchar.h"
+#include "nextchar.h"
 
 namespace easl
 {
@@ -24,14 +24,14 @@ namespace easl
 *       the number of characters in the string, not including the null terminator.
 */
 template <typename T>
-size_t strchrcount(const T *str)
+size_t charcount(const T *str)
 {
 #ifdef EASL_ONLY_ASCII
     return easl::strlen(str);
 #else
     size_t count = 0;
     uchar32_t ch;
-    while ((ch = easl::strnextchar(str)) != NULL)
+    while ((ch = easl::nextchar(str)) != NULL)
     {
         ++count;
     }
@@ -42,4 +42,4 @@ size_t strchrcount(const T *str)
 
 }
 
-#endif // __EASL_CHARACTER_H_
+#endif // __EASL_CHARCOUNT_H_

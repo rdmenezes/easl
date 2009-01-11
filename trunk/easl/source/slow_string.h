@@ -18,9 +18,9 @@
 
 #include "strlen.h"
 #include "strcpy.h"
-#include "strconvertsize.h"
-#include "strgetchar.h"
-#include "strequal.h"
+#include "convertsize.h"
+#include "getchar.h"
+#include "equal.h"
 
 namespace easl
 {
@@ -182,12 +182,12 @@ public:
         {
             if (len == 0)
             {
-                len = easl::strconvertsize<T>(str);
+                len = easl::convertsize<T>(str);
             }
 
             // All we're really doing is a simple conversion.
             this->m_data = new T[len];
-            easl::strconvert(this->m_data, str);
+            easl::convert(this->m_data, str);
         }
 
         return *this;
@@ -246,7 +246,7 @@ public:
         {
             // First we need to determine how much extra space we need to allocate to append
             // the new string.
-            size_t convert_size = easl::strconvertsize<T>(str);
+            size_t convert_size = easl::convertsize<T>(str);
 
             // Now we need to find the length of this string.
             size_t this_size = this->length();
@@ -261,7 +261,7 @@ public:
             memcpy(this->m_data, old_data, sizeof(T) * this_size);
 
             // Now we copy our input string into our new buffer.
-            easl::strconvert(this->m_data + this_size, str);
+            easl::convert(this->m_data + this_size, str);
 
             // Delete our previous data.
             delete [] old_data;
@@ -348,7 +348,7 @@ public:
     {
         assert(this->length() < index);
 
-        return easl::strgetchar(this->m_data, index);
+        return easl::getchar(this->m_data, index);
     }
 
 
@@ -392,25 +392,25 @@ public:
     */
     bool operator ==(const T *str) const
     {
-        return easl::strequal(this->m_data, str);
+        return easl::equal(this->m_data, str);
     }
     bool operator ==(const slow_string<T> &str) const
     {
-        return easl::strequal(this->m_data, str.c_str());
+        return easl::equal(this->m_data, str.c_str());
     }
 
 #ifndef EASL_OPTION_NO_GENERIC_COMPARISON
     template <typename U>
     bool operator ==(const U *str) const
     {
-        return easl::strequal(this->m_data, str);
+        return easl::equal(this->m_data, str);
     }
 
     /// \copydoc    slow_string::operator ==(const U *) const
     template <typename U>
     bool operator ==(const slow_string<U> &str) const
     {
-        return easl::strequal(this->m_data, str.c_str());
+        return easl::equal(this->m_data, str.c_str());
     }
 #endif
 
