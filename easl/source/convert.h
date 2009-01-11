@@ -23,6 +23,8 @@ namespace easl
 */
 size_t utf16_to_utf8(char *dest, const char16_t *source, size_t destSize)
 {
+    (void)destSize; // TODO: Use destSize.
+
     size_t copied_chars = 0;
     
 #ifdef EASL_ONLY_ASCII
@@ -84,6 +86,8 @@ size_t utf16_to_utf8(char *dest, const char16_t *source, size_t destSize)
 
 size_t utf32_to_utf8(char *dest, const char32_t *source, size_t destSize)
 {
+    (void)destSize; // TODO: Use destSize.
+
     size_t copied_chars = 0;
     
 #ifdef EASL_ONLY_ASCII
@@ -145,6 +149,8 @@ size_t utf32_to_utf8(char *dest, const char32_t *source, size_t destSize)
 
 size_t utf8_to_utf16(char16_t *dest, const char *source, size_t destSize)
 {
+    (void)destSize; // TODO: Use destSize.
+
     size_t copied_chars = 0;
     
 #ifdef EASL_ONLY_ASCII
@@ -231,6 +237,8 @@ size_t utf8_to_utf16(char16_t *dest, const char *source, size_t destSize)
 
 size_t utf32_to_utf16(char16_t *dest, const char32_t *source, size_t destSize)
 {
+    (void)destSize; // TODO: Use destSize.
+
     size_t copied_chars = 0;
     
 #ifdef EASL_ONLY_ASCII
@@ -317,6 +325,8 @@ size_t utf32_to_utf16(char16_t *dest, const char32_t *source, size_t destSize)
 
 size_t utf8_to_utf32(char32_t *dest, const char *source, size_t destSize)
 {
+    (void)destSize; // TODO: Use destSize.
+
     size_t copied_chars = 0;
 
 #ifdef EASL_ONLY_ASCII
@@ -369,6 +379,8 @@ size_t utf8_to_utf32(char32_t *dest, const char *source, size_t destSize)
 
 size_t utf16_to_utf32(char32_t *dest, const char16_t *source, size_t destSize)
 {
+    (void)destSize; // TODO: Use destSize.
+
     size_t copied_chars = 0;
 
 #ifdef EASL_ONLY_ASCII
@@ -452,6 +464,8 @@ size_t convert(char32_t *dest, const char16_t *source, size_t destSize = -1)
 template <typename T>
 size_t convert(T *dest, const T *source, size_t destSize = -1)
 {
+    (void)destSize; // TODO: Use destSize.
+
     size_t copied_chars = 0;
 
     // We need only copy the source to the destination.
@@ -479,31 +493,25 @@ size_t convert(T *dest, const T *source, size_t destSize = -1)
 template <typename T>
 size_t convert(wchar_t *dest, const T *source, size_t destSize = -1)
 {
-    if (sizeof(wchar_t) == 2)
+    switch (sizeof(wchar_t))
     {
-        return convert(reinterpret_cast<char16_t *>(dest), source);
-    }
-    else if (sizeof(wchar_t) == 4)
-    {
-        return convert(reinterpret_cast<char32_t *>(dest), source);
+    case 2: return convert(reinterpret_cast<char16_t *>(dest), source, destSize);
+    case 4: return convert(reinterpret_cast<char32_t *>(dest), source, destSize);
     }
 
-    return convert(reinterpret_cast<char *>(dest), source);
+    return convert(reinterpret_cast<char *>(dest), source, destSize);
 }
 
 template <typename T>
 size_t convert(T *dest, const wchar_t *source, size_t destSize = -1)
 {
-    if (sizeof(wchar_t) == 2)
+    switch (sizeof(wchar_t))
     {
-        return convert(dest, reinterpret_cast<const char16_t *>(source));
-    }
-    else if (sizeof(wchar_t) == 4)
-    {
-        return convert(dest, reinterpret_cast<const char32_t *>(source));
+    case 2: return convert(dest, reinterpret_cast<const char16_t *>(source), destSize);
+    case 4: return convert(dest, reinterpret_cast<const char32_t *>(source), destSize);
     }
 
-    return convert(dest, reinterpret_cast<const char *>(source));
+    return convert(dest, reinterpret_cast<const char *>(source), destSize);
 }
 
 

@@ -210,15 +210,10 @@ inline uchar32_t validate_utf32_char(char32_t character)
             return character;
         }
     }
-    else
-    {
-        // If we've made it here, the final character is larger than the maximum value
-        // defined by Unicode (0x10FFFF).
-        return UNI_REPLACEMENT_CHAR;
-    }
 
-    // Should never make it here. Return 0 just in case something stange happens...
-    return 0;
+    // If we've made it here, the final character is larger than the maximum value
+    // defined by Unicode (0x10FFFF).
+    return UNI_REPLACEMENT_CHAR;
 }
 
 }

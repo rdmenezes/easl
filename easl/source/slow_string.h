@@ -51,7 +51,7 @@ public:
         this->assign(str);
     }
 
-#ifndef EASL_OPTION_NO_GENERIC_ASSIGN
+#ifndef EASL_OPTION_NO_GENERIC_OPERATION
     template <typename U>
     slow_string(const U *str) : m_data(NULL)
     {
@@ -68,7 +68,7 @@ public:
         this->assign(str.c_str());
     }
 
-#ifndef EASL_OPTION_NO_GENERIC_ASSIGN
+#ifndef EASL_OPTION_NO_GENERIC_OPERATION
     template <typename U>
     slow_string(const slow_string<U> &str) : m_data(NULL)
     {
@@ -160,7 +160,7 @@ public:
         return *this;
     }
 
-#ifndef EASL_OPTION_NO_GENERIC_ASSIGN
+#ifndef EASL_OPTION_NO_GENERIC_OPERATION
     template <typename U>
     slow_string<T> & assign(const U *str, size_t len = 0)
     {
@@ -238,7 +238,7 @@ public:
         return *this;
     }
 
-#ifndef EASL_OPTION_NO_GENERIC_MANIPULATION
+#ifndef EASL_OPTION_NO_GENERIC_OPERATION
     template <typename U>
     slow_string<T> & append(const U *str, size_t len = 0)
     {
@@ -366,7 +366,7 @@ public:
         return this->assign(str.c_str());
     }
 
-#ifndef EASL_OPTION_NO_GENERIC_ASSIGN
+#ifndef EASL_OPTION_NO_GENERIC_OPERATION
     template <typename U>
     slow_string<T> & operator =(const U *str)
     {
@@ -399,7 +399,7 @@ public:
         return easl::equal(this->m_data, str.c_str());
     }
 
-#ifndef EASL_OPTION_NO_GENERIC_COMPARISON
+#ifndef EASL_OPTION_NO_GENERIC_OPERATION
     template <typename U>
     bool operator ==(const U *str) const
     {
@@ -429,7 +429,7 @@ public:
         return this->append(str.c_str());
     }
 
-#ifndef EASL_OPTION_NO_GENERIC_MANIPULATION
+#ifndef EASL_OPTION_NO_GENERIC_OPERATION
     template <typename U>
     slow_string<T> & operator +=(const U *str)
     {
@@ -471,7 +471,7 @@ public:
         return new_str += str;
     }
 
-#ifndef EASL_OPTION_NO_GENERIC_MANIPULATION
+#ifndef EASL_OPTION_NO_GENERIC_OPERATION
     template <typename U>
     slow_string<T> operator +(const U *str) const
     {
