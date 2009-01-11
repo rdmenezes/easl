@@ -1,5 +1,5 @@
 /**
-*   \file   strconvert.h
+*   \file   convert.h
 *   \author Dave Reid
 *   \brief  Header file for converting between different types of strings.
 */
@@ -8,7 +8,7 @@
 
 #include "types.h"
 #include "_private.h"
-#include "strnextchar.h"
+#include "nextchar.h"
 
 namespace easl
 {
@@ -39,7 +39,7 @@ size_t utf16_to_utf8(char *dest, const char16_t *source, size_t destSize)
 #else
     // Now we need to extract each character from the source and add it to our destination buffer.
     uchar32_t ch = 0;
-    while ((ch = strnextchar(source)) != NULL)
+    while ((ch = nextchar(source)) != NULL)
     {
         // Determine the number of bytes that are required to store this character.
         size_t num_bytes = get_char_size<char>(ch);        
@@ -91,7 +91,7 @@ size_t utf32_to_utf8(char *dest, const char32_t *source, size_t destSize)
 #else
     // Now we need to extract each character from the source and add it to our destination buffer.
     uchar32_t ch = 0;
-    while ((ch = strnextchar(source)) != NULL)
+    while ((ch = nextchar(source)) != NULL)
     {
         // Determine the number of bytes that are required to store this character.
         size_t num_bytes = get_char_size<char>(ch);
@@ -143,7 +143,7 @@ size_t utf8_to_utf16(char16_t *dest, const char *source, size_t destSize)
 #else
     // Now we need to extract each character from the source and add it to our destination buffer.
     uchar32_t ch = 0;
-    while ((ch = strnextchar(source)) != NULL)
+    while ((ch = nextchar(source)) != NULL)
     {
         // TODO: We might want to do some sort of overflow check here. The only real
         // way to do this is to have another parameter detailing the size of the
@@ -229,7 +229,7 @@ size_t utf32_to_utf16(char16_t *dest, const char32_t *source, size_t destSize)
 #else
     // Now we need to extract each character from the source and add it to our destination buffer.
     uchar32_t ch = 0;
-    while ((ch = strnextchar(source)) != NULL)
+    while ((ch = nextchar(source)) != NULL)
     {
         // TODO: We might want to do some sort of overflow check here. The only real
         // way to do this is to have another parameter detailing the size of the
@@ -314,9 +314,9 @@ size_t utf8_to_utf32(char32_t *dest, const char *source, size_t destSize)
     }
 #else
     // All we need to do is extract each character from the source string with
-    // strnextchar(). This will return NULL when it encounters a null terminator.
+    // nextchar(). This will return NULL when it encounters a null terminator.
     uchar32_t ch = 0;
-    while ((ch = strnextchar(source)) != NULL)
+    while ((ch = nextchar(source)) != NULL)
     {
         // If our destination is NULL, we don't want to set any characters, but we
         // do want to get the number of char32_t's that we'll need to use for the
@@ -366,9 +366,9 @@ size_t utf16_to_utf32(char32_t *dest, const char16_t *source, size_t destSize)
     }
 #else
     // All we need to do is extract each character from the source string with
-    // strnextchar(). This will return NULL when it encounters a null terminator.
+    // nextchar(). This will return NULL when it encounters a null terminator.
     uchar32_t ch = 0;
-    while ((ch = strnextchar(source)) != NULL)
+    while ((ch = nextchar(source)) != NULL)
     {
         // If our destination is NULL, we don't want to set any characters, but we
         // do want to get the number of char32_t's that we'll need to use for the
@@ -401,36 +401,36 @@ size_t utf16_to_utf32(char32_t *dest, const char16_t *source, size_t destSize)
 
 
 
-size_t strconvert(char *dest, const char16_t *source, size_t destSize = -1)
+size_t convert(char *dest, const char16_t *source, size_t destSize = -1)
 {
     return utf16_to_utf8(dest, source, destSize);
 }
-size_t strconvert(char *dest, const char32_t *source, size_t destSize = -1)
+size_t convert(char *dest, const char32_t *source, size_t destSize = -1)
 {
     return utf32_to_utf8(dest, source, destSize);
 }
 
-size_t strconvert(char16_t *dest, const char *source, size_t destSize = -1)
+size_t convert(char16_t *dest, const char *source, size_t destSize = -1)
 {
     return utf8_to_utf16(dest, source, destSize);
 }
-size_t strconvert(char16_t *dest, const char32_t *source, size_t destSize = -1)
+size_t convert(char16_t *dest, const char32_t *source, size_t destSize = -1)
 {
     return utf32_to_utf16(dest, source, destSize);
 }
 
-size_t strconvert(char32_t *dest, const char *source, size_t destSize = -1)
+size_t convert(char32_t *dest, const char *source, size_t destSize = -1)
 {
     return utf8_to_utf32(dest, source, destSize);
 }
-size_t strconvert(char32_t *dest, const char16_t *source, size_t destSize = -1)
+size_t convert(char32_t *dest, const char16_t *source, size_t destSize = -1)
 {
     return utf16_to_utf32(dest, source, destSize);
 }
 
 
 template <typename T>
-size_t strconvert(T *dest, const T *source, size_t destSize = -1)
+size_t convert(T *dest, const T *source, size_t destSize = -1)
 {
     size_t copied_chars = 0;
 
@@ -457,33 +457,33 @@ size_t strconvert(T *dest, const T *source, size_t destSize = -1)
 }
 
 template <typename T>
-size_t strconvert(wchar_t *dest, const T *source, size_t destSize = -1)
+size_t convert(wchar_t *dest, const T *source, size_t destSize = -1)
 {
     if (sizeof(wchar_t) == 2)
     {
-        return strconvert(reinterpret_cast<char16_t *>(dest), source);
+        return convert(reinterpret_cast<char16_t *>(dest), source);
     }
     else if (sizeof(wchar_t) == 4)
     {
-        return strconvert(reinterpret_cast<char32_t *>(dest), source);
+        return convert(reinterpret_cast<char32_t *>(dest), source);
     }
 
-    return strconvert(reinterpret_cast<char *>(dest), source);
+    return convert(reinterpret_cast<char *>(dest), source);
 }
 
 template <typename T>
-size_t strconvert(T *dest, const wchar_t *source, size_t destSize = -1)
+size_t convert(T *dest, const wchar_t *source, size_t destSize = -1)
 {
     if (sizeof(wchar_t) == 2)
     {
-        return strconvert(dest, reinterpret_cast<const char16_t *>(source));
+        return convert(dest, reinterpret_cast<const char16_t *>(source));
     }
     else if (sizeof(wchar_t) == 4)
     {
-        return strconvert(dest, reinterpret_cast<const char32_t *>(source));
+        return convert(dest, reinterpret_cast<const char32_t *>(source));
     }
 
-    return strconvert(dest, reinterpret_cast<const char *>(source));
+    return convert(dest, reinterpret_cast<const char *>(source));
 }
 
 

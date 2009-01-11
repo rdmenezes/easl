@@ -11,7 +11,7 @@
 #include "setup.h"
 #include "types.h"
 #include "strstr.h"
-#include "strequal.h"
+#include "equal.h"
 
 namespace easl
 {
@@ -35,8 +35,8 @@ U parse(const T *str)
     // If a specialisation hasn't been created for the U data type, the compiler should
     // throw an error.
 
-    wchar_t *temp = new wchar_t[easl::strconvertsize<wchar_t>(str)];
-    easl::strconvert(temp, str);
+    wchar_t *temp = new wchar_t[easl::convertsize<wchar_t>(str)];
+    easl::convert(temp, str);
 
     U value = parse<U>(temp);
 
@@ -110,7 +110,7 @@ template <> double parse(const char *str)
 
 template <> bool parse(const char *str)
 {
-    if (str == NULL || easl::strequal(str, "false", false) || easl::strequal(str, "0", false))
+    if (str == NULL || easl::equal(str, "false", false) || easl::equal(str, "0", false))
     {
         return false;
     }
@@ -189,7 +189,7 @@ template <> bool parse(const wchar_t *str)
 
     if (easl::strstr(locale, L"English") || easl::strstr(locale, L"english"))
     {
-        if (str == NULL || easl::strequal(str, L"false", false) || easl::strequal(str, L"0", false))
+        if (str == NULL || easl::equal(str, L"false", false) || easl::equal(str, L"0", false))
         {
             return false;
         }

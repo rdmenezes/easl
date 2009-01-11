@@ -1,10 +1,10 @@
 /**
-*   \file   strattachbom.h
+*   \file   attachbom.h
 *   \author Dave Reid
 *   \brief  Header file for strattachbom() implementations.
 */
-#ifndef __EASL_STRATTACHBOM_H_
-#define __EASL_STRATTACHBOM_H_
+#ifndef __EASL_ATTACHBOM_H_
+#define __EASL_ATTACHBOM_H_
 
 #include "types.h"
 #include "_private.h"
@@ -21,7 +21,7 @@ namespace easl
 *       to determine how many T's are required to store the BOM, call getcharsize().
 */
 template <typename T>
-void strattachbom(T *str)
+void attachbom(T *str)
 {
     // We need to determine how many T's our BOM is going to take up.
     size_t size = get_char_size<T>((uchar32_t)0xFEFF);
@@ -55,4 +55,4 @@ void strattachbom(T *str)
 
 }
 
-#endif // __EASL_STRATTACHBOM_H_
+#endif // __EASL_ATTACHBOM_H_

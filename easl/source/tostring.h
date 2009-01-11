@@ -30,7 +30,7 @@ inline void tostring(U value, T *dest, size_t destSize)
 
     tostring(value, temp_dest, destSize);
 
-    easl::strconvert(dest, temp_dest);
+    easl::convert(dest, temp_dest);
 
     delete [] temp_dest;
 }

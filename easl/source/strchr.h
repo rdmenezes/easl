@@ -24,7 +24,7 @@ inline T * strchr(T *str, uchar32_t character)
     T *tmp = str;
 
     uchar32_t ch;
-    while ((ch = easl::strnextchar(str)) != character && ch != NULL)
+    while ((ch = easl::nextchar(str)) != character && ch != NULL)
     {
         str = tmp;
     }
@@ -48,7 +48,7 @@ inline const T * strchr(const T *str, uchar32_t character)
     const T *tmp = str;
 
     uchar32_t ch;
-    while ((ch = easl::strnextchar(tmp)) != character && ch != NULL)
+    while ((ch = easl::nextchar(tmp)) != character && ch != NULL)
     {
         str = tmp;
     }

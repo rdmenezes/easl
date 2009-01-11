@@ -10,5 +10,10 @@
 #include "paths/getfileextsize.h"
 #include "paths/absolute.h"
 #include "paths/absolutesize.h"
+#include "paths/relative.h"
+#include "paths/relativesize.h"
+#include "paths/isabsolute.h"
+#include "paths/isrelative.h"
+#include "paths/isnetworkpath.h"
 
 #endif // __EASL_PATHS_H_

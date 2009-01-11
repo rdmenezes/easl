@@ -1,13 +1,13 @@
 /**
-*   \file   strequal.h
+*   \file   equal.h
 *   \author Dave Reid
-*   \brief  Header file for strequal() implementations.
+*   \brief  Header file for equal() implementations.
 */
 #ifndef __EASL_STREQUAL_H_
 #define __EASL_STREQUAL_H_
 
 #include "types.h"
-#include "strnextchar.h"
+#include "nextchar.h"
 
 namespace easl
 {
@@ -23,17 +23,16 @@ namespace easl
 *       Both strings must be NULL terminated. By default, the comparison is case sensitive.
 */
 template <typename T, typename U>
-bool strequal(const T *str1, const U *str2, bool caseSensitive = true)
+bool equal(const T *str1, const U *str2, bool caseSensitive = true)
 {
     if (str1 == NULL || str2 == NULL)
     {
         return false;
     }
 
-    // We'll need to grab the next character from each string and make it
-    // lower case and then compare.
-    uchar32_t ch1 = strnextchar(str1);
-    uchar32_t ch2 = strnextchar(str2);
+    // We need to grab the first characters first.
+    uchar32_t ch1 = nextchar(str1);
+    uchar32_t ch2 = nextchar(str2);
 
     if (caseSensitive)
     {
@@ -44,8 +43,8 @@ bool strequal(const T *str1, const U *str2, bool caseSensitive = true)
                 return false;
             }
 
-            ch1 = strnextchar(str1);
-            ch2 = strnextchar(str2);
+            ch1 = nextchar(str1);
+            ch2 = nextchar(str2);
         }
     }
     else
@@ -57,8 +56,8 @@ bool strequal(const T *str1, const U *str2, bool caseSensitive = true)
 			    return false;
 		    }
 
-            ch1 = strnextchar(str1);
-            ch2 = strnextchar(str2);
+            ch1 = nextchar(str1);
+            ch2 = nextchar(str2);
         }
     }
 
