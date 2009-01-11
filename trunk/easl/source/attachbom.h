@@ -1,7 +1,7 @@
 /**
 *   \file   attachbom.h
 *   \author Dave Reid
-*   \brief  Header file for strattachbom() implementations.
+*   \brief  Header file for attachbom() implementations.
 */
 #ifndef __EASL_ATTACHBOM_H_
 #define __EASL_ATTACHBOM_H_
@@ -24,7 +24,7 @@ template <typename T>
 void attachbom(T *str)
 {
     // We need to determine how many T's our BOM is going to take up.
-    size_t size = get_char_size<T>((uchar32_t)0xFEFF);
+    size_t size = getcharwidth<T>((uchar32_t)0xFEFF);
 
     // Now we can move all of our character down one spot. First we need to get to
     // the end.

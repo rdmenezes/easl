@@ -30,7 +30,7 @@ inline int vsprintf(T *dest, size_t destSize, const T *format, va_list args)
 {
     // We will convert to a wchar_t * string and call that implementation. This is slow,
     // but it's the simplest way to do it.
-    wchar_t *tmp_dest = new wchar_t[easl::convertsize<wchar_t>(dest)];
+    wchar_t *tmp_dest = new wchar_t[destSize];
     easl::convert(tmp_dest, dest);
 
     wchar_t *tmp_format = new wchar_t[easl::convertsize<wchar_t>(format)];

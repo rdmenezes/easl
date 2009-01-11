@@ -98,10 +98,8 @@ size_t relative(T *dest, const T *path, const T *base)
             // We now need to divide the directories with a slash.
             if ((i != path_count - 1) && (path_dirs[i].end - path_dirs[i].start != 1))
             {
-                size_t char_size = get_char_size<T>(EASL_PATH_SLASH);
-
                 // Now write the character and move the pointer forward.
-                write_char(dest, EASL_PATH_SLASH, char_size);
+                size_t char_size = writechar(dest, EASL_PATH_SLASH);
                 dest += char_size;
 
                 final_size += char_size;
@@ -113,7 +111,7 @@ size_t relative(T *dest, const T *path, const T *base)
 
             if ((i != path_count - 1) && (path_dirs[i].end - path_dirs[i].start != 1))
             {
-                final_size += get_char_size<T>(EASL_PATH_SLASH);
+                final_size += getcharwidth<T>(EASL_PATH_SLASH);
             }
         }
     }

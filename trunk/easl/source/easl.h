@@ -20,6 +20,7 @@
 #include "strcpy.h"
 #include "getbom.h"
 #include "getchar.h"
+#include "getcharwidth.h"
 #include "strlen.h"
 #include "nextchar.h"
 #include "strpbrk.h"
@@ -29,5 +30,6 @@
 #include "tostring.h"
 #include "types.h"
 #include "vsprintf.h"
+#include "writechar.h"
 
 #endif // __EASL_H_

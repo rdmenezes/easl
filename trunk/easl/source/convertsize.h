@@ -3,8 +3,8 @@
 *   \author Dave Reid
 *   \brief  Header file for convertsize() implementations.
 */
-#ifndef __EASL_STRCONVERTSIZE_H_
-#define __EASL_STRCONVERTSIZE_H_
+#ifndef __EASL_CONVERTSIZE_H_
+#define __EASL_CONVERTSIZE_H_
 
 #include "convert.h"
 #include "strlen.h"
@@ -81,4 +81,4 @@ size_t convertsize(const wchar_t *str)
 
 }
 
-#endif // __EASL_STRCONVERTSIZE_H_
+#endif // __EASL_CONVERTSIZE_H_

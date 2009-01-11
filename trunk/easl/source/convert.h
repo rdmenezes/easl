@@ -9,6 +9,8 @@
 #include "types.h"
 #include "_private.h"
 #include "nextchar.h"
+#include "getcharwidth.h"
+#include "writechar.h"
 
 namespace easl
 {
@@ -42,7 +44,7 @@ size_t utf16_to_utf8(char *dest, const char16_t *source, size_t destSize)
     while ((ch = nextchar(source)) != NULL)
     {
         // Determine the number of bytes that are required to store this character.
-        size_t num_bytes = get_char_size<char>(ch);        
+        size_t num_bytes;
 
         // If our destination is NULL, we don't want to set any characters, but we
         // do want to get the number of char32_t's that we'll need to use for the
@@ -50,11 +52,20 @@ size_t utf16_to_utf8(char *dest, const char16_t *source, size_t destSize)
         if (dest != NULL)
         {
             // Now write our character to our string.
-            write_char(dest, ch, num_bytes);
+            num_bytes = writechar(dest, ch);
 
             // The position of the pointer is not modified, so we need to move in front of
             // the character that we just wrote.
             dest += num_bytes;
+        }
+        else
+        {
+            num_bytes = getcharwidth<char>(ch);
+            if (num_bytes == 0)
+            {
+                ch = UNI_REPLACEMENT_CHAR;
+                num_bytes = 3;
+            }
         }
 
         // Increment the number of characters we've copied.
@@ -94,7 +105,7 @@ size_t utf32_to_utf8(char *dest, const char32_t *source, size_t destSize)
     while ((ch = nextchar(source)) != NULL)
     {
         // Determine the number of bytes that are required to store this character.
-        size_t num_bytes = get_char_size<char>(ch);
+        size_t num_bytes;
 
         // If our destination is NULL, we don't want to set any characters, but we
         // do want to get the number of char32_t's that we'll need to use for the
@@ -102,11 +113,20 @@ size_t utf32_to_utf8(char *dest, const char32_t *source, size_t destSize)
         if (dest != NULL)
         {
             // Now write our character to our string.
-            write_char(dest, ch, num_bytes);
+            num_bytes = writechar(dest, ch);
 
             // The position of the pointer is not modified, so we need to move in front of
             // the character that we just wrote.
             dest += num_bytes;
+        }
+        else
+        {
+            num_bytes = getcharwidth<char>(ch);
+            if (num_bytes == 0)
+            {
+                ch = UNI_REPLACEMENT_CHAR;
+                num_bytes = 3;
+            }
         }
 
         // Increment the number of characters we've copied.

@@ -3,13 +3,13 @@
 *   \author Dave Reid
 *   \brief  Header file for the absolute() implementation.
 */
-#ifndef __EASL_STRABSOLUTE_H_
-#define __EASL_STRABSOLUTE_H_
+#ifndef __EASL_PATHS_ABSOLUTE_H_
+#define __EASL_PATHS_ABSOLUTE_H_
 
 #include <assert.h>
 #include "../../string.h"
 #include "../../nextchar.h"
-#include "../../_private.h"         // easl/_private.h"
+#include "../../writechar.h"
 #include "_private.h"               // easl/ext/paths/_private.h
 
 namespace easl
@@ -107,10 +107,8 @@ size_t absolute(T *dest, const T *path, const T *base)
             // the last sub directory and it is _not_ an empty string, we don't want to add the slash.
             if ((i != final_path_count - 1) && ((final_path_dirs[i].end - final_path_dirs[i].start) != 1))
             {
-                size_t char_size = get_char_size<T>(EASL_PATH_SLASH);
-
                 // Now write the character and move the pointer forward.
-                write_char(dest, EASL_PATH_SLASH, char_size);
+                size_t char_size = writechar(dest, EASL_PATH_SLASH);
                 dest += char_size;
             }
         }
@@ -173,4 +171,4 @@ wstring absolute(const wchar_t *path, const wchar_t *base)
 }
 }
 
-#endif // __EASL_STRABSOLUTE_H_
+#endif // __EASL_PATHS_ABSOLUTE_H_

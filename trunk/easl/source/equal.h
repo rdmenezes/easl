@@ -3,8 +3,8 @@
 *   \author Dave Reid
 *   \brief  Header file for equal() implementations.
 */
-#ifndef __EASL_STREQUAL_H_
-#define __EASL_STREQUAL_H_
+#ifndef __EASL_EQUAL_H_
+#define __EASL_EQUAL_H_
 
 #include "types.h"
 #include "nextchar.h"
@@ -72,4 +72,4 @@ bool equal(const T *str1, const U *str2, bool caseSensitive = true)
 
 }
 
-#endif // __EASL_STREQUAL_H_
+#endif // __EASL_EQUAL_H_

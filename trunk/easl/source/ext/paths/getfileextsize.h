@@ -3,8 +3,8 @@
 *   \author Dave Reid
 *   \brief  Header file for the getfileextsize() implementation.
 */
-#ifndef __EASL_PATH_STRGETFILEEXTSIZE_H_
-#define __EASL_PATH_STRGETFILEEXTSIZE_H_
+#ifndef __EASL_PATHS_GETFILEEXTSIZE_H_
+#define __EASL_PATHS_GETFILEEXTSIZE_H_
 
 #include "getfileext.h"
 
@@ -27,4 +27,4 @@ size_t getfileextsize(const T *str)
 }
 }
 
-#endif // __EASL_PATH_STRGETFILEEXTSIZE_H_
+#endif // __EASL_PATHS_GETFILEEXTSIZE_H_

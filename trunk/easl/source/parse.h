@@ -1,7 +1,7 @@
 /**
 *   \file   parse.h
 *   \author Dave Reid
-*   \brief  Header file for parsing strings.
+*   \brief  Header file for parse() implementations.
 */
 #ifndef __EASL_PARSE_H_
 #define __EASL_PARSE_H_
