@@ -3,8 +3,8 @@
 *   \author Dave Reid
 *   \brief  Header file for the getfileext() implementation.
 */
-#ifndef __EASL_PATHS_STRGETFILEEXT_H_
-#define __EASL_PATHS_STRGETFILEEXT_H_
+#ifndef __EASL_PATHS_GETFILEEXT_H_
+#define __EASL_PATHS_GETFILEEXT_H_
 
 #include <assert.h>
 #include "../../nextchar.h"
@@ -141,4 +141,4 @@ wstring getfileext(const wchar_t *src)
 }
 }
 
-#endif // __EASL_PATHS_STRGETFILEEXT_H_
+#endif // __EASL_PATHS_GETFILEEXT_H_

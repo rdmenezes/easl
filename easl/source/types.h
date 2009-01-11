@@ -14,11 +14,9 @@ namespace easl
 // they're available on most compilers. If char8_t is not a proper type for the final
 // C++0x spec, we will keep the typedef for clarity. (It really should be a built-in
 // type).
-//typedef char   char8_t;
 typedef short  char16_t;
 typedef long   char32_t;
 
-//typedef unsigned char   uchar8_t;
 typedef unsigned short  uchar16_t;
 typedef unsigned long   uchar32_t;
 
@@ -30,7 +28,7 @@ typedef unsigned long   uchar32_t;
 
     locale_english,             ///< Default English.
     locale_english_us,          ///< US English
-    locale_english_uk,          ///< UK English
+    locale_english_gb,          ///< British English
     locale_english_aus,         ///< Australian English
     locale_english_nz,          ///< New-Zealand English
     locale_english_can,         ///< Canadian English

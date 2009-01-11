@@ -279,7 +279,7 @@ public:
     slow_string<T> & append(uchar32_t character)
     {
         // First we need to determine how many T's to increase the buffer by.
-        size_t added_size = easl::get_char_size<T>(character);
+        size_t added_size = easl::getcharwidth<T>(character);
 
         // We also need the length of this string.
         size_t this_size = this->length();
@@ -294,7 +294,7 @@ public:
         easl::strcpy(this->m_data, old_data, this_size + added_size + 1);
 
         // Now we need to write this character to the string.
-        easl::write_char(this->m_data + this_size, character, added_size);
+        easl::writechar(this->m_data + this_size, character);
 
         // Null terminate the string.
         this->m_data[this_size + added_size] = 0;

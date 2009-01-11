@@ -1,7 +1,7 @@
 /**
 *   \file   charcount.h
 *   \author Dave Reid
-*   \brief  Header file for strchrcount() implementations.
+*   \brief  Header file for chrcount() implementations.
 */
 #ifndef __EASL_CHARCOUNT_H_
 #define __EASL_CHARCOUNT_H_
