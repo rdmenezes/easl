@@ -184,13 +184,10 @@ inline uchar32_t nextchar(const char32_t *&str)
 }
 inline uchar32_t nextchar(const wchar_t *&str)
 {
-    if (sizeof(wchar_t) == 2)
+    switch (sizeof(wchar_t))
     {
-        return nextchar_utf16((const char16_t *&)str);
-    }
-    else if (sizeof(wchar_t) == 4)
-    {
-        return nextchar_utf32((const char32_t *&)str);
+    case 2: return nextchar_utf16((const char16_t *&)str);
+    case 4: return nextchar_utf32((const char32_t *&)str);
     }
 
     return nextchar_utf8((const char *&)str);

@@ -94,13 +94,10 @@ size_t writechar(char32_t *dest, uchar32_t character)
 // \copydoc writechar(char *, uchar32_t)
 size_t writechar(wchar_t *dest, uchar32_t character)
 {
-    if (sizeof(wchar_t) == 2)
+    switch (sizeof(wchar_t))
     {
-        return writechar((char16_t *)dest, character);
-    }
-    else if (sizeof(wchar_t) == 4)
-    {
-        return writechar((char16_t *)dest, character);
+    case 2: return writechar((char16_t *)dest, character);
+    case 4: return writechar((char16_t *)dest, character);
     }
 
     return writechar((char32_t *)dest, character);

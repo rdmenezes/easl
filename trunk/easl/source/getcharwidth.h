@@ -20,6 +20,8 @@ namespace easl
 template <typename T>
 size_t getcharwidth(uchar32_t character)
 {
+    (void)character;    // Warning silencer.
+
     return 1;
 }
 
@@ -55,16 +57,13 @@ template <> size_t getcharwidth<char16_t>(uchar32_t character)
 }
 template <> size_t getcharwidth<wchar_t>(uchar32_t character)
 {
-    if (sizeof(wchar_t) == 1)
+    switch (sizeof(wchar_t))
     {
-        return getcharwidth<char>(character);
-    }
-    else if (sizeof(wchar_t) == 2)
-    {
-        return getcharwidth<char16_t>(character);
+    case 2: return getcharwidth<char16_t>(character);
+    case 4: return getcharwidth<char32_t>(character);
     }
 
-    return getcharwidth<char32_t>(character);
+    return getcharwidth<char>(character);
 }
 
 }

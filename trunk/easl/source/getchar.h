@@ -65,13 +65,10 @@ template <> uchar32_t getchar(const char32_t *str, size_t index)
 
 template <> uchar32_t getchar(const wchar_t *str, size_t index)
 {
-    if (sizeof(wchar_t) == 2)
+    switch (sizeof(wchar_t))
     {
-        return getchar((const char16_t *)str, index);
-    }
-    else if (sizeof(wchar_t) == 4)
-    {
-        return getchar((const char32_t *)str, index);
+    case 2: return getchar((const char16_t *)str, index);
+    case 4: return getchar((const char32_t *)str, index);
     }
 
     return getchar((const char *)str, index);
