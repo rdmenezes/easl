@@ -1,4 +1,5 @@
 #summary Getting started with EASL.
+#labels Phase-Deploy
 
 = Introduction =
 This page will get you up and running using EASL.
