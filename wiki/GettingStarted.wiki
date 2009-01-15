@@ -1,5 +1,5 @@
 #summary Getting started with EASL.
-#labels Phase-Deploy
+#labels Featured
 
 = Introduction =
 This page will get you up and running using EASL.
@@ -26,7 +26,7 @@ All of the functionality in EASL is under the `easl` namespace.
 
 EASL is made up of two main sections: a low level, C-like function section; and a higher level C++ `std::string`-like section. Having the library structured like this gives developers the most flexibility.
 
-The C-like string manipulation routines work mostly the same as the standard C library equivalents. One major difference is that there is no difference in the name of the function for different string encodings. For example, to copy a string you simply use the `easl::strcpy()` function for all types of string encodings - `char *` and `wchar_t *` alike.
+The C-like string manipulation routines work mostly the same as the standard C library equivalents. One major difference is that there is no difference in the name of the function for different string encodings. For example, to copy a string you simply use the `easl::copy()` function for all types of string encodings - `char *` and `wchar_t *` alike.
 
 
 = Using UTF Encoding =
