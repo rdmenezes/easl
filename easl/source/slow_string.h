@@ -16,9 +16,10 @@
 #ifndef __EASL_SLOW_STRING_H_
 #define __EASL_SLOW_STRING_H_
 
-#include "strlen.h"
-#include "strcpy.h"
-#include "convertsize.h"
+#include "length.h"
+//#include "strcpy.h"
+//#include "convertsize.h"
+#include "copysize.h"
 #include "getchar.h"
 #include "equal.h"
 
@@ -51,7 +52,7 @@ public:
         this->assign(str);
     }
 
-#ifndef EASL_OPTION_NO_GENERIC_OPERATION
+#ifndef EASL_OPTION_NO_GENERIC_OPERATIONS
     template <typename U>
     slow_string(const U *str) : m_data(NULL)
     {
@@ -68,7 +69,7 @@ public:
         this->assign(str.c_str());
     }
 
-#ifndef EASL_OPTION_NO_GENERIC_OPERATION
+#ifndef EASL_OPTION_NO_GENERIC_OPERATIONS
     template <typename U>
     slow_string(const slow_string<U> &str) : m_data(NULL)
     {
@@ -149,18 +150,20 @@ public:
         {
             if (len == 0)
             {
-                len = easl::strlen(str);
+                //len = easl::strlen(str);
+                len = easl::length(str);
             }
 
             // Now we just need to copy the string over.
             this->m_data = new T[len + 1];
-            easl::strcpy(this->m_data, str, len + 1);
+            //easl::strcpy(this->m_data, str, len + 1);
+            easl::copy(this->m_data, str, len + 1, len);
         }
 
         return *this;
     }
 
-#ifndef EASL_OPTION_NO_GENERIC_OPERATION
+#ifndef EASL_OPTION_NO_GENERIC_OPERATIONS
     template <typename U>
     slow_string<T> & assign(const U *str, size_t len = 0)
     {
@@ -182,12 +185,14 @@ public:
         {
             if (len == 0)
             {
-                len = easl::convertsize<T>(str);
+                //len = easl::convertsize<T>(str);
+                len = easl::copysize<T>(str);
             }
 
             // All we're really doing is a simple conversion.
             this->m_data = new T[len];
-            easl::convert(this->m_data, str);
+            //easl::convert(this->m_data, str);
+            easl::copy(this->m_data, str, len);
         }
 
         return *this;
@@ -213,7 +218,8 @@ public:
             // the new string.
             if (len == 0)
             {
-                len = easl::strlen(str);
+                //len = easl::strlen(str);
+                len = easl::length(str);
             }
 
             // Now we need to find the length of this string.
@@ -226,10 +232,12 @@ public:
             this->m_data = new T[this_size + len + 1];
             
             // Copy our old data back into the string.
-            easl::strcpy(this->m_data, old_data, this_size + len + 1);
+            //easl::strcpy(this->m_data, old_data, this_size + len + 1);
+            easl::copy(this->m_data, old_data, this_size + len + 1);
 
             // Now we copy our input string into our new buffer.
-            easl::strcpy(this->m_data + this_size, str, len + 1);
+            //easl::strcpy(this->m_data + this_size, str, len + 1);
+            easl::copy(this->m_data + this_size, str, len + 1);
 
             // Delete our previous data.
             delete [] old_data;
@@ -238,7 +246,7 @@ public:
         return *this;
     }
 
-#ifndef EASL_OPTION_NO_GENERIC_OPERATION
+#ifndef EASL_OPTION_NO_GENERIC_OPERATIONS
     template <typename U>
     slow_string<T> & append(const U *str, size_t len = 0)
     {
@@ -246,7 +254,8 @@ public:
         {
             // First we need to determine how much extra space we need to allocate to append
             // the new string.
-            size_t convert_size = easl::convertsize<T>(str);
+            //size_t convert_size = easl::convertsize<T>(str);
+            size_t copy_size = easl::copysize<T>(str);
 
             // Now we need to find the length of this string.
             size_t this_size = this->length();
@@ -255,13 +264,14 @@ public:
             T *old_data = this->m_data;
 
             // Now we can allocate some more memory.
-            this->m_data = new T[this_size + convert_size];
+            this->m_data = new T[this_size + copy_size];
             
             // Copy our old data back into the string.
             memcpy(this->m_data, old_data, sizeof(T) * this_size);
 
             // Now we copy our input string into our new buffer.
-            easl::convert(this->m_data + this_size, str);
+            //easl::convert(this->m_data + this_size, str);
+            easl::copy(this->m_data + this_size, old_data, copy_size);
 
             // Delete our previous data.
             delete [] old_data;
@@ -291,6 +301,7 @@ public:
         this->m_data = new T[this_size + added_size + 1];
         
         // Copy our old data back into the string.
+        //easl::strcpy(this->m_data, old_data, this_size + added_size + 1);
         easl::strcpy(this->m_data, old_data, this_size + added_size + 1);
 
         // Now we need to write this character to the string.
@@ -315,7 +326,8 @@ public:
     */
     size_t length() const
     {
-        return easl::strlen(this->m_data);
+        //return easl::strlen(this->m_data);
+        return easl::length(this->m_data);
     }
 
 
@@ -366,7 +378,7 @@ public:
         return this->assign(str.c_str());
     }
 
-#ifndef EASL_OPTION_NO_GENERIC_OPERATION
+#ifndef EASL_OPTION_NO_GENERIC_OPERATIONS
     template <typename U>
     slow_string<T> & operator =(const U *str)
     {
@@ -399,7 +411,7 @@ public:
         return easl::equal(this->m_data, str.c_str());
     }
 
-#ifndef EASL_OPTION_NO_GENERIC_OPERATION
+#ifndef EASL_OPTION_NO_GENERIC_OPERATIONS
     template <typename U>
     bool operator ==(const U *str) const
     {
@@ -429,7 +441,7 @@ public:
         return this->append(str.c_str());
     }
 
-#ifndef EASL_OPTION_NO_GENERIC_OPERATION
+#ifndef EASL_OPTION_NO_GENERIC_OPERATIONS
     template <typename U>
     slow_string<T> & operator +=(const U *str)
     {
@@ -471,7 +483,7 @@ public:
         return new_str += str;
     }
 
-#ifndef EASL_OPTION_NO_GENERIC_OPERATION
+#ifndef EASL_OPTION_NO_GENERIC_OPERATIONS
     template <typename U>
     slow_string<T> operator +(const U *str) const
     {

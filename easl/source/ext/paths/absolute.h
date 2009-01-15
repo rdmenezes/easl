@@ -107,9 +107,8 @@ size_t absolute(T *dest, const T *path, const T *base)
             // the last sub directory and it is _not_ an empty string, we don't want to add the slash.
             if ((i != final_path_count - 1) && ((final_path_dirs[i].end - final_path_dirs[i].start) != 1))
             {
-                // Now write the character and move the pointer forward.
-                size_t char_size = writechar(dest, EASL_PATH_SLASH);
-                dest += char_size;
+                // Now write the character.
+                writechar(dest, EASL_PATH_SLASH);
             }
         }
         else

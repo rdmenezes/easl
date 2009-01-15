@@ -39,7 +39,8 @@ inline errno_t strcat(T *dest, const T *src, size_t destSize)
     };
 
     // Now simply copy the string over.
-    easl::strcpy(dest, src, destSize);
+    //easl::strcpy(dest, src, destSize);
+    easl::copy(dest, src, destSize);
 
     return 0;
 }

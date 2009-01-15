@@ -71,7 +71,8 @@ size_t getfileext(T *dest, const T *src)
     if (dest != NULL)
     {
         // Now we need only do a string copy into the destination.
-        easl::strcpy(dest, last_pos, ext_size);
+        //easl::strcpy(dest, last_pos, ext_size);
+        easl::copy(dest, last_pos, ext_size);
     }
 
     return ext_size;

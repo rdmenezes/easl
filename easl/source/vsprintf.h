@@ -12,7 +12,7 @@
 #include <stdarg.h>
 #include <errno.h>
 #include <assert.h>
-#include "convert.h"
+//#include "convert.h"
 
 namespace easl
 {
@@ -31,15 +31,19 @@ inline int vsprintf(T *dest, size_t destSize, const T *format, va_list args)
     // We will convert to a wchar_t * string and call that implementation. This is slow,
     // but it's the simplest way to do it.
     wchar_t *tmp_dest = new wchar_t[destSize];
-    easl::convert(tmp_dest, dest);
+    easl::copy(tmp_dest, dest, destSize);
+    //easl::convert(tmp_dest, dest);
 
-    wchar_t *tmp_format = new wchar_t[easl::convertsize<wchar_t>(format)];
-    easl::convert(tmp_format, format);
+    size_t format_size = easl::convertsize<wchar_t>(format);
+    wchar_t *tmp_format = new wchar_t[format_size];
+    easl::copy(tmp_format, format, format_size);
+    //easl::convert(tmp_format, format);
 
     int result = easl::vsprintf(tmp_dest, destSize, tmp_format, args);
 
     // Convert our string back.
-    easl::convert(dest, tmp_dest);
+    easl::copy(dest, tmp_dest);
+    //easl::convert(dest, tmp_dest);
 
     delete [] tmp_dest;
     delete [] tmp_format;

@@ -19,12 +19,14 @@ namespace easl
 *   \return                 The number of T's that were just written to the string.
 *
 *   \remarks
-*       This function does not move the pointer forward to where a subsequent character
-*       will be written. This must be done manually by looking at the return value. The
-*       return value is indicitive of how many T's the pointer must be increment to
-*       write a subsequent character.
+*       This function will move the input pointer to the position just past the character
+*       that was just inserted. The input pointer can be moved back to its original
+*       position by looking at the return value. The return value is indicitive of how
+*       many character units to move the pointer backwards to get it back to its original
+*       position. A "character unit" is a char for a char* string, a char16_t for a char16_t*
+*       string, etc.
 */
-size_t writechar(char *dest, uchar32_t character)
+size_t writechar(char *&dest, uchar32_t character)
 {
     // Grab the width of the character.
     size_t char_width = getcharwidth<char>(character);
@@ -51,57 +53,98 @@ size_t writechar(char *dest, uchar32_t character)
         case 2: *--dest = static_cast<char>(((character | 0x80) & 0xBF)); character >>= 6;
         case 1: *--dest = static_cast<char>((character | g_firstByteMark[char_width]));
         }
+
+        dest += char_width;
     }
 
     return char_width;
 }
 
 // \copydoc writechar(char *, uchar32_t)
-size_t writechar(char16_t *dest, uchar32_t character)
+size_t writechar(char16_t *&dest, uchar32_t character)
 {
-    size_t char_width = getcharwidth<char16_t>(character);
+    // Our character width will always be equal to at least 1.
+    size_t char_width = 1;
 
-    if (dest != NULL)
+    // If the character is lower or equal to our maximum BMP we can store the character
+    // as a single char16_t.
+    if (character <= UNI_MAX_BMP)
     {
-        if (char_width == 1)
+        // The character is not allowed to equal a UTF-16 surrogate. If it does, we will
+        // replace the character.
+        if (dest != NULL)
         {
-            *dest = static_cast<char16_t>(character);
+            if (character >= UNI_SUR_HIGH_START && character <= UNI_SUR_LOW_END)
+            {
+                *dest++ = (char16_t)UNI_REPLACEMENT_CHAR;
+            }
+            else
+            {
+                *dest++ = static_cast<char16_t>(character);
+            }
         }
-        else // char_width is equal to 2.
+    }
+    else if (character > UNI_MAX_UTF16)
+    {
+        // If we've made it here the character is illegal, so we will replace it.
+        if (dest != NULL)
         {
-            // We have a surrogate pair.
+            *dest++ = (char16_t)UNI_REPLACEMENT_CHAR;
+        }
+    }
+    else
+    {
+        // If we've made it here, the character needs to be divided into two parts.
+
+        // TODO: We should probably do some overflow check here. Again, we will probably
+        // need a third parameter detailing the size of the destination buffer.
+
+        // We now need split the character into two char16_t's.
+        if (dest != NULL)
+        {
             character -= UNI_HALF_BASE;
 
             *dest++ = static_cast<char16_t>((character >> UNI_HALF_SHIFT) + UNI_SUR_HIGH_START);
             *dest++ = static_cast<char16_t>((character & UNI_HALF_MASK) + UNI_SUR_LOW_START);
         }
+
+        // We need to increment our counter by one more.
+        ++char_width;
     }
 
     return char_width;
 }
 
 // \copydoc writechar(char *, uchar32_t)
-size_t writechar(char32_t *dest, uchar32_t character)
+size_t writechar(char32_t *&dest, uchar32_t character)
 {
     if (dest != NULL)
     {
-        *dest = character;
+        *dest++ = validate_utf32_char(character);
     }
 
     return 1;
 }
 
 // \copydoc writechar(char *, uchar32_t)
-size_t writechar(wchar_t *dest, uchar32_t character)
+size_t writechar(wchar_t *&dest, uchar32_t character)
 {
     switch (sizeof(wchar_t))
     {
-    case 2: return writechar((char16_t *)dest, character);
-    case 4: return writechar((char16_t *)dest, character);
+    case 2: return writechar((char16_t *&)dest, character);
+    case 4: return writechar((char16_t *&)dest, character);
     }
 
-    return writechar((char32_t *)dest, character);
+    return writechar((char32_t *&)dest, character);
 }
+
+
+template <typename T>
+size_t writechar(T *dest, uchar32_t character)
+{
+    return writechar((T *&)dest, character);
+}
+
 
 }
 
