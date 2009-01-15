@@ -1,7 +1,7 @@
 /**
-*   \file   strlen.h
+*   \file   length.h
 *   \author Dave Reid
-*   \brief  Header file for strlen() implementations.
+*   \brief  Header file for length() implementations.
 */
 #ifndef __EASL_STRLEN_H_
 #define __EASL_STRLEN_H_

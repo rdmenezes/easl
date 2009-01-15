@@ -110,7 +110,7 @@ size_t relative(T *dest, const T *path, const T *base)
 
             if ((i != path_count - 1) && (path_dirs[i].end - path_dirs[i].start != 1))
             {
-                final_size += getcharwidth<T>(EASL_PATH_SLASH);
+                final_size += charwidth<T>(EASL_PATH_SLASH);
             }
         }
     }

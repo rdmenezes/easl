@@ -1,7 +1,7 @@
 /**
-*   \file   strcmp.h
+*   \file   compare.h
 *   \author Dave Reid
-*   \brief  Header file for strcmp() implementations.
+*   \brief  Header file for compare() implementations.
 */
 #ifndef __EASL_STRCMP_H_
 #define __EASL_STRCMP_H_
@@ -19,11 +19,12 @@ namespace easl
 *   \param  str2  [in]  The second string to compare.
 *   \param  count [in]  The number of characters to compare in the second string (\c str2).
 *   \return             0 if the two strings are equal; -1 if \c str1 is lower than \c str2; +1 otherwise.
+*
+*   \remarks
+*       The comparison is case sensitive. "Hello" does not equal "HELLO".
 */
-// NOTE: Not sure about the implementation of strcmp(). Do we do the comparisons
-// T by T, or by character by character?
 template <typename T, typename U>
-inline int strcmp(const T *str1, const U *str2, size_t count = -1)
+inline int compare(const T *str1, const U *str2, size_t count = -1)
 {
     assert(str1 != NULL);
     assert(str2 != NULL);
@@ -42,7 +43,7 @@ inline int strcmp(const T *str1, const U *str2, size_t count = -1)
             break;
         }
 
-        count -= getcharwidth<U>(ch2);
+        count -= charwidth<U>(ch2);
     }
 
     if (ret < 0)
@@ -57,7 +58,7 @@ inline int strcmp(const T *str1, const U *str2, size_t count = -1)
     return 0;
 }
 #ifdef EASL_ONLY_ASCII
-template <> inline int strcmp(const char *str1, const char *str2, size_t count)
+template <> inline int compare(const char *str1, const char *str2, size_t count)
 {
     assert(str2 != NULL);
     assert(str2 != NULL);
@@ -72,7 +73,7 @@ template <> inline int strcmp(const char *str1, const char *str2, size_t count)
     return ::strcmp(str1, str2);
 }
 #endif
-template <> inline int strcmp(const wchar_t *str1, const wchar_t *str2, size_t count)
+template <> inline int compare(const wchar_t *str1, const wchar_t *str2, size_t count)
 {
     assert(str2 != NULL);
     assert(str2 != NULL);

@@ -7,7 +7,7 @@
 #define __EASL_WRITECHAR_H_
 
 #include "_private.h"
-#include "getcharwidth.h"
+#include "charwidth.h"
 
 namespace easl
 {
@@ -29,7 +29,7 @@ namespace easl
 size_t writechar(char *&dest, uchar32_t character)
 {
     // Grab the width of the character.
-    size_t char_width = getcharwidth<char>(character);
+    size_t char_width = charwidth<char>(character);
     if (char_width == 0)
     {
         char_width = 3;

@@ -7,6 +7,7 @@
 #define __EASL_CHARCOUNT_H_
 
 #include "nextchar.h"
+#include "length.h"
 
 namespace easl
 {

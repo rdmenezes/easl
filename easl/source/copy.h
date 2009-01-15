@@ -17,6 +17,39 @@
 namespace easl
 {
 
+/**
+*   \brief                  Copies a string over to another string.
+*   \param  dest     [out]  The destination buffer.
+*   \param  source   [in]   The source string.
+*   \param  destSize [in]   The size of the destination buffer in T's.
+*   \param  count    [in]   The maximum number of T's to copy from the source.
+*   \return                 The number of T's that are copied to the destination.
+*
+*   \remarks
+*       If \c dest is NULL, the function will return the number of T's required to store
+*       the source string based on the other parameters.
+*       \par
+*       This function does an implicit conversion between the strings. For example, if
+*       \c dest is a char string and \c source is a char16_t string, the source will be
+*       converted from a UTF-16 char16_t string to a UTF-8 char string.
+*       \par
+*       The \c destSize parameter specifies the size in T's of the destination buffer.
+*       If this is equal to -1, the function will do an unsafe copy and should in theory
+*       be slightly quicker. If \c destSize is a value larger than the actual size of
+*       the destination buffer, the results are undefined. This parameter can not be NULL.
+*       \par
+*       The \count parameter specifies the number of T's to copy over from the source
+*       string. Note that this is _not_ the number of characters to copy over, but rather
+*       the number of T's. Use the parameter to only copy over a subset of the source
+*       string. If \c count is larger or equal to the number of T's in the source string,
+*       the entire source string is copied over. This parameter should include the NULL
+*       terminator.
+*       \par
+*       The resulting string is always null terminated.
+*       \par
+*       If the copy fails for whatever reason, the function will return 0. The function
+*       will fail if \c source is NULL.
+*/
 template <typename T>
 size_t copy(T *dest, const T *source, size_t destSize = -1, size_t count = -1)
 {
@@ -96,7 +129,7 @@ template <> size_t copy(wchar_t *dest, const wchar_t *source, size_t destSize, s
 *       The resulting string is always null terminated.
 *       \par
 *       If the copy fails for whatever reason, the function will return 0. The function
-*       will fail is \c source is NULL or \c destSize is equal to 0.
+*       will fail if \c source is NULL.
 */
 template <typename T, typename U>
 size_t copy(T *dest, const U *source, size_t destSize = -1, size_t count = -1)
@@ -126,10 +159,10 @@ size_t copy(T *dest, const U *source, size_t destSize = -1, size_t count = -1)
             // Our destination is NULL, so all we need to do is grab the width of the character.
             // If this returns 0, we can safely assume that writechar() will write the replacement
             // character.
-            char_width = getcharwidth<T>(ch);
+            char_width = charwidth<T>(ch);
             if (char_width == 0)
             {
-                char_width = getcharwidth<T>(UNI_REPLACEMENT_CHAR);
+                char_width = charwidth<T>(UNI_REPLACEMENT_CHAR);
             }
         }
 
