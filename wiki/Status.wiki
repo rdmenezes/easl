@@ -1,0 +1,12 @@
+#summary Current project status
+
+= Introduction =
+This page will discuss the current development status of the project.
+
+
+= Platform Support =
+Currently, only Windows and Microsoft Visual Studio is supported. The project has only been tested on VS 2005, but should also work with later versions.
+
+Other platforms may work, but none other than Windows and VS have been tested.
+
+Support for other platforms will come later on.
