@@ -1,10 +1,10 @@
 /**
-*   \brief  getcharwidth.h
+*   \brief  charwidth.h
 *   \author Dave Reid
-*   \brief  Header file for the getcharwidth() implementation.
+*   \brief  Header file for the charwidth() implementation.
 */
-#ifndef __EASL_GETCHARWIDTH_H_
-#define __EASL_GETCHARWIDTH_H_
+#ifndef __EASL_CHARWIDTH_H_
+#define __EASL_CHARWIDTH_H_
 
 #include "_private.h"
 
@@ -20,7 +20,7 @@ namespace easl
 *       If the character is invalid, the function will return 0.
 */
 template <typename T>
-size_t getcharwidth(uchar32_t character)
+size_t charwidth(uchar32_t character)
 {
     // The character is not allowed to be equal to a UTF-16 surrogate. If it is,
     // we return 0.
@@ -38,7 +38,7 @@ size_t getcharwidth(uchar32_t character)
     return 1;
 }
 
-template <> size_t getcharwidth<char>(uchar32_t character)
+template <> size_t charwidth<char>(uchar32_t character)
 {
     if (character < 0x80)
     {
@@ -59,7 +59,7 @@ template <> size_t getcharwidth<char>(uchar32_t character)
 
     return 0;
 }
-template <> size_t getcharwidth<char16_t>(uchar32_t character)
+template <> size_t charwidth<char16_t>(uchar32_t character)
 {
     if (character <= UNI_MAX_BMP)
     {
@@ -81,17 +81,17 @@ template <> size_t getcharwidth<char16_t>(uchar32_t character)
     
     return 2;
 }
-template <> size_t getcharwidth<wchar_t>(uchar32_t character)
+template <> size_t charwidth<wchar_t>(uchar32_t character)
 {
     switch (sizeof(wchar_t))
     {
-    case 2: return getcharwidth<char16_t>(character);
-    case 4: return getcharwidth<char32_t>(character);
+    case 2: return charwidth<char16_t>(character);
+    case 4: return charwidth<char32_t>(character);
     }
 
-    return getcharwidth<char>(character);
+    return charwidth<char>(character);
 }
 
 }
 
-#endif // __EASL_GETCHARWIDTH_H_
+#endif // __EASL_CHARWIDTH_H_

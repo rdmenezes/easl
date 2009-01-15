@@ -18,13 +18,13 @@ namespace easl
 *
 *   \remarks
 *       There must be enough room in the string buffer to store the BOM. In order
-*       to determine how many T's are required to store the BOM, call getcharsize().
+*       to determine how many T's are required to store the BOM, call charwidth().
 */
 template <typename T>
 void attachbom(T *str)
 {
     // We need to determine how many T's our BOM is going to take up.
-    size_t size = getcharwidth<T>((uchar32_t)0xFEFF);
+    size_t size = charwidth<T>((uchar32_t)0xFEFF);
 
     // Now we can move all of our character down one spot. First we need to get to
     // the end.
@@ -50,7 +50,7 @@ void attachbom(T *str)
     }
 
     // Now we can set the BOM.
-    write_char(str, 0xFEFF, size);
+    writechar(str, 0xFEFF);
 }
 
 }

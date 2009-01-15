@@ -178,7 +178,7 @@ size_t _write_parent_dir(T *&dest)
 {
     size_t count = 0;
 
-    size_t char_size = getcharwidth<T>('.');
+    size_t char_size = charwidth<T>('.');
     if (dest != NULL)
     {
         writechar(dest, '.');
@@ -186,7 +186,7 @@ size_t _write_parent_dir(T *&dest)
     }
     count += char_size * 2;
 
-    char_size = getcharwidth<T>(EASL_PATH_SLASH);
+    char_size = charwidth<T>(EASL_PATH_SLASH);
     if (dest != NULL)
     {
         writechar(dest, EASL_PATH_SLASH);

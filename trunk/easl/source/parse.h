@@ -10,7 +10,7 @@
 #include <locale.h>
 #include "setup.h"
 #include "types.h"
-#include "strstr.h"
+#include "findfirst.h"
 #include "equal.h"
 
 namespace easl
@@ -37,7 +37,6 @@ U parse(const T *str)
 
     size_t temp_size = easl::convertsize<wchar_t>(str);
     wchar_t *temp = new wchar_t[temp_size];
-    //easl::convert(temp, str);
     easl::copy(temp, str, temp_size);
 
     U value = parse<U>(temp);
@@ -189,7 +188,7 @@ template <> bool parse(const wchar_t *str)
     // specific versions based on that locale... seems like it would be quite slow, though.
     wchar_t *locale = ::_wsetlocale(LC_ALL, NULL);
 
-    if (easl::strstr(locale, L"English") || easl::strstr(locale, L"english"))
+    if (easl::findfirst(locale, L"English") || easl::findfirst(locale, L"english"))
     {
         if (str == NULL || easl::equal(str, L"false", false) || easl::equal(str, L"0", false))
         {

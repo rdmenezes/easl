@@ -42,11 +42,11 @@ inline void tostring(U value, T *dest, size_t destSize)
 #ifdef EASL_ONLY_ASCII
 template <> inline void tostring(__int64 value, char *dest, size_t destSize)
 {
-    easl::sprintf(dest, destSize, "%I64d", value);
+    easl::format(dest, destSize, "%I64d", value);
 }
 template <> inline void tostring(unsigned __int64 value, char *dest, size_t destSize)
 {
-    easl::sprintf(dest, destSize, "%I64u", value);
+    easl::format(dest, destSize, "%I64u", value);
 }
 template <> inline void tostring(int value, char *dest, size_t destSize)
 {
@@ -82,34 +82,32 @@ template <> inline void tostring(unsigned char value, char *dest, size_t destSiz
 }
 template <> inline void tostring(float value, char *dest, size_t destSize)
 {
-    easl::sprintf(dest, destSize, "%f", value);
+    easl::format(dest, destSize, "%f", value);
 }
 template <> inline void tostring(double value, char *dest, size_t destSize)
 {
-    easl::sprintf(dest, destSize, "%.12g", value);
+    easl::format(dest, destSize, "%.12g", value);
 }
 template <> inline void tostring(bool value, char *dest, size_t destSize)
 {
     // We'll have to do locale dependant strings here.
     if (value)
     {
-        //easl::strcpy(dest, "true", destSize);
         easl::copy(dest, "true", destSize, 4);
     }
     else
     {
-        //easl::strcpy(dest, "false", destSize);
         easl::copy(dest, "false", destSize, 5);
     }
 }
 #endif
 template <> inline void tostring(__int64 value, wchar_t *dest, size_t destSize)
 {
-    easl::sprintf(dest, destSize, L"%I64d", value);
+    easl::format(dest, destSize, L"%I64d", value);
 }
 template <> inline void tostring(unsigned __int64 value, wchar_t *dest, size_t destSize)
 {
-    easl::sprintf(dest, destSize, L"%I64u", value);
+    easl::format(dest, destSize, L"%I64u", value);
 }
 
 template <> inline void tostring(int value, wchar_t *dest, size_t destSize)
@@ -150,11 +148,11 @@ template <> inline void tostring(unsigned char value, wchar_t *dest, size_t dest
 
 template <> inline void tostring(float value, wchar_t *dest, size_t destSize)
 {
-    easl::sprintf(dest, destSize, L"%f", value);
+    easl::format(dest, destSize, L"%f", value);
 }
 template <> inline void tostring(double value, wchar_t *dest, size_t destSize)
 {
-    easl::sprintf(dest, destSize, L"%.12g", value);
+    easl::format(dest, destSize, L"%.12g", value);
 }
 
 template <> inline void tostring(bool value, wchar_t *dest, size_t destSize)
@@ -162,12 +160,10 @@ template <> inline void tostring(bool value, wchar_t *dest, size_t destSize)
     // TODO: Need to check the locale and do locale dependant values.
     if (value)
     {
-        //easl::strcpy(dest, L"true", destSize);
         easl::copy(dest, L"true", destSize, 4);
     }
     else
     {
-        //easl::strcpy(dest, L"false", destSize);
         easl::copy(dest, L"false", destSize, 5);
     }
 }
