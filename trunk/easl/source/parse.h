@@ -35,8 +35,10 @@ U parse(const T *str)
     // If a specialisation hasn't been created for the U data type, the compiler should
     // throw an error.
 
-    wchar_t *temp = new wchar_t[easl::convertsize<wchar_t>(str)];
-    easl::convert(temp, str);
+    size_t temp_size = easl::convertsize<wchar_t>(str);
+    wchar_t *temp = new wchar_t[temp_size];
+    //easl::convert(temp, str);
+    easl::copy(temp, str, temp_size);
 
     U value = parse<U>(temp);
 

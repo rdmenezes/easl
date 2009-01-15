@@ -25,12 +25,16 @@ namespace easl
 template <typename U, typename T>
 inline void tostring(U value, T *dest, size_t destSize)
 {
+    // NOTE: This is bugged. destSize can be smaller than is required. It won't crash, but the
+    // results might not be optimal.
+
     // We need to store the value in a wchar_t string first and then convert to our destination.
     wchar_t *temp_dest = new wchar_t[destSize];
 
     tostring(value, temp_dest, destSize);
 
-    easl::convert(dest, temp_dest);
+    //easl::convert(dest, temp_dest);
+    easl::copy(dest, temp_dest, destSize);
 
     delete [] temp_dest;
 }
@@ -89,11 +93,13 @@ template <> inline void tostring(bool value, char *dest, size_t destSize)
     // We'll have to do locale dependant strings here.
     if (value)
     {
-        easl::strcpy(dest, "true", destSize);
+        //easl::strcpy(dest, "true", destSize);
+        easl::copy(dest, "true", destSize, 4);
     }
     else
     {
-        easl::strcpy(dest, "false", destSize);
+        //easl::strcpy(dest, "false", destSize);
+        easl::copy(dest, "false", destSize, 5);
     }
 }
 #endif
@@ -156,18 +162,20 @@ template <> inline void tostring(bool value, wchar_t *dest, size_t destSize)
     // TODO: Need to check the locale and do locale dependant values.
     if (value)
     {
-        easl::strcpy(dest, L"true", destSize);
+        //easl::strcpy(dest, L"true", destSize);
+        easl::copy(dest, L"true", destSize, 4);
     }
     else
     {
-        easl::strcpy(dest, L"false", destSize);
+        //easl::strcpy(dest, L"false", destSize);
+        easl::copy(dest, L"false", destSize, 5);
     }
 }
 
 template <size_t destSize, typename U, typename T>
 inline void tostring(U value, T (&dest)[destSize])
 {
-    return tostring(value, dest, destSize);
+    return tostring(value, (T *)dest, destSize);
 }
 
 }

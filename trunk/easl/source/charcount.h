@@ -27,7 +27,7 @@ template <typename T>
 size_t charcount(const T *str)
 {
 #ifdef EASL_ONLY_ASCII
-    return easl::strlen(str);
+    return easl::length(str);
 #else
     size_t count = 0;
     uchar32_t ch;

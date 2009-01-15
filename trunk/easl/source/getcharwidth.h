@@ -6,6 +6,8 @@
 #ifndef __EASL_GETCHARWIDTH_H_
 #define __EASL_GETCHARWIDTH_H_
 
+#include "_private.h"
+
 namespace easl
 {
 
@@ -20,7 +22,18 @@ namespace easl
 template <typename T>
 size_t getcharwidth(uchar32_t character)
 {
-    (void)character;    // Warning silencer.
+    // The character is not allowed to be equal to a UTF-16 surrogate. If it is,
+    // we return 0.
+    if (character >= UNI_SUR_HIGH_START && character <= UNI_SUR_LOW_END)
+    {
+        return 0;
+    }
+
+    // The character is not allowed to be larger than the largest legal character.
+    if (character >= UNI_MAX_LEGAL_UTF32)
+    {
+        return 0;
+    }
 
     return 1;
 }
@@ -50,7 +63,20 @@ template <> size_t getcharwidth<char16_t>(uchar32_t character)
 {
     if (character <= UNI_MAX_BMP)
     {
+        // The character is not allowed to be equal to a UTF-16 surrogate. If it is,
+        // we return 0.
+        if (character >= UNI_SUR_HIGH_START && character <= UNI_SUR_LOW_END)
+        {
+            return 0;
+        }
+
         return 1;
+    }
+
+    // The character is not allowed to be larger than the largest legal character.
+    if (character >= UNI_MAX_LEGAL_UTF32)
+    {
+        return 0;
     }
     
     return 2;

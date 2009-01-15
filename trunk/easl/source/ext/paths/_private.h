@@ -114,7 +114,6 @@ size_t _copy_pair_to_str(T *dest, const _SubDirPair<T> &pair)
             size_t char_size = writechar(dest, ch);
 
             count += char_size;
-            dest += char_size;
         }
     }
 
@@ -183,10 +182,7 @@ size_t _write_parent_dir(T *&dest)
     if (dest != NULL)
     {
         writechar(dest, '.');
-        dest += char_size;
-
         writechar(dest, '.');
-        dest += char_size;
     }
     count += char_size * 2;
 
@@ -194,7 +190,6 @@ size_t _write_parent_dir(T *&dest)
     if (dest != NULL)
     {
         writechar(dest, EASL_PATH_SLASH);
-        dest += char_size;
     }
     count += char_size;
 

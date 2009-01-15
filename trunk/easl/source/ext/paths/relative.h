@@ -100,7 +100,6 @@ size_t relative(T *dest, const T *path, const T *base)
             {
                 // Now write the character and move the pointer forward.
                 size_t char_size = writechar(dest, EASL_PATH_SLASH);
-                dest += char_size;
 
                 final_size += char_size;
             }

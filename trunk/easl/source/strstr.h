@@ -32,7 +32,8 @@ inline const T * strstr(const T *str1, const T *str2)
     }
 
     // Grab the length of the second string.
-    size_t str2_length = easl::strlen(str2);
+    //size_t str2_length = easl::strlen(str2);
+    size_t str2_length = easl::length(str2);
 
     // Grab the first character of our second string.
     uchar32_t first_char = getchar(str2, 0);
