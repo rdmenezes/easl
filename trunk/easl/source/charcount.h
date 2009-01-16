@@ -31,10 +31,29 @@ size_t charcount(const T *str)
     return easl::length(str);
 #else
     size_t count = 0;
-    uchar32_t ch;
-    while ((ch = easl::nextchar(str)) != NULL)
+    while (easl::nextchar(str) != NULL)
     {
         ++count;
+    }
+
+    return count;
+#endif
+}
+
+template <typename T>
+size_t charcount(const reference_string<T> &str)
+{
+#ifdef EASL_ONLY_ASCII
+    return easl::length(str);
+#else
+    size_t count = 0;
+
+    T *temp = str.start;
+    while (temp < str.end)
+    {
+        ++count;
+
+        nextchar(temp);
     }
 
     return count;

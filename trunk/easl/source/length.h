@@ -25,34 +25,6 @@ namespace easl
 *       To retrieve the number of characters in the string insteaad of basic character
 *       units, use strchrcount() instead.
 */
-/*template <typename T>
-inline size_t strlen(const T *str)
-{
-    assert(str != NULL);
-
-    const T *temp = str;
-
-    while (*temp != NULL)
-    {
-        ++temp;
-    }
-
-    return temp - str;
-}
-template <> inline size_t strlen(const char *str)
-{
-    assert(str != NULL);
-
-    return ::strlen(str);
-}
-template <> inline size_t strlen(const wchar_t *str)
-{
-    assert(str != NULL);
-
-    return ::wcslen(str);
-}*/
-
-
 template <typename T>
 inline size_t length(const T *str)
 {
@@ -78,6 +50,14 @@ template <> inline size_t length(const wchar_t *str)
     assert(str != NULL);
 
     return ::wcslen(str);
+}
+
+template <typename T>
+inline size_t length(const reference_string<T> &str)
+{
+    assert(str.end > str.start);
+
+    return str.end - str.start;
 }
 
 

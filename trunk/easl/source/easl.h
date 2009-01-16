@@ -15,6 +15,7 @@
 #include "formatsize.h"
 #include "attachbom.h"
 #include "append.h"
+#include "appendsize.h"
 #include "findfirst.h"
 #include "findfirstof.h"
 #include "charcount.h"
@@ -31,5 +32,7 @@
 #include "vformat.h"
 #include "vformatsize.h"
 #include "writechar.h"
+#include "nextline.h"
+#include "stream_output.h"
 
 #endif // __EASL_H_

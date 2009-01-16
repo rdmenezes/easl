@@ -9,6 +9,7 @@
 #include <string.h>
 #include <assert.h>
 #include "nextchar.h"
+#include "reference_string.h"
 
 namespace easl
 {
@@ -17,7 +18,7 @@ namespace easl
 *   \brief              Compares two strings for equality.
 *   \param  str1  [in]  The first string to compare.
 *   \param  str2  [in]  The second string to compare.
-*   \param  count [in]  The number of characters to compare in the second string (\c str2).
+*   \param  count [in]  The number of characters to compare in the strings.
 *   \return             0 if the two strings are equal; -1 if \c str1 is lower than \c str2; +1 otherwise.
 *
 *   \remarks
@@ -85,6 +86,16 @@ template <> inline int compare(const wchar_t *str1, const wchar_t *str2, size_t 
 
     return ::wcscmp(str1, str2);
 }
+
+
+template <typename T, typename U>
+inline int compare(const reference_string<T> &str1, const reference_string<U> &str2)
+{
+    // Can't call the above functions for this one. We'll have to do it manually.
+
+    return 0;
+}
+
 
 }
 
