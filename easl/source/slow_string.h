@@ -7,7 +7,7 @@
 *   It contains only a single property - a pointer to the content of the string. This
 *   implementation is designed to keep memory consumption to a minumum.
 *
-*   Internally the class uses strlen(), so encoding '\0' anywhere in the string other
+*   Internally the class uses easl::length(), so encoding '\0' anywhere in the string other
 *   than the end will cause the string to become corrupted as soon as it is modified.
 *   If the string remains static, however, a NULL character can be encoded by modifying
 *   the pointer directly from outside the class. This problem only affects slow_string.
@@ -17,8 +17,6 @@
 #define __EASL_SLOW_STRING_H_
 
 #include "length.h"
-//#include "strcpy.h"
-//#include "convertsize.h"
 #include "copysize.h"
 #include "getchar.h"
 #include "equal.h"
@@ -150,13 +148,11 @@ public:
         {
             if (len == 0)
             {
-                //len = easl::strlen(str);
                 len = easl::length(str);
             }
 
             // Now we just need to copy the string over.
             this->m_data = new T[len + 1];
-            //easl::strcpy(this->m_data, str, len + 1);
             easl::copy(this->m_data, str, len + 1, len);
         }
 
@@ -185,13 +181,11 @@ public:
         {
             if (len == 0)
             {
-                //len = easl::convertsize<T>(str);
                 len = easl::copysize<T>(str);
             }
 
             // All we're really doing is a simple conversion.
             this->m_data = new T[len];
-            //easl::convert(this->m_data, str);
             easl::copy(this->m_data, str, len);
         }
 
@@ -207,7 +201,7 @@ public:
     *   \return             A reference to this string.
     *
     *   \remarks
-    *       The \c len parameter should specify the number of U's in \c str and not
+    *       The \c len parameter should specify the number of T's in \c str and not
     *       the number of characters.
     */
     slow_string<T> & append(const T *str, size_t len = 0)
@@ -218,7 +212,6 @@ public:
             // the new string.
             if (len == 0)
             {
-                //len = easl::strlen(str);
                 len = easl::length(str);
             }
 
@@ -232,11 +225,9 @@ public:
             this->m_data = new T[this_size + len + 1];
             
             // Copy our old data back into the string.
-            //easl::strcpy(this->m_data, old_data, this_size + len + 1);
             easl::copy(this->m_data, old_data, this_size + len + 1);
 
             // Now we copy our input string into our new buffer.
-            //easl::strcpy(this->m_data + this_size, str, len + 1);
             easl::copy(this->m_data + this_size, str, len + 1);
 
             // Delete our previous data.
@@ -250,11 +241,12 @@ public:
     template <typename U>
     slow_string<T> & append(const U *str, size_t len = 0)
     {
+        (void)len;  // Warning silencer.
+
         if (str != NULL)
         {
             // First we need to determine how much extra space we need to allocate to append
             // the new string.
-            //size_t convert_size = easl::convertsize<T>(str);
             size_t copy_size = easl::copysize<T>(str);
 
             // Now we need to find the length of this string.
@@ -270,8 +262,7 @@ public:
             memcpy(this->m_data, old_data, sizeof(T) * this_size);
 
             // Now we copy our input string into our new buffer.
-            //easl::convert(this->m_data + this_size, str);
-            easl::copy(this->m_data + this_size, old_data, copy_size);
+            easl::copy(this->m_data + this_size, str, copy_size);
 
             // Delete our previous data.
             delete [] old_data;
@@ -301,8 +292,7 @@ public:
         this->m_data = new T[this_size + added_size + 1];
         
         // Copy our old data back into the string.
-        //easl::strcpy(this->m_data, old_data, this_size + added_size + 1);
-        easl::strcpy(this->m_data, old_data, this_size + added_size + 1);
+        easl::copy(this->m_data, old_data, this_size + added_size + 1);
 
         // Now we need to write this character to the string.
         easl::writechar(this->m_data + this_size, character);
@@ -326,7 +316,6 @@ public:
     */
     size_t length() const
     {
-        //return easl::strlen(this->m_data);
         return easl::length(this->m_data);
     }
 
@@ -358,7 +347,7 @@ public:
     */
     uchar32_t getchar(size_t index)
     {
-        assert(this->length() < index);
+        assert(this->length() > index);
 
         return easl::getchar(this->m_data, index);
     }
@@ -510,25 +499,6 @@ public:
         slow_string<T> new_str(*this);
         return new_str += str;
     }
-
-
-
-    /**
-    *   \brief  Casting operator to a const T *.
-    */
-    operator const T *() const
-    {
-        return this->m_data;
-    }
-
-    /**
-    *   \brief  Casting operator to a T *.
-    */
-    operator T *()
-    {
-        return this->m_data;
-    }
-
 
 
 private:

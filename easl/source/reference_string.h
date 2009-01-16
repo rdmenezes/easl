@@ -38,6 +38,7 @@ struct reference_string
     T *end;
 };
 
+
 }
 
 #endif // __EASL_REFERENCESTRING_H_

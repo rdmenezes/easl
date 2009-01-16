@@ -9,6 +9,7 @@
 #include "setup.h"
 #include "nextchar.h"
 #include "writechar.h"
+#include "reference_string.h"
 
 #if ((COMPILER & COMPILER_VC) && COMPILER >= COMPILER_VC80)
 #include <string.h>
@@ -180,6 +181,13 @@ size_t copy(T *dest, const U *source, size_t destSize = -1, size_t count = -1)
     }
 
     return copy_size;
+}
+
+
+template <typename T, typename U>
+size_t copy(T *dest, const reference_string<U> &source, size_t destSize = -1)
+{
+    return copy(dest, source.start, destSize, source.end - source.start);
 }
 
 }

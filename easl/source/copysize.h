@@ -26,6 +26,12 @@ size_t copysize(const U *source, size_t count = -1)
     return copy((T *)NULL, source, (size_t)-1, count);
 }
 
+template <typename T, typename U>
+size_t copysize(const reference_string<U> &source)
+{
+    return copy((T *)NULL, source, (size_t)-1);
+}
+
 
 }
 

@@ -6,9 +6,12 @@
 #ifndef __EASL_APPEND_H_
 #define __EASL_APPEND_H_
 
+#if ((COMPILER & COMPILER_VC) && COMPILER >= COMPILER_VC80)
 #include <string.h>
+#endif
+
 #include <assert.h>
-#include <errno.h>
+#include "reference_string.h"
 
 namespace easl
 {
@@ -80,6 +83,14 @@ template <> inline size_t append(wchar_t *dest, const wchar_t *src, size_t destS
     return easl::length(dest) + count + 1;
 }
 #endif
+
+
+template <typename T>
+inline size_t append(T *dest, const reference_string<T> &source, size_t destSize)
+{
+    return append(dest, source.start, dest_size, source.end - source.start);
+}
+
 
 }
 

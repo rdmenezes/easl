@@ -8,6 +8,7 @@
 
 #include "types.h"
 #include "nextchar.h"
+#include "length.h"
 
 namespace easl
 {
@@ -69,6 +70,57 @@ bool equal(const T *str1, const U *str2, bool caseSensitive = true)
 
 	return true;
 }
+
+
+// Optimized case.
+template <typename T>
+bool equal(const reference_string<T> &str1, const reference_string<T> &str2, bool caseSensitive = true)
+{
+    // If the lengths are different, it's impossible for the strings to be the same. Calculating
+    // the lengths for reference strings is a fast operation, so this check is worth-while. It
+    // also simplifies the next part.
+    size_t len = length(str1);
+    if (len != length(str2))
+    {
+        return false;
+    }
+
+    // If the internal pointers are the same, the strings are also the same.
+    if (str1.start == str2.start && str1.end == str2.end)
+    {
+        return true;
+    }
+
+    while (--len >= 0)
+    {
+        if (caseSensitive)
+        {
+            if (str1.start[len] != str2.start[len])
+            {
+                return false;
+            }
+        }
+        else
+        {
+            if (tolower(str1.start[len]) != tolower(str2.start[len]))
+            {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+
+template <typename T, typename U>
+bool equal(const reference_string<T> &str1, const reference_string<U> &str2, bool caseSensitive = true)
+{
+    // TODO: We'll have to do it manually without the first function.
+
+    return true;
+}
+
 
 }
 
