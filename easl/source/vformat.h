@@ -18,16 +18,19 @@ namespace easl
 {
 
 /**
-*   \brief                  Writes formatted data to a string from a pointer to a list of arguments.
-*   \param  dest     [out]  Pointer to the buffer that will recieve the formatted string.
-*   \param  destSize [in]   The size of the buffer in T's.
-*   \param  format   [in]   The string describing the format of the formatted string.
-*   \param  args     [in]   The pointer to the arguments to use for the formatted string.
-*   \return                 The number of characters that are written to the string.
+*   \brief                 Writes formatted data to a string from a pointer to a list of arguments.
+*   \param  dest     [out] Pointer to the buffer that will recieve the formatted string.
+*   \param  destSize [in]  The size of the buffer in T's.
+*   \param  format   [in]  The string describing the format of the formatted string.
+*   \param  args     [in]  The pointer to the arguments to use for the formatted string.
+*   \return                The number of characters that are written to the string.
 *
 *   \remarks
 *       If \c dest is NULL, the function will return the number of T's required to store the
-*       formatted string including the NULL terminator.
+*       formatted string including the null terminator.
+*       \par
+*       Internally this function uses vsprintf() which forces the \c format parameter to be
+*       NULL terminated. This may change in the future.
 *       \par
 *       If an error occurs, 0 is returned.
 */

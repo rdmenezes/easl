@@ -7,6 +7,7 @@
 #define __EASL_PATHS_PRIVATE_H_
 
 #include <ctype.h>
+#include "../../reference_string.h"
 
 // Defines the directory slash for platforms.
 #if (PLATFORM == PLATFORM_WINDOWS)
@@ -20,21 +21,11 @@ namespace easl
 namespace paths
 {
 
-// Structure representing a non-null terminated string. The end of the string
-// is determined by another pointer.
 template <typename T>
-struct _SubDirPair
-{
-    const T *start;
-    const T *end;
-};
-
-
-template <typename T>
-void _split_path(_SubDirPair<T> (&dest)[128], size_t &count, const T *path)
+void _split_path(reference_string<const T> (&dest)[128], size_t &count, const T *path, size_t pathLength)
 {
     // Our current sub directory. There is always at least one sub directory.
-    _SubDirPair<T> current_pair;
+    reference_string<const T> current_pair;
     current_pair.start = path;
 
     // We need to ensure that our counter is at 0.
@@ -42,7 +33,7 @@ void _split_path(_SubDirPair<T> (&dest)[128], size_t &count, const T *path)
 
     const T *temp = path;
     uchar32_t ch;
-    while ((ch = easl::nextchar(temp)) != NULL)
+    while (pathLength > 0 && (ch = easl::nextchar(temp)) != NULL)
     {
         if (ch == '\\' || ch == '/')
         {
@@ -63,6 +54,7 @@ void _split_path(_SubDirPair<T> (&dest)[128], size_t &count, const T *path)
             current_pair.start = temp;
         }
         
+        pathLength -= temp - path;
         path = temp;
     }
 
@@ -77,7 +69,7 @@ void _split_path(_SubDirPair<T> (&dest)[128], size_t &count, const T *path)
 *   \return             True if the string is equal to ".."
 */
 template <typename T>
-bool _pair_is_parent_dir(const _SubDirPair<T> &dir)
+bool _pair_is_parent_dir(const reference_string<const T> &dir)
 {
     const T *temp = dir.start;
     uchar32_t ch1 = easl::nextchar(temp);
@@ -97,7 +89,7 @@ bool _pair_is_parent_dir(const _SubDirPair<T> &dir)
 *   \return             The number of T's that are copied over.
 */
 template <typename T>
-size_t _copy_pair_to_str(T *dest, const _SubDirPair<T> &pair)
+size_t _copy_pair_to_str(T *dest, const reference_string<const T> &pair)
 {
     // Stores the number of T's that we're copying over.
     size_t count = 0;
@@ -130,8 +122,8 @@ size_t _copy_pair_to_str(T *dest, const _SubDirPair<T> &pair)
 *   \remarks
 *       The comparison is not case sensitive.
 */
-template <typename T>
-bool _compare_pair(const _SubDirPair<T> &str1, const _SubDirPair<T> &str2)
+/*template <typename T>
+bool _compare_pair(const reference_string<T> &str1, const reference_string<T> &str2)
 {
     const T *temp1 = str1.start;
     const T *temp2 = str2.start;
@@ -157,7 +149,7 @@ bool _compare_pair(const _SubDirPair<T> &str1, const _SubDirPair<T> &str2)
     }
 
     return true;
-}
+}*/
 
 /**
 *   \brief              Writes the "../" directory to the destination.

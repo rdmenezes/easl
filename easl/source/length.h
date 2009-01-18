@@ -3,19 +3,20 @@
 *   \author Dave Reid
 *   \brief  Header file for length() implementations.
 */
-#ifndef __EASL_STRLEN_H_
-#define __EASL_STRLEN_H_
+#ifndef __EASL_LENGTH_H_
+#define __EASL_LENGTH_H_
 
 #include <string.h>
 #include <assert.h>
+#include "reference_string.h"
 
 namespace easl
 {
 
 /**
-*   \brief              Retrieves the length of a C style string.
-*   \param  str [in]    The string to retrieve the length of.
-*   \return             The length of the C style string.
+*   \brief           Retrieves the length of a C style string.
+*   \param  str [in] The string to retrieve the length of.
+*   \return          The length of the C style string.
 *
 *   \remarks
 *       This function return the number of basic character units in the string. A
@@ -23,7 +24,7 @@ namespace easl
 *       whcar_t* strings. The same sort of things applies for UTF strings.
 *       \par
 *       To retrieve the number of characters in the string insteaad of basic character
-*       units, use strchrcount() instead.
+*       units, use charcount() instead.
 */
 template <typename T>
 inline size_t length(const T *str)
@@ -39,13 +40,15 @@ inline size_t length(const T *str)
 
     return temp - str;
 }
-template <> inline size_t length(const char *str)
+
+// Optimized cases.
+inline size_t length(const char *str)
 {
     assert(str != NULL);
 
     return ::strlen(str);
 }
-template <> inline size_t length(const wchar_t *str)
+inline size_t length(const wchar_t *str)
 {
     assert(str != NULL);
 
@@ -63,4 +66,4 @@ inline size_t length(const reference_string<T> &str)
 
 }
 
-#endif // __EASL_STRLEN_H_
+#endif // __EASL_LENGTH_H_

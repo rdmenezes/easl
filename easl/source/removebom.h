@@ -12,8 +12,8 @@ namespace easl
 {
 
 /**
-*   \brief                  Removes the BOM from the specified string if one is present.
-*   \param  str [in, out]   The string to remove the BOM from.
+*   \brief                Removes the BOM from the specified string if one is present.
+*   \param  str [in, out] The string to remove the BOM from.
 */
 template <typename T>
 void removebom(T *str)

@@ -9,6 +9,7 @@
 #include <assert.h>
 #include "../../nextchar.h"
 #include "../../string.h"
+#include "../../reference_string.h"
 
 namespace easl
 {
@@ -16,10 +17,11 @@ namespace paths
 {
 
 /**
-*   \brief              Retrieves the extension of a file.
-*   \param  str  [in]   The string that contains the file name whose extension is to be retrieved.
-*   \param  dest [in]   Pointer to the buffer that will store the extension.
-*   \return             The number of T's that were copied into dest.
+*   \brief                 Retrieves the extension of a file.
+*   \param  str       [in] The string that contains the file name whose extension is to be retrieved.
+*   \param  dest      [in] Pointer to the buffer that will store the extension.
+*   \param  srcLength [in] The length in T's of the source string, not including the null terminator.
+*   \return                The number of T's that were copied into dest.
 *
 *   \remarks
 *       If an extension is not found, an empty string is sent to \c dest. The destination
@@ -35,7 +37,7 @@ namespace paths
 *       function because it must scan a larger string if the full file path is specified.
 */
 template <typename T>
-size_t getfileext(T *dest, const T *src)
+size_t getfileext(T *dest, const T *src, size_t srcLength = -1)
 {
     assert(src != NULL);
 
@@ -46,7 +48,7 @@ size_t getfileext(T *dest, const T *src)
     // we reach the end of the file will be the last one.
     const T *last_pos = NULL;
     uchar32_t ch;
-    while ((ch = easl::nextchar(src)) != NULL)
+    while ((ch = nextchar(src)) != NULL)
     {
         if (ch == '.')
         {
@@ -78,7 +80,7 @@ size_t getfileext(T *dest, const T *src)
 }
 
 template <typename T>
-void getfileext(slow_string<T> &dest, const T *src)
+void getfileext(slow_string<T> &dest, const T *src, size_t srcLength = -1)
 {
     assert(src != NULL);
 
@@ -109,34 +111,78 @@ void getfileext(slow_string<T> &dest, const T *src)
 }
 
 
-string8 getfileext(const char *src)
+string8 getfileext(const char *src, size_t srcLength = -1)
 {
     string8 ret;
     getfileext(ret, src);
 
     return ret;
 }
-string16 getfileext(const char16_t *src)
+string16 getfileext(const char16_t *src, size_t srcLength = -1)
 {
     string16 ret;
     getfileext(ret, src);
 
     return ret;
 }
-string32 getfileext(const char32_t *src)
+string32 getfileext(const char32_t *src, size_t srcLength = -1)
 {
     string32 ret;
     getfileext(ret, src);
 
     return ret;
 }
-wstring getfileext(const wchar_t *src)
+wstring getfileext(const wchar_t *src, size_t srcLength = -1)
 {
     wstring ret;
     getfileext(ret, src);
 
     return ret;
 }
+
+
+template <typename T>
+reference_string<T> getfileext(T *src, size_t srcLength = -1)
+{
+    assert(src != NULL);
+
+    // Need to account for localisation here.
+
+    // Stores the start of the next character.
+    T *start_of_ch = src;
+
+    // We need to find the last occurance of a full stop characters. We'll do this
+    // by storing each occurance of a full stop that we find. The one that stored when
+    // we reach the end of the file will be the last one.
+    T *last_pos = NULL;
+    uchar32_t ch;
+    while (srcLength > 0 && (ch = nextchar(src)) != NULL)
+    {
+        if (ch == '.')
+        {
+            last_pos = src;
+        }
+
+        srcLength -= src - start_of_ch;
+        start_of_ch = src;
+    }
+
+    // Our return value.
+    reference_string<T> ret;
+    ret.end = src;
+
+    if (last_pos == NULL)
+    {
+        ret.start = src;
+    }
+    else
+    {
+        ret.start = last_pos;
+    }
+
+    return ret;
+}
+
 
 }
 }

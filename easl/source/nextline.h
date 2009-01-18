@@ -14,21 +14,22 @@ namespace easl
 {
 
 /**
-*   \brief              Retrieves the line that the specified string is positioned at and moves to the next one.
-*   \param  line [out]  The reference string that will recieve the line.
-*   \param  str  [in]   The string to retrieve the line from.
-*   \return             True if a line was retrieved; false otherwise.
+*   \brief             Retrieves the line that the specified string is positioned at and moves to the next one.
+*   \param  line [out] The reference string that will recieve the line.
+*   \param  str  [in]  The string to retrieve the line from.
+*   \return            True if a line was retrieved; false otherwise.
 *
 *   \remarks
 *       When this function returns a non-null value, the \c start elements of \c line is always set to \c str.
 *       \par
-*       The only time this function will return false is when the string has no characters other than a null
-*       terminator.
+*       The input string must be null terminated. The only time this function will return false is when the
+*       string has no characters other than a null terminator. If this behaviour is not desireable, the
+*       application will need to manually determine when nextline() should stop being called.
 *       \par
 *       The returned string will not contain the new-line delimiter.
 */
 template <typename T>
-bool nextline(reference_string<const T> &line, const T *&str)
+bool nextline(reference_string<T> &line, T *&str)
 {
     assert(str != NULL);
 
@@ -41,7 +42,7 @@ bool nextline(reference_string<const T> &line, const T *&str)
 
     // We need to loop through each character in the string and look for a carriage return
     // and new line character.
-    const T *temp = str;
+    T *temp = str;
     uchar32_t ch;
     while ((ch = nextchar(temp)) != NULL)
     {
@@ -49,7 +50,7 @@ bool nextline(reference_string<const T> &line, const T *&str)
         if (ch == '\r')
         {
             // We will grab the next character. If this is equal to '\n', we have a new line.
-            const T *temp2 = temp;
+            T *temp2 = temp;
             if (nextchar(temp2) == '\n')
             {
                 // We have a new line. We will set the line and return.
@@ -73,14 +74,9 @@ bool nextline(reference_string<const T> &line, const T *&str)
     // want to end this line and return.
     line.end = str;
 
-    return true;;
+    return true;
 }
 
-template <typename T>
-bool nextline(reference_string<T> &line, T *&str)
-{
-    return nextline((reference_string<const T> &)line, (const T *&)str);
-}
 
 }
 

@@ -14,9 +14,10 @@ namespace paths
 {
 
 /**
-*   \brief              Determines if a given path is absolute.
-*   \param  path [in]   The path to check for absoluteness.
-*   \return             True if the path is absolute; false otherwise.
+*   \brief                  Determines if a given path is absolute.
+*   \param  path       [in] The path to check for absoluteness.
+*   \param  pathLength [in] The length in T's of the path, not including the null terminator.
+*   \return                 True if the path is absolute; false otherwise.
 *
 *   \remarks
 *       This function is platform independant. On Windows, an absolute path is
@@ -26,8 +27,13 @@ namespace paths
 *       This function will also check for a network drive path.
 */
 template <typename T>
-bool isabsolute(const T *path)
+bool isabsolute(const T *path, size_t pathLength = -1)
 {
+    if (pathLength == 0)
+    {
+        return false;
+    }
+
     // Create our temporary pointer. We need to do this so we can use the original
     // path to check if it is a network path later on.
     const T *temp = path;
@@ -36,14 +42,17 @@ bool isabsolute(const T *path)
     uchar32_t ch1 = nextchar(temp);
 
 #if (PLATFORM == PLATFORM_WINDOWS)
-    // If the first character is a letter, we need to check if the second character
-    // is a colon. If it is, the path is absolute.
-    if ((ch1 >= 'A' && ch1 <= 'Z') || (ch1 >= 'a' && ch1 <= 'z'))
+    if (temp - path <= pathLength)
     {
-        uchar32 ch2 = nextchar(temp);
-        if (ch2 == ':')
+        // If the first character is a letter, we need to check if the second character
+        // is a colon. If it is, the path is absolute.
+        if ((ch1 >= 'A' && ch1 <= 'Z') || (ch1 >= 'a' && ch1 <= 'z'))
         {
-            return true;
+            uchar32 ch2 = nextchar(temp);
+            if (ch2 == ':')
+            {
+                return true;
+            }
         }
     }
 #else
@@ -56,7 +65,7 @@ bool isabsolute(const T *path)
 #endif
 
     // If we've made it here, we need to check if the path is a network path.
-    return isnetworkpath(path);
+    return isnetworkpath(path, pathLength);
 }
 
 }

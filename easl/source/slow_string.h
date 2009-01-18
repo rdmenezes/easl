@@ -42,8 +42,8 @@ public:
     }
 
     /**
-    *   \brief              Constructor.
-    *   \param  str [in]    The string to initialise this string to.
+    *   \brief           Constructor.
+    *   \param  str [in] The string to initialise this string to.
     */
     slow_string(const T *str) : m_data(NULL)
     {
@@ -59,8 +59,8 @@ public:
 #endif
 
     /**
-    *   \brief              Constructor.
-    *   \param  str [in]    The string to initialise this string to.
+    *   \brief           Constructor.
+    *   \param  str [in] The string to initialise this string to.
     */
     slow_string(const slow_string<T> &str) : m_data(NULL)
     {
@@ -119,16 +119,16 @@ public:
     }
 
     /**
-    *   \brief              Assigns another string to this string.
-    *   \param  str [in]    The new string to assign to this string.
-    *   \param  len [in]    The length of the input string, or -1 if the length is unknown.
-    *   \return             A reference to this string.
+    *   \brief                 Assigns another string to this string.
+    *   \param  str       [in] The new string to assign to this string.
+    *   \param  strLength [in] The length of the input string, or -1 if the length is unknown.
+    *   \return                A reference to this string.
     *
     *   \remarks
     *       If the length of the input string is known, set \c len to the length of the string.
     *       This will prevent this string from manually retrieving the length of the string.
     */
-    slow_string<T> & assign(const T *str, size_t len = 0)
+    slow_string<T> & assign(const T *str, size_t strLength = -1)
     {
         if (this->m_data == (const T *)str && this->m_data != NULL)
         {
@@ -146,14 +146,14 @@ public:
         }
         else
         {
-            if (len == 0)
+            if (strLength == -1)
             {
-                len = easl::length(str);
+                strLength = easl::length(str);
             }
 
             // Now we just need to copy the string over.
-            this->m_data = new T[len + 1];
-            easl::copy(this->m_data, str, len + 1, len);
+            this->m_data = new T[strLength + 1];
+            easl::copy(this->m_data, str, strLength + 1, strLength);
         }
 
         return *this;
@@ -161,7 +161,7 @@ public:
 
 #ifndef EASL_OPTION_NO_GENERIC_OPERATIONS
     template <typename U>
-    slow_string<T> & assign(const U *str, size_t len = 0)
+    slow_string<T> & assign(const U *str, size_t strLength = -1)
     {
         if (this->m_data == (const T *)str && this->m_data != NULL)
         {
@@ -179,14 +179,14 @@ public:
         }
         else
         {
-            if (len == 0)
+            if (strLength == 0)
             {
-                len = easl::copysize<T>(str);
+                strLength = easl::copysize<T>(str);
             }
 
             // All we're really doing is a simple conversion.
-            this->m_data = new T[len];
-            easl::copy(this->m_data, str, len);
+            this->m_data = new T[strLength];
+            easl::copy(this->m_data, str, strLength);
         }
 
         return *this;
@@ -195,24 +195,24 @@ public:
 
 
     /**
-    *   \brief              Helper method for appending a string to this string.
-    *   \param  str [in]    The string to append to this string.
-    *   \param  len [in]    The length in U's of \c str.
-    *   \return             A reference to this string.
+    *   \brief                 Helper method for appending a string to this string.
+    *   \param  str       [in] The string to append to this string.
+    *   \param  strLength [in] The length in U's of \c str.
+    *   \return                A reference to this string.
     *
     *   \remarks
     *       The \c len parameter should specify the number of T's in \c str and not
     *       the number of characters.
     */
-    slow_string<T> & append(const T *str, size_t len = 0)
+    slow_string<T> & append(const T *str, size_t strLength = -1)
     {
         if (str != NULL)
         {
             // First we need to determine how much extra space we need to allocate to append
             // the new string.
-            if (len == 0)
+            if (strLength == 0)
             {
-                len = easl::length(str);
+                strLength = easl::length(str);
             }
 
             // Now we need to find the length of this string.
@@ -222,13 +222,13 @@ public:
             T *old_data = this->m_data;
 
             // Now we can allocate some more memory.
-            this->m_data = new T[this_size + len + 1];
+            this->m_data = new T[this_size + strLength + 1];
             
             // Copy our old data back into the string.
-            easl::copy(this->m_data, old_data, this_size + len + 1);
+            easl::copy(this->m_data, old_data, this_size + strLength + 1);
 
             // Now we copy our input string into our new buffer.
-            easl::copy(this->m_data + this_size, str, len + 1);
+            easl::copy(this->m_data + this_size, str, strLength + 1);
 
             // Delete our previous data.
             delete [] old_data;
@@ -239,9 +239,9 @@ public:
 
 #ifndef EASL_OPTION_NO_GENERIC_OPERATIONS
     template <typename U>
-    slow_string<T> & append(const U *str, size_t len = 0)
+    slow_string<T> & append(const U *str, size_t strLength = -1)
     {
-        (void)len;  // Warning silencer.
+        (void)strLength;  // Warning silencer.
 
         if (str != NULL)
         {
@@ -308,7 +308,7 @@ public:
 
     /**
     *   \brief  Retrieves the length of this string.
-    *   \return The length of this string.
+    *   \return The length of this string in T's.
     *
     *   \remarks
     *       This function will return the number of T's in the string, and not necessarily the
@@ -336,9 +336,9 @@ public:
 
 
     /**
-    *   \brief              Retrieves a character from the string.
-    *   \param  index [in]  The index of the character to retrieve.
-    *   \return             The character if the index is valid, zero otherwise.
+    *   \brief             Retrieves a character from the string.
+    *   \param  index [in] The index of the character to retrieve.
+    *   \return            The character if the index is valid, zero otherwise.
     *
     *   \remarks
     *       For strings with variable length characters, this method can be quite slow
@@ -354,9 +354,12 @@ public:
 
 
     /**
-    *   \brief              Assignment operator.
-    *   \param  str [in]    The string to assign to this string.
-    *   \return             A reference to this string.
+    *   \brief           Assignment operator.
+    *   \param  str [in] The string to assign to this string.
+    *   \return          A reference to this string.
+    *
+    *   \remarks
+    *       The C-style string must be null terminated.
     */
     slow_string<T> & operator =(const T *str)
     {
@@ -374,7 +377,7 @@ public:
         return this->assign(str);
     }
 
-    /// \copydoc    slow_string::operator =(const U *)
+    /// \copydoc    slow_string::operator =(const T *)
     template <typename U>
     slow_string<T> & operator =(const slow_string<U> &str)
     {
@@ -384,9 +387,9 @@ public:
 
 
     /**
-    *   \brief              Comparison operator.
-    *   \param  str [in]    The string to compare this string siwth.
-    *   \return             True if the two strings are equal; false otherwise.
+    *   \brief           Comparison operator.
+    *   \param  str [in] The string to compare this string siwth.
+    *   \return          True if the two strings are equal; false otherwise.
     *
     *   \remarks
     *       The comparison is case sensitive. "Some String" does not equal "some string".
@@ -417,9 +420,12 @@ public:
 
 
     /**
-    *   \brief              Appends a string to this string.
-    *   \param  str [in]    The string to append to this string.
-    *   \return             A reference to this string.
+    *   \brief           Appends a string to this string.
+    *   \param  str [in] The string to append to this string.
+    *   \return          A reference to this string.
+    *
+    *   \remarks
+    *       The C-style string must be null terminated.
     */
     slow_string<T> & operator +=(const T *str)
     {
@@ -446,9 +452,9 @@ public:
 #endif
 
     /**
-    *   \brief                  Appends a character to this string.
-    *   \param  character [in]  The character to append.
-    *   \return                 A reference to this string.
+    *   \brief                 Appends a character to this string.
+    *   \param  character [in] The character to append.
+    *   \return                A reference to this string.
     */
     slow_string<T> & operator +=(uchar32_t character)
     {
@@ -457,9 +463,12 @@ public:
 
 
     /**
-    *   \brief              Creates a new string equal to another string appended to this string.
-    *   \param  str [in]    The string to be appended to the end of the new string.
-    *   \return             A new string equal to this string with the input string appeneded to the end.
+    *   \brief           Creates a new string equal to another string appended to this string.
+    *   \param  str [in] The string to be appended to the end of the new string.
+    *   \return          A new string equal to this string with the input string appeneded to the end.
+    *
+    *   \remarks
+    *       The C-style string must be null terminated.
     */
     slow_string<T> operator +(const T *str) const
     {

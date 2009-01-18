@@ -7,15 +7,16 @@
 #define __EASL_TOSTRING_H_
 
 #include "types.h"
+#include "copy.h"
 
 namespace easl
 {
 
 /**
-*   \brief                  Converts a value to a string.
-*   \param  value    [in]   The value to convert.
-*   \param  dest     [out]  Pointer to the buffer that will recieve the string.
-*   \param  destSize [in]   The number of characters that can fit inside \c dest including the NULL terminator.
+*   \brief                 Converts a value to a string.
+*   \param  value    [in]  The value to convert.
+*   \param  dest     [out] Pointer to the buffer that will recieve the string.
+*   \param  destSize [in]  The number of characters that can fit inside \c dest including the null terminator.
 *
 *   \remarks
 *       The returned string is always NULL terminated. \c destSize specifies

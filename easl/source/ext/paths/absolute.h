@@ -19,11 +19,13 @@ namespace paths
 
 
 /**
-*   \brief              Turns a relative path into an absolute path.
-*   \param  dest [in]   Pointer to the buffer that will recieve the absolute file path.
-*   \param  path [in]   The path to turn into an abolute path.
-*   \param  base [in]   The base part of the absolute path.
-*   \return             The number of T's that are copied into dest including the null terminator.
+*   \brief                   Turns a relative path into an absolute path.
+*   \param  dest       [out] Pointer to the buffer that will recieve the absolute file path.
+*   \param  path       [in]  The path to turn into an abolute path.
+*   \param  base       [in]  The base part of the absolute path.
+*   \param  pathLength [in]  The length in T's of the path string, not including the null terminator.
+*   \param  baseLength [in]  The length in T's of the base string, not including the null terminator.
+*   \return                  The number of T's that are copied into dest including the null terminator.
 *
 *   \remarks
 *       The \c base parameter must be a fully qualified absolute path. If it is not possible to
@@ -33,24 +35,24 @@ namespace paths
 *       This function does not check if the resulting path is a valid or existing directory or file.
 */
 template <typename T>
-size_t absolute(T *dest, const T *path, const T *base)
+size_t absolute(T *dest, const T *path, const T *base, size_t pathLength = -1, size_t baseLength = -1)
 {
     assert(path != NULL);
     assert(base != NULL);
 
     // We need to retrieve the sub directories from each path.
-    _SubDirPair<T> path_dirs[128];
+    reference_string<const T> path_dirs[128];
     size_t path_count;
-    _split_path(path_dirs, path_count, path);
+    _split_path(path_dirs, path_count, path, pathLength);
 
-    _SubDirPair<T> base_dirs[128];
+    reference_string<const T> base_dirs[128];
     size_t base_count;
-    _split_path(base_dirs, base_count, base);
+    _split_path(base_dirs, base_count, base, baseLength);
 
 
     // Now we can begin to build our list of directory pairs that will eventually
     // be stitched together.
-    _SubDirPair<T> final_path_dirs[256];
+    reference_string<const T> final_path_dirs[256];
     size_t final_path_count = 0;
 
     // We first add all of our base directories to the list. We only add it to the list
@@ -132,8 +134,10 @@ void absolute(slow_string<T> &dest, const T *path, const T *base)
 {
     T *&temp = dest.c_str();
 
-    dest = new T[absolute((T *)NULL, path, base)];
+    temp = new T[absolute((T *)NULL, path, base)];
     absolute(temp, path, base);
+
+    // NOTE: Don't delete the temp pointer. It will be deleted by the strings destructor.
 }
 
 

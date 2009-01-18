@@ -12,18 +12,18 @@ namespace easl
 {
 
 /**
-*   \brief              Retrieves the BOM from a given string.
-*   \param  str [in]    The string to retrieve the BOM from.
-*   \return             0xFEFF if the BOM if found, 0 otherwise.
+*   \brief           Retrieves the BOM from a given string.
+*   \param  str [in] The string to retrieve the BOM from.
+*   \return          0xFEFF if the BOM if found, 0 otherwise.
 *
 *   \remarks
 *       This function will not modify the input string in any way. To retrieve the
-*       BOM and move passed it, use strskipbom() instead.
+*       BOM and move passed it, use skipbom() instead.
 */
 template <typename T>
-uchar32_t getbom(const T *str)
+uchar32_t getbom(T *str)
 {
-    const T *temp;
+    T *temp;
     if (easl::nextchar(temp) == 0xFEFF)
     {
         return 0xFEFF;
@@ -31,13 +31,6 @@ uchar32_t getbom(const T *str)
 
     return 0;
 }
-
-template <typename T>
-uchar32_t getbom(T *str)
-{
-    return getbom((const T *)str);
-}
-
 
 }
 

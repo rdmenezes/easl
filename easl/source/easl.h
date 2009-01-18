@@ -6,7 +6,6 @@
 #ifndef __EASL_H_
 #define __EASL_H_
 
-#include "parse.h"
 #include "setup.h"
 #include "copy.h"
 #include "copysize.h"

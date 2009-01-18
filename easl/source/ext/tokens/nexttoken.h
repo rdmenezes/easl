@@ -15,12 +15,12 @@ namespace tokens
 {
 
 /**
-*   \brief                      Retrieves the next token and moves the pointer to the end of that token.
-*   \param  str     [in, out]   The string to retrieve the next token from.
-*   \param  token   [out]       The reference string that will recieve the next token.
-*   \param  line    [out]       The integer that will recieve the zero based line that the token is on.
-*   \param  symbols [in]        A string that represents the symbols that are considered tokens. Each symbol should be seperated by a space.
-*   \return                     True if a token is retrieved; false otherwise.
+*   \brief                    Retrieves the next token and moves the pointer to the end of that token.
+*   \param  str     [in, out] The string to retrieve the next token from.
+*   \param  token   [out]     The reference string that will recieve the next token.
+*   \param  line    [out]     The integer that will recieve the zero based line that the token is on.
+*   \param  symbols [in]      A string that represents the symbols that are considered tokens. Each symbol should be seperated by a space.
+*   \return                   True if a token is retrieved; false otherwise.
 *
 *   \remarks
 *       When the token is retrieved, the input pointer is moved to the position just the

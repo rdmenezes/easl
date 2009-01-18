@@ -9,30 +9,34 @@
 #include <string.h>
 #include <assert.h>
 #include "nextchar.h"
+#include "length.h"
 #include "reference_string.h"
 
 namespace easl
 {
 
 /**
-*   \brief              Compares two strings for equality.
-*   \param  str1  [in]  The first string to compare.
-*   \param  str2  [in]  The second string to compare.
-*   \param  count [in]  The number of characters to compare in the strings.
-*   \return             0 if the two strings are equal; -1 if \c str1 is lower than \c str2; +1 otherwise.
+*   \brief                  Compares two strings for equality.
+*   \param  str1       [in] The first string to compare.
+*   \param  str2       [in] The second string to compare.
+*   \param  str1Length [in] The length in T's of the first string.
+*   \param  str2Length [in] The length in T's of the second string.
+*   \return                 0 if the two strings are equal; -1 if \c str1 is lower than \c str2; +1 otherwise.
 *
 *   \remarks
 *       The comparison is case sensitive. "Hello" does not equal "HELLO".
+*       \par
+*       If the length of a string is unknown, but it is NULL terminated, set the length to -1.
 */
 template <typename T, typename U>
-inline int compare(const T *str1, const U *str2, size_t count = -1)
+inline int compare(const T *str1, const U *str2, size_t str1Length = -1, size_t str2Length = -1)
 {
     assert(str1 != NULL);
     assert(str2 != NULL);
 
     int ret = 0;
 
-    while (count > 0)
+    while (str1Length > 0 && str2Length > 0)
     {
         uchar32_t ch1 = nextchar(str1);
         uchar32_t ch2 = nextchar(str2);
@@ -44,7 +48,9 @@ inline int compare(const T *str1, const U *str2, size_t count = -1)
             break;
         }
 
-        count -= charwidth<U>(ch2);
+        size_t width = charwidth<T>(ch2);
+        str1Length -= width;
+        str2Length -= width;
     }
 
     if (ret < 0)
@@ -58,42 +64,11 @@ inline int compare(const T *str1, const U *str2, size_t count = -1)
 
     return 0;
 }
-#ifdef EASL_ONLY_ASCII
-template <> inline int compare(const char *str1, const char *str2, size_t count)
-{
-    assert(str2 != NULL);
-    assert(str2 != NULL);
-
-    // NOTE: If the comparison is character by character and not byte by byte, we can't
-    // use this method unless we're doing ASCII only.
-    if (count != -1)
-    {
-        return ::strncmp(str1, str2, count);
-    }
-
-    return ::strcmp(str1, str2);
-}
-#endif
-template <> inline int compare(const wchar_t *str1, const wchar_t *str2, size_t count)
-{
-    assert(str2 != NULL);
-    assert(str2 != NULL);
-
-    if (count != -1)
-    {
-        return ::wcsncmp(str1, str2, count);
-    }
-
-    return ::wcscmp(str1, str2);
-}
-
 
 template <typename T, typename U>
 inline int compare(const reference_string<T> &str1, const reference_string<U> &str2)
 {
-    // Can't call the above functions for this one. We'll have to do it manually.
-
-    return 0;
+    return compare(str1.start, str2.start, length(str1), length(str2));
 }
 
 

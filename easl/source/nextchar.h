@@ -6,16 +6,20 @@
 #ifndef __EASL_NEXTCHAR_H_
 #define __EASL_NEXTCHAR_H_
 
-#include "types.h"
 #include "_private.h"
+#include "reference_string.h"
+
+#ifndef NULL
+#define NULL 0
+#endif
 
 namespace easl
 {
 
 /**
-*   \brief                  Retrieves the next character in a UTF-8 string.
-*   \param  str [in, out]   The string whose next character should be retrieved.
-*   \return                 The character that was being pointed to by \c str.
+*   \brief                Retrieves the next character in a UTF-8 string.
+*   \param  str [in, out] The string whose next character should be retrieved.
+*   \return               The character that was being pointed to by \c str.
 *
 *   \remarks
 *       If this function returns NULL, the null terminator was retrieved. When this occurs, the string
@@ -162,9 +166,9 @@ uchar32_t nextchar_utf32(const char32_t *&str)
 
 
 /**
-*   \brief                  Retrieves the next character in a string and moves the pointer to the start of the next character.
-*   \param  str [in, out]   Pointer to the string to retrieve the character from.
-*   \return                 The character that was being pointed to by \c str.
+*   \brief                Retrieves the next character in a string and moves the pointer to the start of the next character.
+*   \param  str [in, out] Pointer to the string to retrieve the character from.
+*   \return               The character that was being pointed to by \c str.
 *
 *   \remarks
 *       If this function returns NULL, the null terminator was retrieved. When this occurs, the string
@@ -198,6 +202,28 @@ inline uchar32_t nextchar(T *&str)
 {
     return nextchar((const T *&)str);
 }
+
+
+/**
+*   \brief                Retrieves the next character in a string and moves the pointer to the start of the next character.
+*   \param  str [in, out] Pointer to the string to retrieve the character from.
+*   \return               The character that was being pointed to by \c str.
+*
+*   \remarks
+*       If this function returns NULL, the start character is either larger or equal to the end
+*       pointer. When this occurs, the start pointer is _not_ modified.
+*/
+template <typename T>
+uchar32_t nextchar(reference_string<T> &str)
+{
+    if (str.start >= str.end)
+    {
+        return NULL;
+    }
+
+    return nextchar(str.start);
+}
+
 
 }
 

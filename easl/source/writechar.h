@@ -13,10 +13,10 @@ namespace easl
 {
 
 /**
-*   \brief                  Writes a character to the specified string
-*   \param  dest      [in]  The string that the character should be written to.
-*   \param  character [in]  The character that should be written.
-*   \return                 The number of T's that were just written to the string.
+*   \brief                 Writes a character to the specified string
+*   \param  dest      [in] The string that the character should be written to.
+*   \param  character [in] The character that should be written.
+*   \return                The number of T's that were just written to the string.
 *
 *   \remarks
 *       This function will move the input pointer to the position just past the character

@@ -13,9 +13,10 @@ namespace easl
 {
 
 /**
-*   \brief              Retrieves the number of characters in the given string.
-*   \param  str [in]    The string to check.
-*   \return             The number of characters that make up the string; or 0 if an error occurs.
+*   \brief                 Retrieves the number of characters in the given string.
+*   \param  str       [in] The string to check.
+*   \param  strLength [in] The length in T's of the string, not including the null terminator.
+*   \return                The number of characters that make up the string; or 0 if an error occurs.
 *
 *   \remarks
 *       The input string must be null terminated. The null terminator should be the same size
@@ -25,39 +26,33 @@ namespace easl
 *       the number of characters in the string, not including the null terminator.
 */
 template <typename T>
-size_t charcount(const T *str)
+size_t charcount(const T *str, size_t strLength)
 {
-#ifdef EASL_ONLY_ASCII
-    return easl::length(str);
-#else
+    const T *temp = str;
     size_t count = 0;
-    while (easl::nextchar(str) != NULL)
+    while (static_cast<size_t>(temp - str) < strLength && easl::nextchar(temp) != NULL)
     {
         ++count;
     }
 
     return count;
+}
+
+// Optimized case. Uses easl::length() if we're only using ASCII.
+template <typename T>
+size_t charcount(const T *str)
+{
+#ifdef EASL_ONLY_ASCII
+    return easl::length(str);
 #endif
+
+    return charcount(str, (size_t)-1);
 }
 
 template <typename T>
 size_t charcount(const reference_string<T> &str)
 {
-#ifdef EASL_ONLY_ASCII
-    return easl::length(str);
-#else
-    size_t count = 0;
-
-    T *temp = str.start;
-    while (temp < str.end)
-    {
-        ++count;
-
-        nextchar(temp);
-    }
-
-    return count;
-#endif
+    return charcount(str.start, str.end - str.start);
 }
 
 }

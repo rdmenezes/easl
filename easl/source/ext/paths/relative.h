@@ -7,8 +7,9 @@
 #define __EASL_PATHS_RELATIVE_H_
 
 #include <assert.h>
-#include "../../nextchar.h"
 #include "../../_private.h"         // easl/_private.h"
+#include "../../nextchar.h"
+#include "../../equal.h"
 #include "_private.h"               // easl/ext/paths/_private.h
 
 namespace easl
@@ -17,11 +18,13 @@ namespace paths
 {
 
 /**
-*   \brief              Turns an absolute file path into a relative path.
-*   \param  dest [out]  Pointer to the buffer that will recieve the relative path.
-*   \param  path [in]   The absolute path that should be made relative.
-*   \param  base [in]   The path that the input path should be made relative to.
-*   \return             The number ot T's that must be allocated to store the converted path.
+*   \brief                      Turns an absolute file path into a relative path.
+*   \param  dest       [out]    Pointer to the buffer that will recieve the relative path.
+*   \param  path       [in]     The absolute path that should be made relative.
+*   \param  base       [in]     The path that the input path should be made relative to.
+*   \param  pathLength [in]     The length in T's of the path string, not including the null terminator.
+*   \param  baseLength [in]     The length in T's of the base string, not including the null terminator.
+*   \return                     The number ot T's that must be allocated to store the converted path.
 *
 *   \remarks
 *       If it is not possible to convert the path, the function will return 1 and the destination
@@ -34,19 +37,19 @@ namespace paths
 *       The function does not check if the resulting path is a valid or existing directory or file.
 */
 template <typename T>
-size_t relative(T *dest, const T *path, const T *base)
+size_t relative(T *dest, const T *path, const T *base, size_t pathLength = -1, size_t baseLength = -1)
 {
     assert(path != NULL);
     assert(base != NULL);
 
     // First we need to retrieve the sub directories of each path.
-    _SubDirPair<T> path_dirs[128];
+    reference_string<const T> path_dirs[128];
     size_t path_count;
-    _split_path(path_dirs, path_count, path);
+    _split_path(path_dirs, path_count, path, pathLength);
 
-    _SubDirPair<T> base_dirs[128];
+    reference_string<const T> base_dirs[128];
     size_t base_count;
-    _split_path(base_dirs, base_count, base);
+    _split_path(base_dirs, base_count, base, baseLength);
 
     // We need to check the last base directory. If it is an empty string,
     // we want to decrement our number of items.
@@ -68,7 +71,7 @@ size_t relative(T *dest, const T *path, const T *base)
     size_t end_common = 0;
     for (end_common = 0; end_common < smallest_count; ++end_common)
     {
-        if (!_compare_pair(path_dirs[end_common], base_dirs[end_common]))
+        if (!equal(path_dirs[end_common], base_dirs[end_common]))
         {
             break;
         }
@@ -130,8 +133,10 @@ void relative(slow_string<T> &dest, const T *path, const T *base)
 {
     T *&temp = dest.c_str();
 
-    dest = new T[relative((T *)NULL, path, base)];
+    temp = new T[relative((T *)NULL, path, base)];
     relative(temp, path, base);
+
+    // NOTE: Don't delete the temp pointer. It will be deleted by the strings destructor.
 }
 
 
