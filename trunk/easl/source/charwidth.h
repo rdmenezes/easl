@@ -12,9 +12,9 @@ namespace easl
 {
 
 /**
-*   \brief                  Retrieves the number of T's required to represent the specified character.
-*   \param  character [in]  The character whose width is to be retrieved.
-*   \return                 The number of T's required to represent the specified character.
+*   \brief                 Retrieves the number of T's required to represent the specified character.
+*   \param  character [in] The character whose width is to be retrieved.
+*   \return                The number of T's required to represent the specified character.
 *
 *   \remarks
 *       If the character is invalid, the function will return 0.

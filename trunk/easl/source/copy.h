@@ -9,7 +9,7 @@
 #include "setup.h"
 #include "nextchar.h"
 #include "writechar.h"
-#include "reference_string.h"
+#include "length.h"
 
 #if ((COMPILER & COMPILER_VC) && COMPILER >= COMPILER_VC80)
 #include <string.h>
@@ -19,12 +19,12 @@ namespace easl
 {
 
 /**
-*   \brief                  Copies a string over to another string.
-*   \param  dest     [out]  The destination buffer.
-*   \param  source   [in]   The source string.
-*   \param  destSize [in]   The size of the destination buffer in T's.
-*   \param  count    [in]   The maximum number of T's to copy from the source.
-*   \return                 The number of T's that are copied to the destination.
+*   \brief                     Copies a string over to another string.
+*   \param  dest         [out] The destination buffer.
+*   \param  source       [in]  The source string.
+*   \param  destSize     [in]  The size of the destination buffer in T's.
+*   \param  sourceLength [in]  The maximum number of T's to copy from the source.
+*   \return                    The number of T's that are copied to the destination.
 *
 *   \remarks
 *       If \c dest is NULL, the function will return the number of T's required to store
@@ -39,11 +39,11 @@ namespace easl
 *       be slightly quicker. If \c destSize is a value larger than the actual size of
 *       the destination buffer, the results are undefined. This parameter can not be NULL.
 *       \par
-*       The \count parameter specifies the number of T's to copy over from the source
-*       string. Note that this is _not_ the number of characters to copy over, but rather
-*       the number of T's. Use the parameter to only copy over a subset of the source
-*       string. If \c count is larger or equal to the number of T's in the source string,
-*       the entire source string is copied over. This parameter should include the NULL
+*       The \c sourceLength parameter specifies the length of the source string. Note that
+*       this is _not_ the number of characters to copy over, but rather the number of T's.
+*       This parameter can be used to copy only a subset of the source string. If
+*       \c sourceCount is larger or equal to the number of T's in the source string,
+*       the entire source string is copied over. This parameter should not include the NULL
 *       terminator.
 *       \par
 *       The resulting string is always null terminated.
@@ -52,7 +52,7 @@ namespace easl
 *       will fail if \c source is NULL.
 */
 template <typename T>
-size_t copy(T *dest, const T *source, size_t destSize = -1, size_t count = -1)
+size_t copy(T *dest, const T *source, size_t destSize = -1, size_t sourceLength = -1)
 {
     if (source == NULL || (dest == NULL && destSize == 0))
     {
@@ -60,17 +60,17 @@ size_t copy(T *dest, const T *source, size_t destSize = -1, size_t count = -1)
     }
 
     // We need to copy the original count so can return a good value.
-    size_t temp_count = count;
+    size_t temp_count = sourceLength;
 
     // Now we loop through and copy character by character.
-    while (destSize > 1 && count > 0 && *source != NULL)
+    while (destSize > 1 && sourceLength > 0 && *source != NULL)
     {
         *dest = *source;
 
         ++dest;
         ++source;
         --destSize;
-        --count;
+        --sourceLength;
     }
 
     // Ensure that we have a null terminator.
@@ -78,34 +78,36 @@ size_t copy(T *dest, const T *source, size_t destSize = -1, size_t count = -1)
 
     return temp_count + 1;
 }
+
+// Visual Studio 2005+ specific. Makes the final binary a little smaller in size.
 #if ((COMPILER & COMPILER_VC) && COMPILER >= COMPILER_VC80)
-template <> size_t copy(char *dest, const char *source, size_t destSize, size_t count)
+template <> size_t copy(char *dest, const char *source, size_t destSize, size_t sourceLength)
 {
     if (dest != NULL)
     {
-        ::strncpy_s(dest, destSize, source, count);
+        ::strncpy_s(dest, destSize, source, sourceLength);
     }
 
-    return count + 1;
+    return sourceLength + 1;
 }
-template <> size_t copy(wchar_t *dest, const wchar_t *source, size_t destSize, size_t count)
+template <> size_t copy(wchar_t *dest, const wchar_t *source, size_t destSize, size_t sourceLength)
 {
     if (dest != NULL)
     {
-        ::wcsncpy_s(dest, destSize, source, count);
+        ::wcsncpy_s(dest, destSize, source, sourceLength);
     }
 
-    return count + 1;
+    return sourceLength + 1;
 }
 #endif
 
 /**
-*   \brief                  Copies a string over to another string.
-*   \param  dest     [out]  The destination buffer.
-*   \param  source   [in]   The source string.
-*   \param  destSize [in]   The size of the destination buffer in T's.
-*   \param  count    [in]   The maximum number of U's to copy from the source.
-*   \return                 The number of T's that are copied to the destination.
+*   \brief                     Copies a string over to another string.
+*   \param  dest         [out] The destination buffer.
+*   \param  source       [in]  The source string.
+*   \param  destSize     [in]  The size of the destination buffer in T's.
+*   \param  sourceLength [in]  The maximum number of U's to copy from the source.
+*   \return                    The number of T's that are copied to the destination.
 *
 *   \remarks
 *       If \c dest is NULL, the function will return the number of T's required to store
@@ -120,11 +122,11 @@ template <> size_t copy(wchar_t *dest, const wchar_t *source, size_t destSize, s
 *       be slightly quicker. If \c destSize is a value larger than the actual size of
 *       the destination buffer, the results are undefined. This parameter can not be NULL.
 *       \par
-*       The \count parameter specifies the number of U's to copy over from the source
-*       string. Note that this is _not_ the number of characters to copy over, but rather
-*       the number of U's. Use the parameter to only copy over a subset of the source
-*       string. If \c count is larger or equal to the number of T's in the source string,
-*       the entire source string is copied over. This parameter should include the NULL
+*       The \c sourceLength parameter specifies the length of the source string. Note that
+*       this is _not_ the number of characters to copy over, but rather the number of T's.
+*       This parameter can be used to copy only a subset of the source string. If
+*       \c sourceCount is larger or equal to the number of T's in the source string,
+*       the entire source string is copied over. This parameter should not include the NULL
 *       terminator.
 *       \par
 *       The resulting string is always null terminated.
@@ -133,7 +135,7 @@ template <> size_t copy(wchar_t *dest, const wchar_t *source, size_t destSize, s
 *       will fail if \c source is NULL.
 */
 template <typename T, typename U>
-size_t copy(T *dest, const U *source, size_t destSize = -1, size_t count = -1)
+size_t copy(T *dest, const U *source, size_t destSize = -1, size_t sourceLength = -1)
 {
     if (source == NULL || destSize == 0)
     {
@@ -145,7 +147,7 @@ size_t copy(T *dest, const U *source, size_t destSize = -1, size_t count = -1)
 
     // Now we need to loop through each character in the source and copy over the character.
     uchar32_t ch;
-    while (destSize > 1 && count > 0 && (ch = nextchar(source)) != NULL)
+    while (destSize > 1 && sourceLength > 0 && (ch = nextchar(source)) != NULL)
     {
         // Variable that stores the width of the current character.
         size_t char_width;
@@ -170,8 +172,8 @@ size_t copy(T *dest, const U *source, size_t destSize = -1, size_t count = -1)
         // Now increment our copy size.
         copy_size += char_width;
 
-        --destSize;
-        --count;
+        destSize -= char_width;
+        sourceLength -= char_width;
     }
 
     // NULL terminate the destination.
@@ -187,7 +189,7 @@ size_t copy(T *dest, const U *source, size_t destSize = -1, size_t count = -1)
 template <typename T, typename U>
 size_t copy(T *dest, const reference_string<U> &source, size_t destSize = -1)
 {
-    return copy(dest, source.start, destSize, source.end - source.start);
+    return copy(dest, source.start, destSize, length(source));
 }
 
 }

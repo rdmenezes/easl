@@ -14,17 +14,19 @@ namespace easl
 {
 
 /**
-*   \brief                      Determines if two strings are equal.
-*   \param  str1          [in]  The first string to compare.
-*   \param  str2          [in]  The second string to compare.
-*   \param  caseSensitive [in]  Specifies whether or not the comparison is case sensitive.
-*   \return                     True if the two strings are equal; false otherwise.
+*   \brief                     Determines if two strings are equal.
+*   \param  str1          [in] The first string to compare.
+*   \param  str2          [in] The second string to compare.
+*   \param  caseSensitive [in] Specifies whether or not the comparison is case sensitive.
+*   \param  str1Length    [in] The length in T's of the first string, not including the null terminator.
+*   \param  str2Length    [in] The length in U's of the second string, not including the null terminator.
+*   \return                    True if the two strings are equal; false otherwise.
 *
 *   \remarks
 *       Both strings must be NULL terminated. By default, the comparison is case sensitive.
 */
 template <typename T, typename U>
-bool equal(const T *str1, const U *str2, bool caseSensitive = true)
+bool equal(const T *str1, const U *str2, bool caseSensitive = true, size_t str1Length = -1, size_t str2Length = -1)
 {
     if (str1 == NULL || str2 == NULL)
     {
@@ -37,7 +39,7 @@ bool equal(const T *str1, const U *str2, bool caseSensitive = true)
 
     if (caseSensitive)
     {
-        while (ch1 != NULL && ch2 != NULL)
+        while ((str1Length > 0 && ch1 != NULL) && (str2Length > 0 && ch2 != NULL))
         {
             if (ch1 != ch2)
             {
@@ -50,7 +52,7 @@ bool equal(const T *str1, const U *str2, bool caseSensitive = true)
     }
     else
     {
-        while (ch1 != NULL && ch2 != NULL)
+        while ((str1Length > 0 && ch1 != NULL) && (str2Length > 0 && ch2 != NULL))
         {
             if (tolower(ch1) != tolower(ch2))
 		    {
@@ -72,12 +74,13 @@ bool equal(const T *str1, const U *str2, bool caseSensitive = true)
 }
 
 
-// Optimized case.
+// Optimized case. The function can be simplified and should be more efficient when both
+// strings are the same type.
 template <typename T>
 bool equal(const reference_string<T> &str1, const reference_string<T> &str2, bool caseSensitive = true)
 {
     // If the lengths are different, it's impossible for the strings to be the same. Calculating
-    // the lengths for reference strings is a fast operation, so this check is worth-while. It
+    // the lengths for reference strings is a fast operation, so this check is worth while. It
     // also simplifies the next part.
     size_t len = length(str1);
     if (len != length(str2))
@@ -91,16 +94,19 @@ bool equal(const reference_string<T> &str1, const reference_string<T> &str2, boo
         return true;
     }
 
-    while (--len >= 0)
+    if (caseSensitive)
     {
-        if (caseSensitive)
+        while (--len >= 0)
         {
             if (str1.start[len] != str2.start[len])
             {
                 return false;
             }
         }
-        else
+    }
+    else
+    {
+        while (--len >= 0)
         {
             if (tolower(str1.start[len]) != tolower(str2.start[len]))
             {
@@ -116,9 +122,7 @@ bool equal(const reference_string<T> &str1, const reference_string<T> &str2, boo
 template <typename T, typename U>
 bool equal(const reference_string<T> &str1, const reference_string<U> &str2, bool caseSensitive = true)
 {
-    // TODO: We'll have to do it manually without the first function.
-
-    return true;
+    return equal(str1.start, str2.start, caseSensitive, length(str1), length(str2));
 }
 
 

@@ -7,43 +7,75 @@
 #define __EASL_GETCHAR_H_
 
 #include "nextchar.h"
+#include "reference_string.h"
 
 namespace easl
 {
 
 /**
-*   \brief              Retrieves a character from the specified string.
-*   \param  str   [in]  The string to retrieve the character from.
-*   \param  index [in]  The zero based index of the character to retrieve.
-*   \return             The character at the location specified by the index.
+*   \brief                 Retrieves a character from the specified string.
+*   \param  str       [in] The string to retrieve the character from.
+*   \param  index     [in] The zero based index of the character to retrieve.
+*   \param  strLength [in] The length in T's of the string, not including the null terminator.
+*   \return                The character at the location specified by the index.
 *
 *   \remarks
 *       If the index is not valid, results are undefined.
 */
 #ifdef EASL_ONLY_ASCII
 template <typename T>
-uchar32_t getchar(const T *str, size_t index)
+inline uchar32_t getchar(const T *str, size_t index, size_t strLength = -1)
 {
+    if (strLength != -1)
+    {
+        if (index >= strLength)
+        {
+            return NULL;
+        }
+    }
+
     return (uchar32_t)str[index];
 }
-template <> uchar32_t getchar(const char *str, size_t index)
+template <> inline uchar32_t getchar(const char *str, size_t index, size_t strLength = -1)
 {
+    if (strLength != -1)
+    {
+        if (index >= strLength)
+        {
+            return NULL;
+        }
+    }
+
     return (uchar32_t)(unsigned char)str[index];
 }
-template <> uchar32_t getchar(const uchar16_t *str, size_t index)
+template <> inline uchar32_t getchar(const uchar16_t *str, size_t index, size_t strLength = -1)
 {
+    if (strLength != -1)
+    {
+        if (index >= strLength)
+        {
+            return NULL;
+        }
+    }
+
     return (uchar32_t)(uchar16_t)str[index];
 }
 #else
 template <typename T>
-uchar32_t getchar(const T *str, size_t index)
+uchar32_t getchar(const T *str, size_t index, size_t strLength = -1)
 {
     const T *temp = str;
 
+    // Stores the start of the next character.
+    const T *start_of_ch = str;
+
     uchar32_t ch;
-    while ((ch = easl::nextchar(temp)) != NULL)
+    while (strLength > 0 && (ch = easl::nextchar(temp)) != NULL)
     {
         size_t cur_pos = temp - str;
+
+        strLength -= temp - start_of_ch;
+        start_of_ch = temp;
 
         if (cur_pos == index + 1)
         {
@@ -57,22 +89,40 @@ uchar32_t getchar(const T *str, size_t index)
 
     return 0;
 }
-template <> uchar32_t getchar(const char32_t *str, size_t index)
+
+// Optimized case.
+inline uchar32_t getchar(const char32_t *str, size_t index, size_t strLength = -1)
 {
+    if (strLength != -1)
+    {
+        if (index >= strLength)
+        {
+            return NULL;
+        }
+    }
+
     return static_cast<uchar32_t>(str[index]);
 }
 #endif
 
-template <> uchar32_t getchar(const wchar_t *str, size_t index)
+uchar32_t getchar(const wchar_t *str, size_t index, size_t strLength = -1)
 {
     switch (sizeof(wchar_t))
     {
-    case 2: return getchar((const char16_t *)str, index);
-    case 4: return getchar((const char32_t *)str, index);
+    case 2: return getchar((const char16_t *)str, index, strLength);
+    case 4: return getchar((const char32_t *)str, index, strLength);
     }
 
-    return getchar((const char *)str, index);
+    return getchar((const char *)str, index, strLength);
 }
+
+
+template <typename T>
+uchar32_t getchar(const reference_string<T> &str, size_t index)
+{
+    return getchar(str.start, index, str.end - str.start);
+}
+
 
 }
 

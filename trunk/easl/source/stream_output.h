@@ -11,7 +11,6 @@
 #include "reference_string.h"
 #include "nextchar.h"
 
-
 template <typename T>
 std::basic_ostream<T> & operator << (std::basic_ostream<T> &stream, const easl::slow_string<T> &str)
 {
@@ -42,13 +41,12 @@ std::basic_ostream<T> & operator << (std::basic_ostream<T> &stream, const easl::
 template <typename T, typename U>
 std::basic_ostream<T> & operator << (std::basic_ostream<T> &stream, const easl::reference_string<U> &str)
 {
-    U *temp = str.start;
+    easl::reference_string<U> temp = str;
 
-    easl::uchar32_t ch = easl::nextchar(temp);
-    while (temp <= str.end)
+    easl::uchar32_t ch;
+    while ((ch = easl::nextchar(temp)) != NULL)
     {
         stream.put((T)ch);
-        ch = easl::nextchar(temp);
     }
 
     return stream;
