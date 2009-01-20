@@ -23,6 +23,9 @@ namespace tokens
 *   \return                   True if a token is retrieved; false otherwise.
 *
 *   \remarks
+*       The source string must be null terminated. When the null terminator is reached, the
+*       function will return false and the pointer will not be modified.
+*       \par
 *       When the token is retrieved, the input pointer is moved to the position just the
 *       end of the returned token and _not_ to the start of the next token. Therefore, when
 *       when the function returns, \c str == \c token.end.
@@ -56,7 +59,13 @@ namespace tokens
 *       are considered a single token. The quotes are included in the token so that applications
 *       can determine if a given token is indeed a quote or not. When a quote extends over more
 *       than one line, the \c line parameter will recieve the line at which the quote ends.
-*       Different types of quotes should be seperated by spaces.
+*       Different types of quotes should be seperated by spaces. When a quote string defined
+*       in the \c quotes parameter is inside a quote itself, the tokeniser must know this. To
+*       do this, the quote string must be preceeded with an escape string.
+*       \par
+*       The escape character is used in quotes. It is used for determining when a quote string
+*       should be inside a quote, or should define the start or end of a quote. When a quote
+*       string needs to be inside another quote, it must be preceeded by the escape character.
 *       \par
 *       When the function returns false, the input string is not modified.
 */
