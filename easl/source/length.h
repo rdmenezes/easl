@@ -27,7 +27,7 @@ namespace easl
 *       units, use charcount() instead.
 */
 template <typename T>
-inline size_t length(const T *str)
+size_t length(const T *str)
 {
     assert(str != NULL);
 

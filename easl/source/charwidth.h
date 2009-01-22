@@ -38,7 +38,7 @@ size_t charwidth(uchar32_t character)
     return 1;
 }
 
-template <> size_t charwidth<char>(uchar32_t character)
+template <> inline size_t charwidth<char>(uchar32_t character)
 {
     if (character < 0x80)
     {
@@ -59,7 +59,7 @@ template <> size_t charwidth<char>(uchar32_t character)
 
     return 0;
 }
-template <> size_t charwidth<char16_t>(uchar32_t character)
+template <> inline size_t charwidth<char16_t>(uchar32_t character)
 {
     if (character <= UNI_MAX_BMP)
     {
@@ -81,7 +81,7 @@ template <> size_t charwidth<char16_t>(uchar32_t character)
     
     return 2;
 }
-template <> size_t charwidth<wchar_t>(uchar32_t character)
+template <> inline size_t charwidth<wchar_t>(uchar32_t character)
 {
     switch (sizeof(wchar_t))
     {

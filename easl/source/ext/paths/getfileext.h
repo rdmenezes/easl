@@ -123,28 +123,28 @@ void getfileext(slow_string<T> &dest, const T *src, size_t srcLength = -1)
 }
 
 
-string8 getfileext(const char *src, size_t srcLength = -1)
+inline string8 getfileext(const char *src, size_t srcLength = -1)
 {
     string8 ret;
     getfileext(ret, src, srcLength);
 
     return ret;
 }
-string16 getfileext(const char16_t *src, size_t srcLength = -1)
+inline string16 getfileext(const char16_t *src, size_t srcLength = -1)
 {
     string16 ret;
     getfileext(ret, src, srcLength);
 
     return ret;
 }
-string32 getfileext(const char32_t *src, size_t srcLength = -1)
+inline string32 getfileext(const char32_t *src, size_t srcLength = -1)
 {
     string32 ret;
     getfileext(ret, src, srcLength);
 
     return ret;
 }
-wstring getfileext(const wchar_t *src, size_t srcLength = -1)
+inline wstring getfileext(const wchar_t *src, size_t srcLength = -1)
 {
     wstring ret;
     getfileext(ret, src, srcLength);

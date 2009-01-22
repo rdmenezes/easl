@@ -318,7 +318,6 @@ bool nexttoken(T *&str, reference_string<T> &token, size_t &line, const NEXT_TOK
             }
         }
 
-        //str = temp;
         prev_ch = ch;
     }
 

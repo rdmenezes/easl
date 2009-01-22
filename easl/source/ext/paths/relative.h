@@ -140,28 +140,28 @@ void relative(slow_string<T> &dest, const T *path, const T *base)
 }
 
 
-string8 relative(const char *path, const char *base)
+inline string8 relative(const char *path, const char *base)
 {
     string8 dest;
     relative(dest, path, base);
 
     return dest;
 }
-string16 relative(const char16_t *path, const char16_t *base)
+inline string16 relative(const char16_t *path, const char16_t *base)
 {
     string16 dest;
     relative(dest, path, base);
 
     return dest;
 }
-string32 relative(const char32_t *path, const char32_t *base)
+inline string32 relative(const char32_t *path, const char32_t *base)
 {
     string32 dest;
     relative(dest, path, base);
 
     return dest;
 }
-wstring relative(const wchar_t *path, const wchar_t *base)
+inline wstring relative(const wchar_t *path, const wchar_t *base)
 {
     wstring dest;
     relative(dest, path, base);

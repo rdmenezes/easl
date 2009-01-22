@@ -37,7 +37,7 @@ namespace easl
 template <typename T>
 inline int vformat(T *dest, size_t destSize, const T *format, va_list args)
 {
-    size_t format_size = easl::convertsize<wchar_t>(format);
+    size_t format_size = easl::copysize<wchar_t>(format);
     wchar_t *tmp_format = new wchar_t[format_size];
     easl::copy(tmp_format, format, format_size);
 

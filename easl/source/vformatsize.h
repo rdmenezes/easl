@@ -17,7 +17,7 @@ namespace easl
 *   \return             The number of T's required to store the formatted string based on the format string and the input parameters.
 */
 template <typename T>
-size_t vformatsize(const T *format, ...)
+inline size_t vformatsize(const T *format, ...)
 {
     va_list args;
     va_start(args, format);

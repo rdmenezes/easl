@@ -141,28 +141,28 @@ void absolute(slow_string<T> &dest, const T *path, const T *base)
 }
 
 
-string8 absolute(const char *path, const char *base)
+inline string8 absolute(const char *path, const char *base)
 {
     string8 dest;
     absolute(dest, path, base);
 
     return dest;
 }
-string16 absolute(const char16_t *path, const char16_t *base)
+inline string16 absolute(const char16_t *path, const char16_t *base)
 {
     string16 dest;
     absolute(dest, path, base);
 
     return dest;
 }
-string32 absolute(const char32_t *path, const char32_t *base)
+inline string32 absolute(const char32_t *path, const char32_t *base)
 {
     string32 dest;
     absolute(dest, path, base);
 
     return dest;
 }
-wstring absolute(const wchar_t *path, const wchar_t *base)
+inline wstring absolute(const wchar_t *path, const wchar_t *base)
 {
     wstring dest;
     absolute(dest, path, base);
