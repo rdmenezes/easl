@@ -25,7 +25,7 @@ namespace easl
 *       If this function returns NULL, the null terminator was retrieved. When this occurs, the string
 *       is _not_ moved forward to the next character (there is no characters after the null terminator).
 */
-uchar32_t nextchar_utf8(const char *&str)
+inline uchar32_t nextchar_utf8(const char *&str)
 {
 #ifdef EASL_ONLY_ASCII
     char32_t ch = *str;
@@ -91,7 +91,7 @@ uchar32_t nextchar_utf8(const char *&str)
 #endif
 }
 
-uchar32_t nextchar_utf16(const char16_t *&str)
+inline uchar32_t nextchar_utf16(const char16_t *&str)
 {
 #ifdef EASL_ONLY_ASCII
     char32_t ch = *str;
@@ -150,7 +150,7 @@ uchar32_t nextchar_utf16(const char16_t *&str)
 #endif
 }
 
-uchar32_t nextchar_utf32(const char32_t *&str)
+inline uchar32_t nextchar_utf32(const char32_t *&str)
 {
     char32_t ch = *str;
 
@@ -198,7 +198,7 @@ inline uchar32_t nextchar(const wchar_t *&str)
 }
 
 template <typename T>
-inline uchar32_t nextchar(T *&str)
+uchar32_t nextchar(T *&str)
 {
     return nextchar((const T *&)str);
 }

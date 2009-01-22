@@ -112,45 +112,6 @@ size_t _copy_pair_to_str(T *dest, const reference_string<const T> &pair)
     return count;
 }
 
-
-/**
-*   \brief              Compares two sub directory pairs for equality.
-*   \param  dir1[in]    The first operand.
-*   \param  dir2[in]    The second operand.
-*   \return             True if the two directories are equal.
-*
-*   \remarks
-*       The comparison is not case sensitive.
-*/
-/*template <typename T>
-bool _compare_pair(const reference_string<T> &str1, const reference_string<T> &str2)
-{
-    const T *temp1 = str1.start;
-    const T *temp2 = str2.start;
-
-    uchar32_t ch1 = easl::nextchar(temp1);
-    uchar32_t ch2 = easl::nextchar(temp2);
-
-    while (temp1 != str1.end && temp2 != str2.end)
-    {
-        if (tolower(ch1) != tolower(ch2))
-        {
-            return false;
-        }
-
-        ch1 = easl::nextchar(temp1);
-        ch2 = easl::nextchar(temp2);
-    }
-
-    // If both strings aren't at their ends then they are not equal.
-    if (temp1 != str1.end && temp2 != str2.end)
-    {
-        return false;
-    }
-
-    return true;
-}*/
-
 /**
 *   \brief              Writes the "../" directory to the destination.
 *   \param  dest [out]  The string that will recieve the "../" string.

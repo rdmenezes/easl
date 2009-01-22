@@ -12,51 +12,6 @@
 namespace easl
 {
 
-#define EASL_TOKENS_SET_DEFAULT_SYMBOLS_ENG(symbols) \
-    T new_symbols[64] = \
-        {'.', ' ', \
-         ',', ' ', \
-         '(', ' ', \
-         ')', ' ', \
-         '{', ' ', \
-         '}', ' ', \
-         '<', ' ', \
-         '>', ' ', \
-         '[', ' ', \
-         ']', ' ', \
-         ';', ' ', \
-         ':', ' ', \
-         '/', ' ', \
-         '\\', ' ', \
-         '?', ' ', \
-         '+', ' ', \
-         '-', ' ', \
-         '*', ' ', \
-         '/', ' ', \
-         '`', ' ', \
-         '~', ' ', \
-         '!', ' ', \
-         '@', ' ', \
-         '#', ' ', \
-         '$', ' ', \
-         '%', ' ', \
-         '^', ' ', \
-         '&', ' ', \
-         '=', ' ', \
-         '|', ' ', \
-         '\0'}; \
-    symbols = new_symbols;
-
-#define EASL_TOKENS_SET_DEFAULT_QUOTES_ENG(quotes) \
-    T new_quotes[8] = \
-        {'\"', ' ', \
-         '\'', ' ', \
-         '\0'}; \
-    quotes = new_quotes;
-
-
-
-
 /**
 *   \brief                   Checks if a string starts with a token in the specified token group.
 *   \param  str    [in, out] The string to check.

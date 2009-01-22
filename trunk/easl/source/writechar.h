@@ -26,7 +26,7 @@ namespace easl
 *       position. A "character unit" is a char for a char* string, a char16_t for a char16_t*
 *       string, etc.
 */
-size_t writechar(char *&dest, uchar32_t character)
+inline size_t writechar(char *&dest, uchar32_t character)
 {
     // Grab the width of the character.
     size_t char_width = charwidth<char>(character);
@@ -61,7 +61,7 @@ size_t writechar(char *&dest, uchar32_t character)
 }
 
 // \copydoc writechar(char *, uchar32_t)
-size_t writechar(char16_t *&dest, uchar32_t character)
+inline size_t writechar(char16_t *&dest, uchar32_t character)
 {
     // Our character width will always be equal to at least 1.
     size_t char_width = 1;
@@ -116,7 +116,7 @@ size_t writechar(char16_t *&dest, uchar32_t character)
 }
 
 // \copydoc writechar(char *, uchar32_t)
-size_t writechar(char32_t *&dest, uchar32_t character)
+inline size_t writechar(char32_t *&dest, uchar32_t character)
 {
     if (dest != NULL)
     {
@@ -127,7 +127,7 @@ size_t writechar(char32_t *&dest, uchar32_t character)
 }
 
 // \copydoc writechar(char *, uchar32_t)
-size_t writechar(wchar_t *&dest, uchar32_t character)
+inline size_t writechar(wchar_t *&dest, uchar32_t character)
 {
     switch (sizeof(wchar_t))
     {
@@ -140,7 +140,7 @@ size_t writechar(wchar_t *&dest, uchar32_t character)
 
 
 template <typename T>
-size_t writechar(T *dest, uchar32_t character)
+inline size_t writechar(T *dest, uchar32_t character)
 {
     return writechar((T *&)dest, character);
 }

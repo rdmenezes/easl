@@ -48,16 +48,20 @@ U parse(const T *str, size_t strLength = -1)
 }
 
 #ifdef EASL_ONLY_ASCII
-template <> __int64 parse(const char *str, size_t strLength)
+template <> inline __int64 parse(const char *str, size_t strLength)
 {
+    (void)strLength;
+
 #if ((COMPILER & COMPILER_VC) && COMPILER >= COMPILER_VC80)
     return ::_strtoi64(str, NULL, 10);
 #else
     return ::strtoll(str, NULL, 10);
 #endif
 }
-template <> unsigned __int64 parse(const char *str, size_t strLength)
+template <> inline unsigned __int64 parse(const char *str, size_t strLength)
 {
+    (void)strLength;
+
 #if ((COMPILER & COMPILER_VC) && COMPILER >= COMPILER_VC80)
     return ::_strtoui64(str, NULL, 10);
 #else
@@ -65,54 +69,58 @@ template <> unsigned __int64 parse(const char *str, size_t strLength)
 #endif
 }
 
-template <> int parse(const char *str, size_t strLength)
+template <> inline int parse(const char *str, size_t strLength)
 {
-    return static_cast<int>(parse<__int64>(str));
+    return static_cast<int>(parse<__int64>(str), strLength);
 }
-template <> unsigned int parse(const char *str, size_t strLength)
+template <> inline unsigned int parse(const char *str, size_t strLength)
 {
-    return static_cast<unsigned int>(parse<unsigned __int64>(str));
-}
-
-template <> long parse(const char *str, size_t strLength)
-{
-    return static_cast<long>(parse<__int64>(str));
-}
-template <> unsigned long parse(const char *str, size_t strLength)
-{
-    return static_cast<unsigned long>(parse<unsigned __int64>(str));
+    return static_cast<unsigned int>(parse<unsigned __int64>(str), strLength);
 }
 
-template <> short parse(const char *str, size_t strLength)
+template <> inline long parse(const char *str, size_t strLength)
 {
-    return static_cast<short>(parse<__int64>(str));
+    return static_cast<long>(parse<__int64>(str), strLength);
 }
-template <> unsigned short parse(const char *str, size_t strLength)
+template <> inline unsigned long parse(const char *str, size_t strLength)
 {
-    return static_cast<unsigned short>(parse<unsigned __int64>(str));
-}
-
-template <> char parse(const char *str, size_t strLength)
-{
-    return static_cast<signed char>(parse<__int64>(str));
-}
-template <> unsigned char parse(const char *str, size_t strLength)
-{
-    return static_cast<unsigned char>(parse<unsigned __int64>(str));
+    return static_cast<unsigned long>(parse<unsigned __int64>(str), strLength);
 }
 
-template <> float parse(const char *str, size_t strLength)
+template <> inline short parse(const char *str, size_t strLength)
 {
+    return static_cast<short>(parse<__int64>(str), strLength);
+}
+template <> inline unsigned short parse(const char *str, size_t strLength)
+{
+    return static_cast<unsigned short>(parse<unsigned __int64>(str), strLength);
+}
+
+template <> inline char parse(const char *str, size_t strLength)
+{
+    return static_cast<signed char>(parse<__int64>(str), strLength);
+}
+template <> inline unsigned char parse(const char *str, size_t strLength)
+{
+    return static_cast<unsigned char>(parse<unsigned __int64>(str), strLength);
+}
+
+template <> inline float parse(const char *str, size_t strLength)
+{
+    (void)strLength;
+
     return static_cast<float>(::atof(str));
 }
 template <> double parse(const char *str, size_t strLength)
 {
+    (void)strLength;
+
     return ::atof(str);
 }
 
-template <> bool parse(const char *str, size_t strLength)
+template <> inline bool parse(const char *str, size_t strLength)
 {
-    if (str == NULL || easl::equal(str, "false", false) || easl::equal(str, "0", false))
+    if (str == NULL || equal(str, "false", false, strLength) || equal(str, "0", false, strLength))
     {
         return false;
     }
@@ -121,16 +129,20 @@ template <> bool parse(const char *str, size_t strLength)
 }
 #endif
 
-template <> __int64 parse(const wchar_t *str, size_t strLength)
+template <> inline __int64 parse(const wchar_t *str, size_t strLength)
 {
+    (void)strLength;
+
 #if ((COMPILER & COMPILER_VC) && COMPILER >= COMPILER_VC80)
     return ::_wcstoi64(str, NULL, 10);
 #else
     return ::wcstoll(str, NULL, 10);
 #endif
 }
-template <> unsigned __int64 parse(const wchar_t *str, size_t strLength)
+template <> inline unsigned __int64 parse(const wchar_t *str, size_t strLength)
 {
+    (void)strLength;
+
 #if ((COMPILER & COMPILER_VC) && COMPILER >= COMPILER_VC80)
     return ::_wcstoui64(str, NULL, 10);
 #else
@@ -138,52 +150,56 @@ template <> unsigned __int64 parse(const wchar_t *str, size_t strLength)
 #endif
 }
 
-template <> int parse(const wchar_t *str, size_t strLength)
+template <> inline int parse(const wchar_t *str, size_t strLength)
 {
-    return static_cast<int>(parse<__int64>(str));
+    return static_cast<int>(parse<__int64>(str), strLength);
 }
-template <> unsigned int parse(const wchar_t *str, size_t strLength)
+template <> inline unsigned int parse(const wchar_t *str, size_t strLength)
 {
-    return static_cast<unsigned int>(parse<unsigned __int64>(str));
-}
-
-template <> long parse(const wchar_t *str, size_t strLength)
-{
-    return static_cast<long>(parse<__int64>(str));
-}
-template <> unsigned long parse(const wchar_t *str, size_t strLength)
-{
-    return static_cast<unsigned long>(parse<unsigned __int64>(str));
+    return static_cast<unsigned int>(parse<unsigned __int64>(str), strLength);
 }
 
-template <> short parse(const wchar_t *str, size_t strLength)
+template <> inline long parse(const wchar_t *str, size_t strLength)
 {
-    return static_cast<short>(parse<__int64>(str));
+    return static_cast<long>(parse<__int64>(str), strLength);
 }
-template <> unsigned short parse(const wchar_t *str, size_t strLength)
+template <> inline unsigned long parse(const wchar_t *str, size_t strLength)
 {
-    return static_cast<unsigned short>(parse<unsigned __int64>(str));
-}
-
-template <> signed char parse(const wchar_t *str, size_t strLength)
-{
-    return static_cast<signed char>(parse<__int64>(str));
-}
-template <> unsigned char parse(const wchar_t *str, size_t strLength)
-{
-    return static_cast<unsigned char>(parse<unsigned __int64>(str));
+    return static_cast<unsigned long>(parse<unsigned __int64>(str), strLength);
 }
 
-template <> float parse(const wchar_t *str, size_t strLength)
+template <> inline short parse(const wchar_t *str, size_t strLength)
 {
+    return static_cast<short>(parse<__int64>(str), strLength);
+}
+template <> inline unsigned short parse(const wchar_t *str, size_t strLength)
+{
+    return static_cast<unsigned short>(parse<unsigned __int64>(str), strLength);
+}
+
+template <> inline signed char parse(const wchar_t *str, size_t strLength)
+{
+    return static_cast<signed char>(parse<__int64>(str), strLength);
+}
+template <> inline unsigned char parse(const wchar_t *str, size_t strLength)
+{
+    return static_cast<unsigned char>(parse<unsigned __int64>(str), strLength);
+}
+
+template <> inline float parse(const wchar_t *str, size_t strLength)
+{
+    (void)strLength;
+
     return static_cast<float>(::_wtof(str));
 }
-template <> double parse(const wchar_t *str, size_t strLength)
+template <> inline double parse(const wchar_t *str, size_t strLength)
 {
+    (void)strLength;
+
     return ::_wtof(str);
 }
 
-template <> bool parse(const wchar_t *str, size_t strLength)
+template <> inline bool parse(const wchar_t *str, size_t strLength)
 {
     // How do we handle different languages for this? We might have to look at the locale and do
     // specific versions based on that locale... seems like it would be quite slow, though.
@@ -191,7 +207,7 @@ template <> bool parse(const wchar_t *str, size_t strLength)
 
     if (findfirst(locale, L"English") || findfirst(locale, L"english"))
     {
-        if (str == NULL || equal(str, L"false", false) || equal(str, L"0", false))
+        if (str == NULL || equal(str, L"false", false, strLength) || equal(str, L"0", false, strLength))
         {
             return false;
         }

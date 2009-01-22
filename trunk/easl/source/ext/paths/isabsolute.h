@@ -42,13 +42,13 @@ bool isabsolute(const T *path, size_t pathLength = -1)
     uchar32_t ch1 = nextchar(temp);
 
 #if (PLATFORM == PLATFORM_WINDOWS)
-    if (temp - path <= pathLength)
+    if (static_cast<size_t>(temp - path) <= pathLength)
     {
         // If the first character is a letter, we need to check if the second character
         // is a colon. If it is, the path is absolute.
         if ((ch1 >= 'A' && ch1 <= 'Z') || (ch1 >= 'a' && ch1 <= 'z'))
         {
-            uchar32 ch2 = nextchar(temp);
+            uchar32_t ch2 = nextchar(temp);
             if (ch2 == ':')
             {
                 return true;
