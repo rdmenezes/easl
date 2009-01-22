@@ -58,7 +58,7 @@ inline size_t length(const wchar_t *str)
 template <typename T>
 inline size_t length(const reference_string<T> &str)
 {
-    assert(str.end > str.start);
+    assert(str.end >= str.start);
 
     return str.end - str.start;
 }

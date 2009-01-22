@@ -43,17 +43,23 @@ size_t getfileext(T *dest, const T *src, size_t srcLength = -1)
 
     // Need to account for localisation here.
 
+    // Stores the start of the next character.
+    T *start_of_ch = src;
+
     // We need to find the last occurance of a full stop characters. We'll do this
     // by storing each occurance of a full stop that we find. The one that stored when
     // we reach the end of the file will be the last one.
     const T *last_pos = NULL;
     uchar32_t ch;
-    while ((ch = nextchar(src)) != NULL)
+    while (srcLength > 0 && (ch = nextchar(src)) != NULL)
     {
         if (ch == '.')
         {
             last_pos = src;
         }
+
+        srcLength -= src - start_of_ch;
+        start_of_ch = src;
     }
 
     // If we didn't find a decimal point, there is no extension.
@@ -86,17 +92,23 @@ void getfileext(slow_string<T> &dest, const T *src, size_t srcLength = -1)
 
     // Need to account for localisation here.
 
+    // Stores the start of the next character.
+    const T *start_of_ch = src;
+
     // We need to find the last occurance of a full stop characters. We'll do this
     // by storing each occurance of a full stop that we find. The one that stored when
     // we reach the end of the file will be the last one.
     const T *last_pos = NULL;
     uchar32_t ch;
-    while ((ch = easl::nextchar(src)) != NULL)
+    while (srcLength > 0 && (ch = easl::nextchar(src)) != NULL)
     {
         if (ch == '.')
         {
             last_pos = src;
         }
+
+        srcLength -= src - start_of_ch;
+        start_of_ch = src;
     }
 
     // If we didn't find a decimal point, there is no extension.
@@ -114,28 +126,28 @@ void getfileext(slow_string<T> &dest, const T *src, size_t srcLength = -1)
 string8 getfileext(const char *src, size_t srcLength = -1)
 {
     string8 ret;
-    getfileext(ret, src);
+    getfileext(ret, src, srcLength);
 
     return ret;
 }
 string16 getfileext(const char16_t *src, size_t srcLength = -1)
 {
     string16 ret;
-    getfileext(ret, src);
+    getfileext(ret, src, srcLength);
 
     return ret;
 }
 string32 getfileext(const char32_t *src, size_t srcLength = -1)
 {
     string32 ret;
-    getfileext(ret, src);
+    getfileext(ret, src, srcLength);
 
     return ret;
 }
 wstring getfileext(const wchar_t *src, size_t srcLength = -1)
 {
     wstring ret;
-    getfileext(ret, src);
+    getfileext(ret, src, srcLength);
 
     return ret;
 }

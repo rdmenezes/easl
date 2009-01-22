@@ -7,8 +7,7 @@
 #define __EASL_EQUAL_H_
 
 #include "types.h"
-#include "nextchar.h"
-#include "length.h"
+#include "charcount.h"
 
 namespace easl
 {
@@ -33,6 +32,13 @@ bool equal(const T *str1, const U *str2, bool caseSensitive = true, size_t str1L
         return false;
     }
 
+    // If the number of characters in the strings are different, they are not equal.
+    // NOTE: This should probably be optimised out.
+    if (charcount(str1, str1Length) != charcount(str2, str2Length))
+    {
+        return false;
+    }
+
     // We need to grab the first characters first.
     uchar32_t ch1 = nextchar(str1);
     uchar32_t ch2 = nextchar(str2);
@@ -48,6 +54,9 @@ bool equal(const T *str1, const U *str2, bool caseSensitive = true, size_t str1L
 
             ch1 = nextchar(str1);
             ch2 = nextchar(str2);
+
+            str1Length -= charwidth<T>(ch1);
+            str2Length -= charwidth<U>(ch2);
         }
     }
     else
@@ -61,13 +70,10 @@ bool equal(const T *str1, const U *str2, bool caseSensitive = true, size_t str1L
 
             ch1 = nextchar(str1);
             ch2 = nextchar(str2);
-        }
-    }
 
-    // If both strings aren't at their null terminators, they must be different.
-    if (ch1 != 0 || ch2 != 0)
-    {
-	    return false;
+            str1Length -= charwidth<T>(ch1);
+            str2Length -= charwidth<U>(ch2);
+        }
     }
 
 	return true;
