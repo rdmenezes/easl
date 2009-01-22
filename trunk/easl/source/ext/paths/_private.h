@@ -22,7 +22,7 @@ namespace paths
 {
 
 template <typename T>
-void _split_path(reference_string<const T> (&dest)[128], size_t &count, const T *path, size_t pathLength)
+inline void _split_path(reference_string<const T> (&dest)[128], size_t &count, const T *path, size_t pathLength)
 {
     // Our current sub directory. There is always at least one sub directory.
     reference_string<const T> current_pair;
@@ -69,7 +69,7 @@ void _split_path(reference_string<const T> (&dest)[128], size_t &count, const T 
 *   \return             True if the string is equal to ".."
 */
 template <typename T>
-bool _pair_is_parent_dir(const reference_string<const T> &dir)
+inline bool _pair_is_parent_dir(const reference_string<const T> &dir)
 {
     const T *temp = dir.start;
     uchar32_t ch1 = easl::nextchar(temp);
@@ -89,7 +89,7 @@ bool _pair_is_parent_dir(const reference_string<const T> &dir)
 *   \return             The number of T's that are copied over.
 */
 template <typename T>
-size_t _copy_pair_to_str(T *dest, const reference_string<const T> &pair)
+inline size_t _copy_pair_to_str(T *dest, const reference_string<const T> &pair)
 {
     // Stores the number of T's that we're copying over.
     size_t count = 0;
@@ -127,7 +127,7 @@ size_t _copy_pair_to_str(T *dest, const reference_string<const T> &pair)
 *       written string.
 */
 template <typename T>
-size_t _write_parent_dir(T *&dest)
+inline size_t _write_parent_dir(T *&dest)
 {
     size_t count = 0;
 

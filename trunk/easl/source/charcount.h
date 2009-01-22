@@ -26,7 +26,7 @@ namespace easl
 *       the number of characters in the string, not including the null terminator.
 */
 template <typename T>
-size_t charcount(const T *str, size_t strLength)
+inline size_t charcount(const T *str, size_t strLength)
 {
     const T *temp = str;
     size_t count = 0;
@@ -40,7 +40,7 @@ size_t charcount(const T *str, size_t strLength)
 
 // Optimized case. Uses easl::length() if we're only using ASCII.
 template <typename T>
-size_t charcount(const T *str)
+inline size_t charcount(const T *str)
 {
 #ifdef EASL_ONLY_ASCII
     return easl::length(str);
@@ -50,7 +50,7 @@ size_t charcount(const T *str)
 }
 
 template <typename T>
-size_t charcount(const reference_string<T> &str)
+inline size_t charcount(const reference_string<T> &str)
 {
     return charcount(str.start, str.end - str.start);
 }

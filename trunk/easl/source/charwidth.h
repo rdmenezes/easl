@@ -20,7 +20,7 @@ namespace easl
 *       If the character is invalid, the function will return 0.
 */
 template <typename T>
-size_t charwidth(uchar32_t character)
+inline size_t charwidth(uchar32_t character)
 {
     // The character is not allowed to be equal to a UTF-16 surrogate. If it is,
     // we return 0.

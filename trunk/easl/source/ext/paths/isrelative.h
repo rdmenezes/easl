@@ -23,7 +23,7 @@ namespace paths
 *       This function simply returns !isabsolute().
 */
 template <typename T>
-bool isrelative(const T *path, size_t pathLength = -1)
+inline bool isrelative(const T *path, size_t pathLength = -1)
 {
     return !isabsolute(path, pathLength);
 }

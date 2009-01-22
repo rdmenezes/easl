@@ -113,7 +113,7 @@ struct NEXT_TOKEN_OPTIONS
 *       When the function returns false, the input string is not modified.
 */
 template <typename T>
-bool nexttoken(T *&str, reference_string<T> &token, size_t &line, const NEXT_TOKEN_OPTIONS<T> &options)
+inline bool nexttoken(T *&str, reference_string<T> &token, size_t &line, const NEXT_TOKEN_OPTIONS<T> &options)
 {
     assert(str != NULL);
 

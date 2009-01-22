@@ -24,7 +24,7 @@ namespace easl
 *       function will assume that the appropriate string is null terminated.
 */
 template <typename T>
-size_t appendsize(const T *str1, const T *str2, size_t str1Length = -1, size_t str2Length = -1)
+inline size_t appendsize(const T *str1, const T *str2, size_t str1Length = -1, size_t str2Length = -1)
 {
     return append((T *)str1, str2, (size_t)-1, str1Length, str2Length);
 }

@@ -29,7 +29,7 @@ namespace easl
 *       The returned string will not contain the new-line delimiter.
 */
 template <typename T>
-bool nextline(reference_string<T> &line, T *&str)
+inline bool nextline(reference_string<T> &line, T *&str)
 {
     assert(str != NULL);
 

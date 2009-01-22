@@ -23,7 +23,7 @@ namespace easl
 *       to determine how many T's are required to store the BOM, call charwidth().
 */
 template <typename T>
-void attachbom(T *str, size_t strSize = -1, size_t strLength = -1)
+inline void attachbom(T *str, size_t strSize = -1, size_t strLength = -1)
 {
     // We need to determine how many T's our BOM is going to take up.
     size_t size = charwidth<T>((uchar32_t)0xFEFF);

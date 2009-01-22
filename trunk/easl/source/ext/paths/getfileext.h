@@ -37,7 +37,7 @@ namespace paths
 *       function because it must scan a larger string if the full file path is specified.
 */
 template <typename T>
-size_t getfileext(T *dest, const T *src, size_t srcLength = -1)
+inline size_t getfileext(T *dest, const T *src, size_t srcLength = -1)
 {
     assert(src != NULL);
 
@@ -86,7 +86,7 @@ size_t getfileext(T *dest, const T *src, size_t srcLength = -1)
 }
 
 template <typename T>
-void getfileext(slow_string<T> &dest, const T *src, size_t srcLength = -1)
+inline void getfileext(slow_string<T> &dest, const T *src, size_t srcLength = -1)
 {
     assert(src != NULL);
 

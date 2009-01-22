@@ -21,7 +21,7 @@ namespace easl
 *       BOM and move passed it, use skipbom() instead.
 */
 template <typename T>
-uchar32_t getbom(T *str)
+inline uchar32_t getbom(T *str)
 {
     T *temp;
     if (easl::nextchar(temp) == 0xFEFF)

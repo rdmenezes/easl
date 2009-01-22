@@ -22,7 +22,7 @@ namespace paths
 *   \return                 The number of T's required to store the relative path.
 */
 template <typename T>
-size_t relativesize(const T *path, const T *base, size_t pathLength = -1, size_t baseLength = -1)
+inline size_t relativesize(const T *path, const T *base, size_t pathLength = -1, size_t baseLength = -1)
 {
     return relative((T *)NULL, path, base, pathLength, baseLength);
 }

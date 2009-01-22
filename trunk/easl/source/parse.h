@@ -31,7 +31,7 @@ namespace easl
 // hidden to keep the API as simple as possible. We use T for the string type because
 // most other functions use T for strings also.
 template <typename U, typename T>
-U parse(const T *str, size_t strLength = -1)
+inline U parse(const T *str, size_t strLength = -1)
 {
     // If a specialisation hasn't been created for the U data type, the compiler should
     // throw an error.
@@ -111,7 +111,7 @@ template <> inline float parse(const char *str, size_t strLength)
 
     return static_cast<float>(::atof(str));
 }
-template <> double parse(const char *str, size_t strLength)
+template <> inline double parse(const char *str, size_t strLength)
 {
     (void)strLength;
 

@@ -27,7 +27,7 @@ namespace paths
 *       This function will also check for a network drive path.
 */
 template <typename T>
-bool isabsolute(const T *path, size_t pathLength = -1)
+inline bool isabsolute(const T *path, size_t pathLength = -1)
 {
     if (pathLength == 0)
     {

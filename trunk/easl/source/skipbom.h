@@ -21,7 +21,7 @@ namespace easl
 *       one is present. If there is no BOM, the pointer is not moved.
 */
 template <typename T>
-uchar32_t skipbom(T *&str)
+inline uchar32_t skipbom(T *&str)
 {
     T *temp = str;
     if (easl::nextchar(temp) == 0xFEFF)

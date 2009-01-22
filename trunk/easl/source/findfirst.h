@@ -24,7 +24,7 @@ namespace easl
 *   \return                If the character is found, returns a pointer to that character. Otherwise, a NULL pointer is returned.
 */
 template <typename T>
-T * findfirst(T *str, uchar32_t character, size_t strLength = -1)
+inline T * findfirst(T *str, uchar32_t character, size_t strLength = -1)
 {
     T *temp = str;
 
@@ -64,7 +64,7 @@ inline wchar_t * findfirst(wchar_t *str, uchar32_t character)
 }
 
 template <typename T>
-T * findfirst(const reference_string<T> &str, uchar32_t character)
+inline T * findfirst(const reference_string<T> &str, uchar32_t character)
 {
     return findfirst(str.start, character, length(str));
 }
@@ -79,7 +79,7 @@ T * findfirst(const reference_string<T> &str, uchar32_t character)
 *   \return                 A pointer to the first occurance of \c str2; or NULL if the string is not found.
 */
 template <typename T>
-const T * findfirst(const T *str1, const T *str2, size_t str1Length = -1, size_t str2Length = -1)
+inline const T * findfirst(const T *str1, const T *str2, size_t str1Length = -1, size_t str2Length = -1)
 {
     assert(str1 != NULL);
     assert(str2 != NULL);
@@ -122,7 +122,7 @@ inline const wchar_t * findfirst(const wchar_t *str1, const wchar_t *str2)
 
 
 template <typename T>
-T * findfirst(T *str1, const T *str2, size_t str1Length = -1, size_t str2Length = -1)
+inline T * findfirst(T *str1, const T *str2, size_t str1Length = -1, size_t str2Length = -1)
 {
     return (T *)findfirst((const T *)str1, str2, str1Length, str2Length);
 }
@@ -140,7 +140,7 @@ inline wchar_t * findfirst(wchar_t *str1, const wchar_t *str2)
 
 
 template <typename T>
-T * findfirst(const reference_string<T> &str1, const reference_string<T> &str2)
+inline T * findfirst(const reference_string<T> &str1, const reference_string<T> &str2)
 {
     return findfirst(str1.start, str2.start, length(str1), length(str2));
 }
