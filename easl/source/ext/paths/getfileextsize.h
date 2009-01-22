@@ -20,7 +20,7 @@ namespace paths
 *   \return                The number of T's that must be allocated in order to store the extension of \c src.
 */
 template <typename T>
-size_t getfileextsize(const T *str, size_t strLength = -1)
+inline size_t getfileextsize(const T *str, size_t strLength = -1)
 {
     return getfileext((T *)NULL, str, strLength);
 }

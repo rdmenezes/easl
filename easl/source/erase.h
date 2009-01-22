@@ -23,7 +23,7 @@ namespace easl
 *       The character at position \c start is also removed.
 */
 template <typename T>
-void erase(T *str, size_t start, size_t count, size_t strLength = -1)
+inline void erase(T *str, size_t start, size_t count, size_t strLength = -1)
 {
     // This assertion checks that we aren't trying to erase past the end of the string.
     // The function won't crash in release builds, but it's good to have this here to
@@ -60,7 +60,7 @@ void erase(T *str, size_t start, size_t count, size_t strLength = -1)
 }
 
 template <typename T>
-void erase(reference_string<T> &str, size_t start, size_t count)
+inline void erase(reference_string<T> &str, size_t start, size_t count)
 {
     return erase(str.start, start, count, length(str));
 }

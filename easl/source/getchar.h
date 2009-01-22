@@ -24,7 +24,7 @@ namespace easl
 */
 #ifdef EASL_ONLY_ASCII
 template <typename T>
-uchar32_t getchar(const T *str, size_t index, size_t strLength = -1)
+inline uchar32_t getchar(const T *str, size_t index, size_t strLength = -1)
 {
     if (strLength != -1)
     {
@@ -62,7 +62,7 @@ template <> inline uchar32_t getchar(const uchar16_t *str, size_t index, size_t 
 }
 #else
 template <typename T>
-uchar32_t getchar(const T *str, size_t index, size_t strLength = -1)
+inline uchar32_t getchar(const T *str, size_t index, size_t strLength = -1)
 {
     const T *temp = str;
 
@@ -118,7 +118,7 @@ inline uchar32_t getchar(const wchar_t *str, size_t index, size_t strLength = -1
 
 
 template <typename T>
-uchar32_t getchar(const reference_string<T> &str, size_t index)
+inline uchar32_t getchar(const reference_string<T> &str, size_t index)
 {
     return getchar(str.start, index, str.end - str.start);
 }

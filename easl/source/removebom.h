@@ -16,7 +16,7 @@ namespace easl
 *   \param  str [in, out] The string to remove the BOM from.
 */
 template <typename T>
-void removebom(T *str)
+inline void removebom(T *str)
 {
     T *temp = str;
     if (skipbom(temp) != 0)

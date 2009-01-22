@@ -12,13 +12,13 @@
 #include "nextchar.h"
 
 template <typename T>
-std::basic_ostream<T> & operator << (std::basic_ostream<T> &stream, const easl::slow_string<T> &str)
+inline std::basic_ostream<T> & operator << (std::basic_ostream<T> &stream, const easl::slow_string<T> &str)
 {
     return stream.write(str.c_str(), static_cast<std::streamsize>(str.length()));
 }
 
 template <typename T, typename U>
-std::basic_ostream<T> & operator << (std::basic_ostream<T> &stream, const easl::slow_string<U> &str)
+inline std::basic_ostream<T> & operator << (std::basic_ostream<T> &stream, const easl::slow_string<U> &str)
 {
     const U *temp = str.c_str();
 
@@ -33,13 +33,13 @@ std::basic_ostream<T> & operator << (std::basic_ostream<T> &stream, const easl::
 
 
 template <typename T>
-std::basic_ostream<T> & operator << (std::basic_ostream<T> &stream, const easl::reference_string<T> &str)
+inline std::basic_ostream<T> & operator << (std::basic_ostream<T> &stream, const easl::reference_string<T> &str)
 {
     return stream.write(str.start, static_cast<std::streamsize>(str.end - str.start));
 }
 
 template <typename T, typename U>
-std::basic_ostream<T> & operator << (std::basic_ostream<T> &stream, const easl::reference_string<U> &str)
+inline std::basic_ostream<T> & operator << (std::basic_ostream<T> &stream, const easl::reference_string<U> &str)
 {
     easl::reference_string<U> temp = str;
 

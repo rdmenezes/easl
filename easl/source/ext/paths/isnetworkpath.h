@@ -20,7 +20,7 @@ namespace paths
 *   \return                 True if the path is a network path; false otherwise.
 */
 template <typename T>
-bool isnetworkpath(const T *path, size_t pathLength = -1)
+inline bool isnetworkpath(const T *path, size_t pathLength = -1)
 {
 #if (PLATFORM == PLATFORM_WINDOWS)
     if (pathLength < 2)

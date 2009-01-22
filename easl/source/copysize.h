@@ -21,13 +21,13 @@ namespace easl
 *       The T template parameter specifies the type of the destination buffer.
 */
 template <typename T, typename U>
-size_t copysize(const U *source, size_t sourceLength = -1)
+inline size_t copysize(const U *source, size_t sourceLength = -1)
 {
     return copy((T *)NULL, source, (size_t)-1, sourceLength);
 }
 
 template <typename T, typename U>
-size_t copysize(const reference_string<U> &source)
+inline size_t copysize(const reference_string<U> &source)
 {
     return copy((T *)NULL, source, (size_t)-1);
 }

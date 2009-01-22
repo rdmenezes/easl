@@ -20,7 +20,7 @@ namespace easl
 *       The \c format parameter must be NULL terminated. This may change in the future.
 */
 template <typename T>
-size_t formatsize(const T *format, ...)
+inline size_t formatsize(const T *format, ...)
 {
     va_list args;
     va_start(args, format);

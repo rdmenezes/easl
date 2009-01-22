@@ -35,7 +35,7 @@ namespace paths
 *       This function does not check if the resulting path is a valid or existing directory or file.
 */
 template <typename T>
-size_t absolute(T *dest, const T *path, const T *base, size_t pathLength = -1, size_t baseLength = -1)
+inline size_t absolute(T *dest, const T *path, const T *base, size_t pathLength = -1, size_t baseLength = -1)
 {
     assert(path != NULL);
     assert(base != NULL);
@@ -130,7 +130,7 @@ size_t absolute(T *dest, const T *path, const T *base, size_t pathLength = -1, s
 
 
 template <typename T>
-void absolute(slow_string<T> &dest, const T *path, const T *base)
+inline void absolute(slow_string<T> &dest, const T *path, const T *base)
 {
     T *&temp = dest.c_str();
 

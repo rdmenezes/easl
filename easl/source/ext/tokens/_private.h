@@ -23,7 +23,7 @@ namespace easl
 *       character after the last character in the token group.
 */
 template <typename T>
-bool _check_token_group(T *&str, T *groups)
+inline bool _check_token_group(T *&str, T *groups)
 {
     // TODO: This can be made more efficient. We should make it more specific and remove the easl::findfirst() calls.
 
@@ -70,7 +70,7 @@ bool _check_token_group(T *&str, T *groups)
 *       When this function returns true, the input string is moved to the end of the starting ignore block.
 */
 template <typename T>
-bool _check_ignore_block_start(T *&str, T *blockStarts, reference_string<T> &start)
+inline bool _check_ignore_block_start(T *&str, T *blockStarts, reference_string<T> &start)
 {
     // The original input value.
     T *temp = str;
@@ -91,7 +91,7 @@ bool _check_ignore_block_start(T *&str, T *blockStarts, reference_string<T> &sta
 *   \param  block [out] Reference to the reference string that will recieve the 
 */
 template <typename T>
-void _get_block(reference_string<T> &block, size_t index, T *blocks)
+inline void _get_block(reference_string<T> &block, size_t index, T *blocks)
 {
     size_t temp_index = 0;
 
@@ -143,7 +143,7 @@ void _get_block(reference_string<T> &block, size_t index, T *blocks)
 *       When this function returns true, the input string is moved to the end of the ending ignore block.
 */
 template <typename T>
-bool _check_ignore_block_end(T *&str, const reference_string<T> &start, T *blockStarts, T *blockEnds)
+inline bool _check_ignore_block_end(T *&str, const reference_string<T> &start, T *blockStarts, T *blockEnds)
 {
     // Now we need to scan through our starts and get the next index of the string
     // that is equal to 'start'. It's important that the index starts at -1.

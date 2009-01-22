@@ -52,7 +52,7 @@ namespace easl
 *       will fail if \c source is NULL.
 */
 template <typename T>
-size_t copy(T *dest, const T *source, size_t destSize = -1, size_t sourceLength = -1)
+inline size_t copy(T *dest, const T *source, size_t destSize = -1, size_t sourceLength = -1)
 {
     if (source == NULL || (dest == NULL && destSize == 0))
     {
@@ -81,7 +81,7 @@ size_t copy(T *dest, const T *source, size_t destSize = -1, size_t sourceLength 
 
 // Visual Studio 2005+ specific. Makes the final binary a little smaller in size.
 #if ((COMPILER & COMPILER_VC) && COMPILER >= COMPILER_VC80)
-template <> size_t copy(char *dest, const char *source, size_t destSize, size_t sourceLength)
+template <> inline size_t copy(char *dest, const char *source, size_t destSize, size_t sourceLength)
 {
     if (dest != NULL)
     {
@@ -90,7 +90,7 @@ template <> size_t copy(char *dest, const char *source, size_t destSize, size_t 
 
     return sourceLength + 1;
 }
-template <> size_t copy(wchar_t *dest, const wchar_t *source, size_t destSize, size_t sourceLength)
+template <> inline size_t copy(wchar_t *dest, const wchar_t *source, size_t destSize, size_t sourceLength)
 {
     if (dest != NULL)
     {
@@ -135,7 +135,7 @@ template <> size_t copy(wchar_t *dest, const wchar_t *source, size_t destSize, s
 *       will fail if \c source is NULL.
 */
 template <typename T, typename U>
-size_t copy(T *dest, const U *source, size_t destSize = -1, size_t sourceLength = -1)
+inline size_t copy(T *dest, const U *source, size_t destSize = -1, size_t sourceLength = -1)
 {
     if (source == NULL || destSize == 0)
     {
@@ -187,7 +187,7 @@ size_t copy(T *dest, const U *source, size_t destSize = -1, size_t sourceLength 
 
 
 template <typename T, typename U>
-size_t copy(T *dest, const reference_string<U> &source, size_t destSize = -1)
+inline size_t copy(T *dest, const reference_string<U> &source, size_t destSize = -1)
 {
     return copy(dest, source.start, destSize, length(source));
 }

@@ -25,7 +25,7 @@ namespace easl
 *       Both strings must be NULL terminated. By default, the comparison is case sensitive.
 */
 template <typename T, typename U>
-bool equal(const T *str1, const U *str2, bool caseSensitive = true, size_t str1Length = -1, size_t str2Length = -1)
+inline bool equal(const T *str1, const U *str2, bool caseSensitive = true, size_t str1Length = -1, size_t str2Length = -1)
 {
     if (str1 == NULL || str2 == NULL)
     {
@@ -83,7 +83,7 @@ bool equal(const T *str1, const U *str2, bool caseSensitive = true, size_t str1L
 // Optimized case. The function can be simplified and should be more efficient when both
 // strings are the same type.
 template <typename T>
-bool equal(const reference_string<T> &str1, const reference_string<T> &str2, bool caseSensitive = true)
+inline bool equal(const reference_string<T> &str1, const reference_string<T> &str2, bool caseSensitive = true)
 {
     // If the lengths are different, it's impossible for the strings to be the same. Calculating
     // the lengths for reference strings is a fast operation, so this check is worth while. It
@@ -126,7 +126,7 @@ bool equal(const reference_string<T> &str1, const reference_string<T> &str2, boo
 
 
 template <typename T, typename U>
-bool equal(const reference_string<T> &str1, const reference_string<U> &str2, bool caseSensitive = true)
+inline bool equal(const reference_string<T> &str1, const reference_string<U> &str2, bool caseSensitive = true)
 {
     return equal(str1.start, str2.start, caseSensitive, length(str1), length(str2));
 }

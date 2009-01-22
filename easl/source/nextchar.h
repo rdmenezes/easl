@@ -198,7 +198,7 @@ inline uchar32_t nextchar(const wchar_t *&str)
 }
 
 template <typename T>
-uchar32_t nextchar(T *&str)
+inline uchar32_t nextchar(T *&str)
 {
     return nextchar((const T *&)str);
 }
@@ -214,7 +214,7 @@ uchar32_t nextchar(T *&str)
 *       pointer. When this occurs, the start pointer is _not_ modified.
 */
 template <typename T>
-uchar32_t nextchar(reference_string<T> &str)
+inline uchar32_t nextchar(reference_string<T> &str)
 {
     if (str.start >= str.end)
     {

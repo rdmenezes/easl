@@ -23,7 +23,7 @@ namespace easl
 *       This function is functionally equivalent to findfirst(const T *, uchar32_t, size_t).
 */
 template <typename T>
-T * findfirstof(T *str, uchar32_t character, size_t strLength = -1)
+inline T * findfirstof(T *str, uchar32_t character, size_t strLength = -1)
 {
     return easl::findfirst(str, character, strLength);
 }
@@ -38,7 +38,7 @@ T * findfirstof(T *str, uchar32_t character, size_t strLength = -1)
 *   \return                A pointer in \c str to the first occurance of any character in \c charSet; or NULL if no characters are found.
 */
 template <typename T>
-const T * findfirstof(const T *str, const T *charSet, size_t strLength = -1, size_t setLength = -1)
+inline const T * findfirstof(const T *str, const T *charSet, size_t strLength = -1, size_t setLength = -1)
 {
     const T *temp = str;
 
@@ -85,7 +85,7 @@ inline const wchar_t * findfirstof(const wchar_t *str, const wchar_t *charSet)
 }
 
 template <typename T>
-T * findfirstof(T *str, const T *charSet, size_t strLength = -1, size_t setLength = -1)
+inline T * findfirstof(T *str, const T *charSet, size_t strLength = -1, size_t setLength = -1)
 {
     return (T *)findfirstof((const T *)str, charSet, strLength, setLength);
 }
