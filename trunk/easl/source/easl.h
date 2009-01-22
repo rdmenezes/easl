@@ -33,5 +33,6 @@
 #include "writechar.h"
 #include "nextline.h"
 #include "stream_output.h"
+#include "erase.h"
 
 #endif // __EASL_H_

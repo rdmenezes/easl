@@ -36,7 +36,7 @@ inline uchar32_t getchar(const T *str, size_t index, size_t strLength = -1)
 
     return (uchar32_t)str[index];
 }
-template <> inline uchar32_t getchar(const char *str, size_t index, size_t strLength = -1)
+template <> inline uchar32_t getchar(const char *str, size_t index, size_t strLength)
 {
     if (strLength != -1)
     {
@@ -48,7 +48,7 @@ template <> inline uchar32_t getchar(const char *str, size_t index, size_t strLe
 
     return (uchar32_t)(unsigned char)str[index];
 }
-template <> inline uchar32_t getchar(const uchar16_t *str, size_t index, size_t strLength = -1)
+template <> inline uchar32_t getchar(const uchar16_t *str, size_t index, size_t strLength)
 {
     if (strLength != -1)
     {
