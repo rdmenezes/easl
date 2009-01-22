@@ -59,6 +59,12 @@ void erase(T *str, size_t start, size_t count, size_t strLength = -1)
     *str = '\0';
 }
 
+template <typename T>
+void erase(reference_string<T> &str, size_t start, size_t count)
+{
+    return erase(str.start, start, count, length(str));
+}
+
 }
 
 #endif // __EASL_ERASE_H_
