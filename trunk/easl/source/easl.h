@@ -35,5 +35,6 @@
 #include "nextline.h"
 #include "stream_output.h"
 #include "erase.h"
+#include "istype.h"
 
 #endif // __EASL_H_

@@ -24,6 +24,7 @@ namespace easl
 *   \remarks
 *       Both strings must be NULL terminated. By default, the comparison is case sensitive.
 */
+// TODO: Should implement a T-only optimization. We can remove the charcount() checks at the very least.
 template <typename T, typename U>
 inline bool equal(const T *str1, const U *str2, bool caseSensitive = true, size_t str1Length = -1, size_t str2Length = -1)
 {

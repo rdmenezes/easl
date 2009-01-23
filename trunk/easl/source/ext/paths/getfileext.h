@@ -154,7 +154,7 @@ inline wstring getfileext(const wchar_t *src, size_t srcLength = -1)
 
 
 template <typename T>
-reference_string<T> getfileext(T *src, size_t srcLength = -1)
+void getfileext(reference_string<T> &dest, T *src, size_t srcLength = -1)
 {
     assert(src != NULL);
 
@@ -179,17 +179,15 @@ reference_string<T> getfileext(T *src, size_t srcLength = -1)
         start_of_ch = src;
     }
 
-    // Our return value.
-    reference_string<T> ret;
-    ret.end = src;
+    dest.end = src;
 
     if (last_pos == NULL)
     {
-        ret.start = src;
+        dest.start = src;
     }
     else
     {
-        ret.start = last_pos;
+        dest.start = last_pos;
     }
 
     return ret;
