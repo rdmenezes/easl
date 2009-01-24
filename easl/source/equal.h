@@ -132,6 +132,18 @@ inline bool equal(const reference_string<T> &str1, const reference_string<U> &st
     return equal(str1.start, str2.start, caseSensitive, length(str1), length(str2));
 }
 
+template <typename T, typename U>
+inline bool equal(const T *str1, const reference_string<U> &str2, bool caseSensitive = true, size_t str1Length = -1)
+{
+    return equal(str1, str2.start, caseSensitive, str1Length, length(str2));
+}
+
+template <typename T, typename U>
+inline bool equal(const reference_string<T> str1, const U *str2, bool caseSensitive = true, size_t str2Length = -1)
+{
+    return equal(str1.start, str2, caseSensitive, length(str1), str2Length);
+}
+
 
 }
 

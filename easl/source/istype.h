@@ -59,7 +59,12 @@ bool _istype_fd(const T *str, size_t strLength, uchar32_t suffix)
                     // We need to ensure that the suffix is the last character in the string.
                     if (strLength - charwidth<T>(ch) == 0)
                     {
-                        return true;
+                        if (prev_ch != '.')
+                        {
+                            return true;
+                        }
+                        
+                        return false;
                     }
                     else
                     {
@@ -67,7 +72,12 @@ bool _istype_fd(const T *str, size_t strLength, uchar32_t suffix)
                         uchar32_t ch2 = nextchar(temp);
                         if (ch2 == NULL)
                         {
-                            return true;
+                            if (prev_ch != '.')
+                            {
+                                return true;
+                            }
+
+                            return false;
                         }
                     }
                 }
@@ -84,7 +94,7 @@ bool _istype_fd(const T *str, size_t strLength, uchar32_t suffix)
         strLength -= charwidth<T>(ch);
     }
 
-    return found_digit;
+    return found_digit && found_decimal && prev_ch != '.';
 }
 
 
