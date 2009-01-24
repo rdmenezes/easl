@@ -50,11 +50,22 @@ public:
         this->assign(str);
     }
 
+    slow_string(const reference_string<T> &str) : m_data(NULL)
+    {
+        this->assign(str.start, easl::length(str));
+    }
+
 #ifndef EASL_OPTION_NO_GENERIC_OPERATIONS
     template <typename U>
     slow_string(const U *str) : m_data(NULL)
     {
         this->assign(str);
+    }
+
+    template <typename U>
+    slow_string(const reference_string<U> &str) : m_data(NULL)
+    {
+        this->assign(str.start, easl::length(str));
     }
 #endif
 
@@ -369,6 +380,10 @@ public:
     {
         return this->assign(str.c_str());
     }
+    slow_string<T> & operator =(const reference_string<T> &str)
+    {
+        return this->assign(str.start, easl::length(str));
+    }
 
 #ifndef EASL_OPTION_NO_GENERIC_OPERATIONS
     template <typename U>
@@ -382,6 +397,12 @@ public:
     slow_string<T> & operator =(const slow_string<U> &str)
     {
         return this->assign(str.c_str());
+    }
+
+    template <typename U>
+    slow_string<T> & operator =(const reference_string<U> &str)
+    {
+        return this->assign(str.start, easl::length(str));
     }
 #endif
 
@@ -402,6 +423,10 @@ public:
     {
         return easl::equal(this->m_data, str.c_str());
     }
+    bool operator ==(const reference_string<T> &str) const
+    {
+        return easl::equal(this->m_data, str);
+    }
 
 #ifndef EASL_OPTION_NO_GENERIC_OPERATIONS
     template <typename U>
@@ -415,6 +440,54 @@ public:
     bool operator ==(const slow_string<U> &str) const
     {
         return easl::equal(this->m_data, str.c_str());
+    }
+
+    template <typename U>
+    bool operator ==(const reference_string<U> &str) const
+    {
+        return easl::equal(this->m_data, str);
+    }
+#endif
+
+    /**
+    *   \brief           Comparison operator.
+    *   \param  str [in] The string to compare this string siwth.
+    *   \return          True if the two strings are different; false otherwise.
+    *
+    *   \remarks
+    *       The comparison is case sensitive. "Some String" does not equal "some string".
+    */
+    bool operator !=(const T *str) const
+    {
+        return !easl::equal(this->m_data, str);
+    }
+    bool operator !=(const slow_string<T> &str) const
+    {
+        return !easl::equal(this->m_data, str.c_str());
+    }
+    bool operator !=(const reference_string<T> &str) const
+    {
+        return !easl::equal(this->m_data, str);
+    }
+
+#ifndef EASL_OPTION_NO_GENERIC_OPERATIONS
+    template <typename U>
+    bool operator !=(const U *str) const
+    {
+        return !easl::equal(this->m_data, str);
+    }
+
+    /// \copydoc    slow_string::operator ==(const U *) const
+    template <typename U>
+    bool operator !=(const slow_string<U> &str) const
+    {
+        return !easl::equal(this->m_data, str.c_str());
+    }
+
+    template <typename U>
+    bool operator !=(const reference_string<U> &str) const
+    {
+        return !easl::equal(this->m_data, str);
     }
 #endif
 
@@ -435,6 +508,10 @@ public:
     {
         return this->append(str.c_str());
     }
+    slow_string<T> & operator +=(const reference_string<T> &str)
+    {
+        return this->append(str.start, easl::length(str));
+    }
 
 #ifndef EASL_OPTION_NO_GENERIC_OPERATIONS
     template <typename U>
@@ -448,6 +525,12 @@ public:
     slow_string<T> & operator +=(const slow_string<U> &str)
     {
         return this->append(str.c_str());
+    }
+
+    template <typename U>
+    slow_string<T> & operator +=(const reference_string<U> &str)
+    {
+        return this->append(str.start, easl::length(str));
     }
 #endif
 
@@ -480,6 +563,11 @@ public:
         slow_string<T> new_str(*this);
         return new_str += str;
     }
+    slow_string<T> operator +(const reference_string<T> &str) const
+    {
+        slow_string<T> new_str(*this);
+        return new_str += str;
+    }
 
 #ifndef EASL_OPTION_NO_GENERIC_OPERATIONS
     template <typename U>
@@ -492,6 +580,13 @@ public:
     /// \copydoc    slow_string::operator +(const U *)
     template <typename U>
     slow_string<T> operator +(const slow_string<U> &str) const
+    {
+        slow_string<T> new_str(*this);
+        return new_str += str;
+    }
+
+    template <typename U>
+    slow_string<T> operator +(const reference_string<U> &str) const
     {
         slow_string<T> new_str(*this);
         return new_str += str;

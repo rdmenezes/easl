@@ -36,5 +36,6 @@
 #include "stream_output.h"
 #include "erase.h"
 #include "istype.h"
+#include "replace.h"
 
 #endif // __EASL_H_

@@ -113,12 +113,15 @@ struct NEXT_TOKEN_OPTIONS
 *       When the function returns false, the input string is not modified.
 */
 template <typename T>
-inline bool nexttoken(T *&str, reference_string<T> &token, size_t &line, const NEXT_TOKEN_OPTIONS<T> &options)
+inline bool nexttoken(T *&str, reference_string<T> &token, size_t *line, const NEXT_TOKEN_OPTIONS<T> *options, size_t strLength = -1)
 {
     assert(str != NULL);
 
     // Initialise the line.
-    line = 0;
+    if (line != NULL)
+    {
+        *line = 0;
+    }
 
     // The type of the token. The value of this value is as follows:
     //    - 0 means that there is no token yet.
@@ -148,7 +151,7 @@ inline bool nexttoken(T *&str, reference_string<T> &token, size_t &line, const N
     // loop until we reach the end of the string or we break out of the loop.
     T *temp = str;
     uchar32_t ch;
-    while ((ch = nextchar(temp)) != NULL)
+    while (strLength > 0 && (ch = nextchar(temp)) != NULL)
     {
         // We need to check which character we've got. If it's a non-printable character,
         // we want to ignore it and continue to the next character.
@@ -168,10 +171,13 @@ inline bool nexttoken(T *&str, reference_string<T> &token, size_t &line, const N
             // need to check for a \r\n pair. We need only look for a \n character.
             if (ch == '\n')
             {
-                ++line;
+                if (line != NULL)
+                {
+                    *line += 1;
+                }
 
                 // It is valid for a new line character to be an ending ignore block.
-                if (_check_ignore_block_end(str, ignore_block_start, options.ignoreBlockStart, options.ignoreBlockEnd))
+                if (options != NULL && _check_ignore_block_end(str, ignore_block_start, options->ignoreBlockStart, options->ignoreBlockEnd))
                 {
                     // We've reached the end of our ignore block, so now we can reset our type.
                     type = 0;
@@ -214,7 +220,7 @@ inline bool nexttoken(T *&str, reference_string<T> &token, size_t &line, const N
                     token.start = str;
 
                     // If the character is a quote character, we are starting a quote.
-                    if (findfirst(options.quotes, ch) != NULL)
+                    if (options != NULL && findfirst(options->quotes, ch) != NULL)
                     {
                         starting_quote_ch = ch;
                         type = 4;
@@ -225,9 +231,9 @@ inline bool nexttoken(T *&str, reference_string<T> &token, size_t &line, const N
                     {
                         type = 3;
 
-                        // Here we check to see if the token is part of a token group. If it is, we move to
-                        // the end of the token group, set the appropriate variables and then return.
-                        if (_check_token_group(str, options.symbolGroups))
+                        // Here we check to see if the token is part of a symbol group. If it is, we move to
+                        // the end of the symbol group, set the appropriate variables and then return.
+                        if (options != NULL && _check_token_group(str, options->symbolGroups))
                         {
                             token.end = str;
                             return true;
@@ -235,7 +241,7 @@ inline bool nexttoken(T *&str, reference_string<T> &token, size_t &line, const N
 
                         // Here we need to check if we are at the start of an ignore block. We will also need
                         // to store the string that has opened the ignore block.
-                        if (_check_ignore_block_start(str, options.ignoreBlockStart, ignore_block_start))
+                        if (options != NULL && _check_ignore_block_start(str, options->ignoreBlockStart, ignore_block_start))
                         {
                             temp = str;
                             type = 5;
@@ -291,7 +297,7 @@ inline bool nexttoken(T *&str, reference_string<T> &token, size_t &line, const N
                     // We're in a quote, so we need to check the character. If the character is the same
                     // as 'starting_quote_ch', we will move to the next character, set the appropriate
                     // values and then return true.
-                    if (ch == starting_quote_ch && prev_ch != options.escapeCharacter)
+                    if (ch == starting_quote_ch && options != NULL && prev_ch != options->escapeCharacter)
                     {
                         str = temp;
                         token.end = str;
@@ -304,7 +310,7 @@ inline bool nexttoken(T *&str, reference_string<T> &token, size_t &line, const N
                 {
                     // We're in the ignore block, so we need to check if we've now got a matching ending
                     // ignore block string.
-                    if (_check_ignore_block_end(str, ignore_block_start, options.ignoreBlockStart, options.ignoreBlockEnd))
+                    if (options != NULL && _check_ignore_block_end(str, ignore_block_start, options->ignoreBlockStart, options->ignoreBlockEnd))
                     {
                         // We've reached the end of our ignore block, so now we can reset our type.
                         temp = str;
@@ -319,6 +325,7 @@ inline bool nexttoken(T *&str, reference_string<T> &token, size_t &line, const N
         }
 
         prev_ch = ch;
+        strLength -= charwidth<T>(ch);
     }
 
     // We now need to ensure that if we have a token, we return true.
@@ -330,6 +337,25 @@ inline bool nexttoken(T *&str, reference_string<T> &token, size_t &line, const N
 
     return false;
 }
+
+template <typename T>
+inline bool nexttoken(T *&str, reference_string<T> &token, size_t *line, size_t strLength = -1)
+{
+    return nexttoken(str, token, line, (const NEXT_TOKEN_OPTIONS<T> *)NULL, strLength);
+}
+
+template <typename T>
+inline bool nexttoken(reference_string<T> &str, reference_string<T> &token, size_t *line, const NEXT_TOKEN_OPTIONS<T> *options)
+{
+    return nexttoken(str.start, token, line, options, length(str));
+}
+
+template <typename T>
+inline bool nexttoken(reference_string<T> &str, reference_string<T> &token, size_t *line)
+{
+    return nexttoken(str, token, line, (const NEXT_TOKEN_OPTIONS<T> *)NULL);
+}
+
 
 }
 }

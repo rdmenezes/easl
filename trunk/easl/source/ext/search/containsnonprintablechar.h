@@ -1,10 +1,10 @@
 /**
-*   \file   containsprintablechar.h
+*   \file   containsnonprintablechar.h
 *   \author Dave Reid
-*   \brief  Header file for the containsprintablechar() implementation.
+*   \brief  Header file for the containsnonprintablechar() implementation.
 */
-#ifndef __EASL_SEARCH_CONTAINSPRINTABLECHAR
-#define __EASL_SEARCH_CONTAINSPRINTABLECHAR
+#ifndef __EASL_SEARCH_CONTAINSNONPRINTABLECHAR
+#define __EASL_SEARCH_CONTAINSNONPRINTABLECHAR
 
 #include "nextchar.h"
 #include "length.h"
@@ -15,10 +15,10 @@ namespace search
 {
 
 /**
-*   \brief                 Determines if the specified string contains a printable character.
+*   \brief                 Determines if the specified string contains a non-printable character.
 *   \param  str       [in] The string to check for printable characters.
 *   \param  strLength [in] The length in T's of the string.
-*   \return                True if the string contains at least one printable character; false otherwise.
+*   \return                True if the string contains a non-printable character; false otherwise.
 *
 *   \remarks
 *       A printable character is a character that has some sort of visual appearance. A printable
@@ -26,12 +26,12 @@ namespace search
 *       considered printable characters.
 */
 template <typename T>
-bool containsprintablechar(const T *str, size_t strLength = -1)
+bool containsnonprintablechar(const T *str, size_t strLength = -1)
 {
     uchar32_t ch;
     while (strLength > 0 && (ch = nextchar(str)) != NULL)
     {
-        if (ch > ' ')
+        if (ch <= ' ')
         {
             return true;
         }
@@ -41,12 +41,12 @@ bool containsprintablechar(const T *str, size_t strLength = -1)
 }
 
 template <typename T>
-inline bool containsprintablechar(const reference_string<T> &str)
+bool containsnonprintablechar(const reference_string<T> &str)
 {
-    return containsprintablechar(str.start, length(str));
+    return containsnonprintablechar(str.start, length(str));
 }
 
 }
 }
 
-#endif // __EASL_SEARCH_CONTAINSPRINTABLECHAR
+#endif // __EASL_SEARCH_CONTAINSNONPRINTABLECHAR
