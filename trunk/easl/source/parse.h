@@ -71,38 +71,38 @@ template <> inline unsigned __int64 parse(const char *str, size_t strLength)
 
 template <> inline int parse(const char *str, size_t strLength)
 {
-    return static_cast<int>(parse<__int64>(str), strLength);
+    return static_cast<int>(parse<__int64>(str, strLength));
 }
 template <> inline unsigned int parse(const char *str, size_t strLength)
 {
-    return static_cast<unsigned int>(parse<unsigned __int64>(str), strLength);
+    return static_cast<unsigned int>(parse<unsigned __int64>(str, strLength));
 }
 
 template <> inline long parse(const char *str, size_t strLength)
 {
-    return static_cast<long>(parse<__int64>(str), strLength);
+    return static_cast<long>(parse<__int64>(str, strLength));
 }
 template <> inline unsigned long parse(const char *str, size_t strLength)
 {
-    return static_cast<unsigned long>(parse<unsigned __int64>(str), strLength);
+    return static_cast<unsigned long>(parse<unsigned __int64>(str, strLength));
 }
 
 template <> inline short parse(const char *str, size_t strLength)
 {
-    return static_cast<short>(parse<__int64>(str), strLength);
+    return static_cast<short>(parse<__int64>(str, strLength));
 }
 template <> inline unsigned short parse(const char *str, size_t strLength)
 {
-    return static_cast<unsigned short>(parse<unsigned __int64>(str), strLength);
+    return static_cast<unsigned short>(parse<unsigned __int64>(str, strLength));
 }
 
 template <> inline char parse(const char *str, size_t strLength)
 {
-    return static_cast<signed char>(parse<__int64>(str), strLength);
+    return static_cast<signed char>(parse<__int64>(str, strLength));
 }
 template <> inline unsigned char parse(const char *str, size_t strLength)
 {
-    return static_cast<unsigned char>(parse<unsigned __int64>(str), strLength);
+    return static_cast<unsigned char>(parse<unsigned __int64>(str, strLength));
 }
 
 template <> inline float parse(const char *str, size_t strLength)
@@ -152,38 +152,38 @@ template <> inline unsigned __int64 parse(const wchar_t *str, size_t strLength)
 
 template <> inline int parse(const wchar_t *str, size_t strLength)
 {
-    return static_cast<int>(parse<__int64>(str), strLength);
+    return static_cast<int>(parse<__int64>(str, strLength));
 }
 template <> inline unsigned int parse(const wchar_t *str, size_t strLength)
 {
-    return static_cast<unsigned int>(parse<unsigned __int64>(str), strLength);
+    return static_cast<unsigned int>(parse<unsigned __int64>(str, strLength));
 }
 
 template <> inline long parse(const wchar_t *str, size_t strLength)
 {
-    return static_cast<long>(parse<__int64>(str), strLength);
+    return static_cast<long>(parse<__int64>(str, strLength));
 }
 template <> inline unsigned long parse(const wchar_t *str, size_t strLength)
 {
-    return static_cast<unsigned long>(parse<unsigned __int64>(str), strLength);
+    return static_cast<unsigned long>(parse<unsigned __int64>(str, strLength));
 }
 
 template <> inline short parse(const wchar_t *str, size_t strLength)
 {
-    return static_cast<short>(parse<__int64>(str), strLength);
+    return static_cast<short>(parse<__int64>(str, strLength));
 }
 template <> inline unsigned short parse(const wchar_t *str, size_t strLength)
 {
-    return static_cast<unsigned short>(parse<unsigned __int64>(str), strLength);
+    return static_cast<unsigned short>(parse<unsigned __int64>(str, strLength));
 }
 
 template <> inline signed char parse(const wchar_t *str, size_t strLength)
 {
-    return static_cast<signed char>(parse<__int64>(str), strLength);
+    return static_cast<signed char>(parse<__int64>(str, strLength));
 }
 template <> inline unsigned char parse(const wchar_t *str, size_t strLength)
 {
-    return static_cast<unsigned char>(parse<unsigned __int64>(str), strLength);
+    return static_cast<unsigned char>(parse<unsigned __int64>(str, strLength));
 }
 
 template <> inline float parse(const wchar_t *str, size_t strLength)
@@ -214,6 +214,12 @@ template <> inline bool parse(const wchar_t *str, size_t strLength)
     }
 
     return true;
+}
+
+template <typename U, typename T>
+inline U parse(const reference_string<T> &str)
+{
+    return parse<U>(str.start, length(str));
 }
 
 }
