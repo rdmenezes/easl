@@ -19,8 +19,16 @@ namespace tokens
 *   \brief  Structure describing the options for extracting tokens.
 */
 template <typename T>
-struct NEXT_TOKEN_OPTIONS
+struct TOKEN_OPTIONS
 {
+    /**
+    *   \brief  Constructor.
+    */
+    TOKEN_OPTIONS()
+        : symbolGroups(NULL), quotes(NULL), escapeCharacter(NULL), ignoreBlockStart(NULL), ignoreBlockEnd(NULL)
+    {
+    }
+
     /**
     *   \brief The list of symbol groups that should be considered seperate tokens.
     *
@@ -68,12 +76,13 @@ struct NEXT_TOKEN_OPTIONS
 
 
 /**
-*   \brief                    Retrieves the next token and moves the pointer to the end of that token.
-*   \param  str     [in, out] The string to retrieve the next token from.
-*   \param  token   [out]     The reference string that will recieve the next token.
-*   \param  line    [out]     The integer that will recieve the zero based line that the token is on.
-*   \param  options [in]      The various options to use when retrieving the next token.
-*   \return                   True if a token is retrieved; false otherwise.
+*   \brief                      Retrieves the next token and moves the pointer to the end of that token.
+*   \param  str       [in, out] The string to retrieve the next token from.
+*   \param  token     [out]     The reference string that will recieve the next token.
+*   \param  line      [out]     The integer that will recieve the zero based line that the token is on.
+*   \param  options   [in]      The various options to use when retrieving the next token.
+*   \param  strLength [in]      The length in T's of the input string, not including the null terminator.
+*   \return                     True if a token is retrieved; false otherwise.
 *
 *   \remarks
 *       This function does not behave like strtok().
@@ -113,7 +122,7 @@ struct NEXT_TOKEN_OPTIONS
 *       When the function returns false, the input string is not modified.
 */
 template <typename T>
-inline bool nexttoken(T *&str, reference_string<T> &token, size_t *line, const NEXT_TOKEN_OPTIONS<T> *options, size_t strLength = -1)
+inline bool nexttoken(T *&str, reference_string<T> &token, size_t *line, const TOKEN_OPTIONS<T> *options, size_t strLength = -1)
 {
     assert(str != NULL);
 
@@ -345,7 +354,7 @@ inline bool nexttoken(T *&str, reference_string<T> &token, size_t *line, size_t 
 }
 
 template <typename T>
-inline bool nexttoken(reference_string<T> &str, reference_string<T> &token, size_t *line, const NEXT_TOKEN_OPTIONS<T> *options)
+inline bool nexttoken(reference_string<T> &str, reference_string<T> &token, size_t *line, const TOKEN_OPTIONS<T> *options)
 {
     return nexttoken(str.start, token, line, options, length(str));
 }

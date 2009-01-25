@@ -37,5 +37,6 @@
 #include "erase.h"
 #include "istype.h"
 #include "replace.h"
+#include "split.h"
 
 #endif // __EASL_H_
