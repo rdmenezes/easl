@@ -9,5 +9,7 @@
 #include "ext/paths.h"
 #include "ext/tokens.h"
 #include "ext/search.h"
+#include "ext/misc.h"
+#include "ext/list.h"
 
 #endif // __EASLEXT_H_

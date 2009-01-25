@@ -25,6 +25,11 @@ namespace easl
 template <typename T>
 inline bool _check_token_group(T *&str, T *groups)
 {
+    if (groups == NULL)
+    {
+        return false;
+    }
+
     // TODO: This can be made more efficient. We should make it more specific and remove the easl::findfirst() calls.
 
     T *temp = groups;
@@ -72,6 +77,13 @@ inline bool _check_token_group(T *&str, T *groups)
 template <typename T>
 inline bool _check_ignore_block_start(T *&str, T *blockStarts, reference_string<T> &start)
 {
+    assert(str != NULL);
+
+    if (blockStarts == NULL)
+    {
+        return false;
+    }
+
     // The original input value.
     T *temp = str;
     if (_check_token_group(temp, blockStarts))
@@ -145,6 +157,13 @@ inline void _get_block(reference_string<T> &block, size_t index, T *blocks)
 template <typename T>
 inline bool _check_ignore_block_end(T *&str, const reference_string<T> &start, T *blockStarts, T *blockEnds)
 {
+    assert(str != NULL);
+
+    if (blockStarts == NULL || blockEnds == NULL)
+    {
+        return false;
+    }
+
     // Now we need to scan through our starts and get the next index of the string
     // that is equal to 'start'. It's important that the index starts at -1.
     size_t index = 0;

@@ -6,6 +6,7 @@
 #ifndef __EASL_NEXTCHAR_H_
 #define __EASL_NEXTCHAR_H_
 
+#include <assert.h>
 #include "_private.h"
 #include "reference_string.h"
 
@@ -27,6 +28,8 @@ namespace easl
 */
 inline uchar32_t nextchar_utf8(const char *&str)
 {
+    assert(str != NULL);
+
 #ifdef EASL_ONLY_ASCII
     char32_t ch = *str;
 
@@ -93,6 +96,8 @@ inline uchar32_t nextchar_utf8(const char *&str)
 
 inline uchar32_t nextchar_utf16(const char16_t *&str)
 {
+    assert(str != NULL);
+
 #ifdef EASL_ONLY_ASCII
     char32_t ch = *str;
 
@@ -152,6 +157,8 @@ inline uchar32_t nextchar_utf16(const char16_t *&str)
 
 inline uchar32_t nextchar_utf32(const char32_t *&str)
 {
+    assert(str != NULL);
+
     char32_t ch = *str;
 
     if (ch != NULL)

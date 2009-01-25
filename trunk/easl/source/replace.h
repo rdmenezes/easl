@@ -9,41 +9,8 @@
 #include "nextchar.h"
 #include "writechar.h"
 
-#include <string.h>         // For memove().
-
 namespace easl
 {
-
-template <typename T>
-void _movestr(T *dest, const T *source, size_t count)
-{
-    assert(dest != NULL);
-    assert(source != NULL);
-
-    if (source > dest)
-    {
-        while (count > 0 && *source != NULL)
-        {
-            *dest = *source;
-
-            ++dest;
-            ++source;
-            --count;
-        }
-    }
-    else
-    {
-        // In this case, we need to move from the end.
-        while (count > 0)
-        {
-            dest[count - 1] = source[count - 1];
-            --count;
-        }
-    }
-
-    
-}
-
 
 /**
 *   \brief                      Replaces each occurance of a character in a string with another character.

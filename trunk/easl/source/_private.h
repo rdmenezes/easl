@@ -11,6 +11,7 @@
 #ifndef __EASL_UTFPRIVATE_H_
 #define __EASL_UTFPRIVATE_H_
 
+#include <assert.h>
 #include "types.h"
 
 namespace easl
@@ -215,6 +216,69 @@ inline uchar32_t validate_utf32_char(char32_t character)
     // defined by Unicode (0x10FFFF).
     return UNI_REPLACEMENT_CHAR;
 }
+
+template <typename T>
+void _movestr(T *dest, T *source, size_t count)
+{
+    assert(dest != 0);
+    assert(source != 0);
+
+    if (source > dest)
+    {
+        while (count > 0 && *source != 0)
+        {
+            *dest = *source;
+
+            ++dest;
+            ++source;
+            --count;
+        }
+    }
+    else
+    {
+        // In this case, we need to move from the end.
+        while (count > 0)
+        {
+            dest[count - 1] = source[count - 1];
+            --count;
+        }
+    }
+}
+
+
+/**
+*   \brief                  Moves a string down in memory location.
+*   \param  source     [in] Pointer to the string that should be moved down.
+*   \param  count      [in] The number of T's to move the string down.
+*   \param  sourceSize [in] The number of T's to move down.
+*
+*   \remarks
+*       This function will not read any data past a null terminator.
+*/
+template <typename T>
+void _movestrdown(T *source, size_t count, size_t sourceSize)
+{
+    T *dest = source - count;
+
+    assert(dest < source);
+
+    while (sourceSize > 0 && *source != 0)
+    {
+        *dest = *source;
+
+        ++dest;
+        ++source;
+        --sourceSize;
+    }
+
+    // If the loop was terminated because of a null terminator, we need to
+    // make sure that the destination is also null terminated.
+    if (sourceSize > 0 && *source == 0)
+    {
+        *dest = '\0';
+    }
+}
+
 
 }
 
