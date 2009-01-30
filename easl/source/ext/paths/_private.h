@@ -50,7 +50,7 @@ inline void _split_path(reference_string<const T> (&dest)[128], size_t &count, c
                 }
             }
 
-            // Now we can start our new pair.
+            // Now we can start our new string.
             current_pair.start = temp;
         }
         
@@ -58,7 +58,7 @@ inline void _split_path(reference_string<const T> (&dest)[128], size_t &count, c
         path = temp;
     }
 
-    // We need to add our last pair to the list.
+    // We need to add our last string to the list.
     current_pair.end = temp;
     dest[count++] = current_pair;
 }
