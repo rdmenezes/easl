@@ -221,7 +221,7 @@ public:
         {
             // First we need to determine how much extra space we need to allocate to append
             // the new string.
-            if (strLength == 0)
+            if (strLength == -1)
             {
                 strLength = easl::length(str);
             }
@@ -601,7 +601,46 @@ public:
     slow_string<T> operator +(uchar32_t character) const
     {
         slow_string<T> new_str(*this);
-        return new_str += str;
+        return new_str += character;
+    }
+
+
+
+    /**
+    *   \brief             Inserts a value into the string.
+    *   \param  value [in] The value to insert into the string.
+    *   \return            A reference to this.
+    *
+    *   \remarks
+    *       This function uses the easl::tostring() function to convert the value to a string
+    *       before adding it to this. This converted string can not exceed 256 T's.
+    *       \par
+    *       This operator does not work reliably for individual characters. Use append() instead.
+    */
+    template <typename U>
+    slow_string<T> & operator << (const U &value)
+    {
+        T temp[256];
+        easl::tostring(value, temp);
+        return this->append(temp);
+    }
+
+    template <typename U>
+    slow_string<T> & operator << (U *value)
+    {
+        return this->append(value);
+    }
+
+    template <typename U>
+    slow_string<T> & operator << (const slow_string<U> &value)
+    {
+        return this->append(value.c_str());
+    }
+
+    template <typename U>
+    slow_string<T> & operator << (const reference_string<U> &value)
+    {
+        return this->append(value.start, easl::length(value));
     }
 
 

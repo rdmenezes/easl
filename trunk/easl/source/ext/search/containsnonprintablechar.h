@@ -35,6 +35,8 @@ bool containsnonprintablechar(const T *str, size_t strLength = -1)
         {
             return true;
         }
+
+        strLength -= charwidth<T>(ch);
     }
 
     return false;

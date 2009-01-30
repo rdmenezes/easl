@@ -350,7 +350,7 @@ inline bool nexttoken(T *&str, reference_string<T> &token, size_t *line, const T
 template <typename T>
 inline bool nexttoken(T *&str, reference_string<T> &token, size_t *line, size_t strLength = -1)
 {
-    return nexttoken(str, token, line, (const NEXT_TOKEN_OPTIONS<T> *)NULL, strLength);
+    return nexttoken(str, token, line, (const TOKEN_OPTIONS<T> *)NULL, strLength);
 }
 
 template <typename T>
@@ -362,7 +362,7 @@ inline bool nexttoken(reference_string<T> &str, reference_string<T> &token, size
 template <typename T>
 inline bool nexttoken(reference_string<T> &str, reference_string<T> &token, size_t *line)
 {
-    return nexttoken(str, token, line, (const NEXT_TOKEN_OPTIONS<T> *)NULL);
+    return nexttoken(str, token, line, (const TOKEN_OPTIONS<T> *)NULL);
 }
 
 

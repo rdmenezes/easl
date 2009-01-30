@@ -189,8 +189,6 @@ void getfileext(reference_string<T> &dest, T *src, size_t srcLength = -1)
     {
         dest.start = last_pos;
     }
-
-    return ret;
 }
 
 
