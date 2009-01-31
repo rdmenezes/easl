@@ -19,7 +19,7 @@ The paths extension is used to provide functionality for working with directory 
 Such functionality includes converting between absolute and relative paths; determining if a path is absolute or relative; extracting the extension of a file.
 
 == Tokens - `#include <easl/ext/tokens.h>` ==
-The tokens extension is used to split a string into different tokens. It's main function is to iterate through each token in a string. This extension is mostly useful for things such as source code parses.
+The tokens extension is used to split a string into different tokens. It's main function is to iterate through each token in a string. This extension is mostly useful for things such as source code parsers.
 
 == Search - `#include <easl/ext/search.h>` ==
 The search extension is used to perform more complex or not-so-common search functionality than that provided by `easl::findfirst()`, `easl::findfirstof()`, etc.
