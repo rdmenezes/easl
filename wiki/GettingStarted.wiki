@@ -30,7 +30,7 @@ The C-like string manipulation routines work mostly the same as the standard C l
 
 
 = Using Extensions =
-To use extensions, you need only include the appropriate header file for that extension. All extensions can be included with `#include <easl/ext/<extension>.h`, where `<extension>` is the name of the extension. So, for example, if you want to use the `paths` extension, use `#include <easl/ext/paths.h>`.
+To use [Extensions extensions], you need only include the appropriate header file for that extension. All extensions can be included with `#include <easl/ext/<extension>.h`, where `<extension>` is the name of the extension. So, for example, if you want to use the `paths` extension, use `#include <easl/ext/paths.h>`.
 
 Alternatively, every extension can be included at once with `#include <easl/easlext.h>`
 
