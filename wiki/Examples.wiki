@@ -208,6 +208,6 @@ some_utf32_string: Hello, World!
 
 This example demonstrates how easy it is to work with different string encodings when using EASL's string class(es). Here we first declare two strings of different encodings. The second string, which is a `wchar_t *` string internally is appended to a `char *` (UTF-8) string.
 
-The string is then converted to a UTF-16 string, which in turn is converted to a UTF-32 string. The results are then printed to standard output to prove that it works. We can also see how`operator <<` has been overloaded so that our custom strings can be easily printed to standard output and any other `std::basic_ostream`.
+The string is then converted to a UTF-16 string, which in turn is converted to a UTF-32 string. The results are then printed to standard output to prove that it works. We can also see how `operator <<` has been overloaded so that our custom strings can be easily printed to standard output and any other `std::basic_ostream`.
 
 In addition, it can be seen that the string classes are quite similar to `std::string`'s (but not exactly the same). The `easl::string` and `easl::wstring` classes use a `char *` and `wchar_t *` string internally, just like `std::string` and `std::wstring`. The UTF-16 string is `easl::string16` and the UTF-32 string is `easl::string32`. A `easl::string8` class is also available which is simply an alias for `easl::string` to match with `easl::string16` and `easl::string32`.
