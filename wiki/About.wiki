@@ -1,4 +1,5 @@
 #summary About Easy-As String Library
+#labels Featured
 
 = Introduction =
 Easy-As String Library (EASL) is a C++ header library for working with strings.
