@@ -8,14 +8,14 @@ This page will get you up and running using EASL.
 = Installing =
 Getting access to the library is as simple as following these steps.
 
-  # [http://easl.googlecode.com/files/easl_0.0.1.zip Download] the source code package.
+  # [http://easl.googlecode.com/files/easl-0.0.2.zip Download] the source code package.
   # Extract the "easl" folder from inside the package to somewhere on the hard disk.
   # Configure you compiler to look for header file in the folder that the "easl" folder was extracted into.
   # Start using the library.
 
 
 = Using EASL =
-EASL is a header library, so you need only include certain header files to begin using the library. There is no need to link against particular libraries.
+EASL is a header library, so you need only include certain header files to begin using the library. There is no need to link against any libraries.
 
 To begin using EASL, simply include the file `<easl/easl.h>`, like so:
 {{{
@@ -27,6 +27,12 @@ All of the functionality in EASL is under the `easl` namespace.
 EASL is made up of two main sections: a low level, C-like function section; and a higher level C++ `std::string`-like section. Having the library structured like this gives developers the most flexibility.
 
 The C-like string manipulation routines work mostly the same as the standard C library equivalents. One major difference is that there is no difference in the name of the function for different string encodings. For example, to copy a string you simply use the `easl::copy()` function for all types of string encodings - `char *` and `wchar_t *` alike.
+
+
+= Using Extensions =
+To use extensions, you need only include the appropriate header file for that extension. All extensions can be included with `#include <easl/ext/<extension>.h`, where `<extension>` is the name of the extension. So, for example, if you want to use the `paths` extension, use `#include <easl/ext/paths.h>`.
+
+Alternatively, every extension can be included at once with `#include <easl/easlext.h>`
 
 
 = Using UTF Encoding =
