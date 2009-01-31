@@ -190,7 +190,7 @@ public:
         }
         else
         {
-            if (strLength == 0)
+            if (strLength == -1)
             {
                 strLength = easl::copysize<T>(str);
             }
