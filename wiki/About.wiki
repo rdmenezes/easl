@@ -56,15 +56,15 @@ Code:
 int main()
 {
     char str1[1024];
-    easl::strcpy(str1, "Hello, World!");
+    easl::copy(str1, "Hello, World!");
 
     wchar_t *str2 = new wchar_t[1024];
-    easl::strcpy(str2, L"Hello!", 1024);
+    easl::copy(str2, L"Hello!", 1024);
 
-    std::cout << "String 1 length:  " << easl::strlen(str1) << std::endl;
+    std::cout << "String 1 length:  " << easl::length(str1) << std::endl;
     std::cout << "String 1 content: " << str1 << std::endl << std::endl;
 
-    std::wcout << L"String 2 length:  " << easl::strlen(str2) << std::endl;
+    std::wcout << L"String 2 length:  " << easl::length(str2) << std::endl;
     std::wcout << L"String 2 content: " << str2 << std::endl;
 
     delete [] str2;
