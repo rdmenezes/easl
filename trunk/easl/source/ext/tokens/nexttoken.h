@@ -223,13 +223,13 @@ inline bool nexttoken(T *&str, reference_string<T> &token, size_t *line, const T
             }
             else
             {
-                // We must have a symbol.
+                // We must have a symbol. 
                 if (type == 0)
                 {
                     token.start = str;
 
                     // If the character is a quote character, we are starting a quote.
-                    if (options != NULL && findfirst(options->quotes, ch) != NULL)
+                    if (options != NULL && options->quotes != NULL && findfirst(options->quotes, ch) != NULL)
                     {
                         starting_quote_ch = ch;
                         type = 4;
@@ -238,28 +238,56 @@ inline bool nexttoken(T *&str, reference_string<T> &token, size_t *line, const T
                     }
                     else
                     {
-                        type = 3;
-
-                        // Here we check to see if the token is part of a symbol group. If it is, we move to
-                        // the end of the symbol group, set the appropriate variables and then return.
-                        if (options != NULL && _check_token_group(str, options->symbolGroups))
+                        // If we have a negative sign, the next character must be a number. If it
+                        // isn't, the negative symbol is it's own token. Otherwise we have a
+                        // number token.
+                        if (ch == '-')
                         {
-                            token.end = str;
-                            return true;
-                        }
+                            // Check the next character.
+                            T *temp2 = temp;
+                            ch = nextchar(temp);
+                            if (ch >= '0' && ch <= '9')
+                            {
+                                // We have a number, so now we just need to set the type.
+                                type = 2;
 
-                        // Here we need to check if we are at the start of an ignore block. We will also need
-                        // to store the string that has opened the ignore block.
-                        if (options != NULL && _check_ignore_block_start(str, options->ignoreBlockStart, ignore_block_start))
-                        {
-                            temp = str;
-                            type = 5;
+                                str = temp;
+                            }
+                            else
+                            {
+                                // It is not a number, so we need to restore temp and do nothing else.
+                                temp = temp2;
+                                str = temp;
+
+                                token.end = str;
+                                return true;
+                            }
                         }
                         else
                         {
-                            str = temp;
-                            token.end = temp;
-                            return true;
+                            type = 3;
+
+                            // Here we check to see if the token is part of a symbol group. If it is, we move to
+                            // the end of the symbol group, set the appropriate variables and then return.
+                            if (options != NULL && _check_token_group(str, options->symbolGroups))
+                            {
+                                token.end = str;
+                                return true;
+                            }
+
+                            // Here we need to check if we are at the start of an ignore block. We will also need
+                            // to store the string that has opened the ignore block.
+                            if (options != NULL && _check_ignore_block_start(str, options->ignoreBlockStart, ignore_block_start))
+                            {
+                                temp = str;
+                                type = 5;
+                            }
+                            else
+                            {
+                                str = temp;
+                                token.end = temp;
+                                return true;
+                            }
                         }
                     }
                 }
