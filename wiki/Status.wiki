@@ -7,12 +7,12 @@ This page will discuss the current development status of the project.
 = Platform and Compiler Support =
 Below is a table summarising the supported platforms and compilers.
 
-|| || *VC++ 6.0* || *VC++ 7.1* || *VC++ 8.0* || *VC++ 9.0* || *GCC 3.x* || *GCC 4.x* || *Borland C++* || *Intel C++* ||
-|| *Windows XP*    || ? || Probably || Yes || Probably || No || No || No || No ||
-|| *Windows Vista* || ? || Probably || Yes || Probably || No || No || No || No ||
-|| *Linux 2.4.x*   || No || No || No || No || No || No || No || No ||
-|| *Linux 2.6.x*   || No || No || No || No || No || No || No || No ||
-|| *Mac OS X*      || No || No || No || No || No || No || No || No ||
+|| || *VC++ 7.1* || *VC++ 8.0* || *VC++ 9.0* || *GCC 3.x* || *GCC 4.x* || *Borland C++* || *Intel C++* ||
+|| *Windows XP*    || Probably || Yes || Probably || No (MinGW/Cygwin) || No (MinGW/Cygwin) || No || No ||
+|| *Windows Vista* || Probably || Yes || Probably || No (MinGW/Cygwin) || No (MinGW/Cygwin) || No || No ||
+|| *Linux 2.4.x*   || N/A || N/A || N/A || No || No || No || No ||
+|| *Linux 2.6.x*   || N/A || N/A || N/A || No || No || No || No ||
+|| *Mac OS X*      || N/A || N/A || N/A || No || No || No || No ||
 
 Currently, only Windows and Visual C++ is supported. The project has only been tested on VC++ 8.0, but should also work with later versions as well as VC++ 7.1.
 
@@ -20,6 +20,4 @@ Other platforms may work, but none other than Windows and VC++ 8.0 have been tes
 
 Support for Linux and Mac will come later on. Likewise, support for platforms other than Windows, Linux and Mac may also be included later.
 
-The library will not provide support for operating systems older than Windows XP, Linux kernal 2.4.x and Mac OS X.
-
-
+The library will not provide support for operating systems older than Windows XP, Linux kernal 2.4.x and Mac OS X. Likewise, compilers older than VC++ 7.1 and GCC 3.x will not be supported.
