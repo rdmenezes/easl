@@ -16,12 +16,10 @@ Below is a table summarising the supported platforms and compilers.
 
 Currently, only Windows and Visual C++ is supported. The project has only been tested on VC++ 8.0, but should also work with later versions as well as VC++ 7.1.
 
-Other platforms may work, but none other than Windows and Visual Studio 2005 have been tested.
+Other platforms may work, but none other than Windows and VC++ 8.0 have been tested.
 
-Support for other platforms will come later on. Support for platforms other than Windows, Linux and Mac may be included later on.
+Support for Linux and Mac will come later on. Likewise, support for platforms other than Windows, Linux and Mac may also be included later.
 
 The library will not provide support for operating systems older than Windows XP, Linux kernal 2.4.x and Mac OS X.
-
-
 
 
