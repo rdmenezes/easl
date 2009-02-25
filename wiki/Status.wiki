@@ -4,9 +4,24 @@
 This page will discuss the current development status of the project.
 
 
-= Platform Support =
-Currently, only Windows and Microsoft Visual Studio is supported. The project has only been tested on VS 2005, but should also work with later versions.
+= Platform and Compiler Support =
+Below is a table summarising the supported platforms and compilers.
 
-Other platforms may work, but none other than Windows and VS have been tested.
+|| || *VC++ 6.0* || *VC++ 7.1* || *VC++ 8.0* || *VC++ 9.0* || *GCC 3.x* || *GCC 4.x* || *Borland C++* || *Intel C++* ||
+|| *Windows XP*    || ? || Probably || Yes || Probably || No || No || No || No ||
+|| *Windows Vista* || ? || Probably || Yes || Probably || No || No || No || No ||
+|| *Linux 2.4.x*   || No || No || No || No || No || No || No || No ||
+|| *Linux 2.6.x*   || No || No || No || No || No || No || No || No ||
+|| *Mac OS X*      || No || No || No || No || No || No || No || No ||
 
-Support for other platforms will come later on.
+Currently, only Windows and Visual C++ is supported. The project has only been tested on VC++ 8.0, but should also work with later versions as well as VC++ 7.1.
+
+Other platforms may work, but none other than Windows and Visual Studio 2005 have been tested.
+
+Support for other platforms will come later on. Support for platforms other than Windows, Linux and Mac may be included later on.
+
+The library will not provide support for operating systems older than Windows XP, Linux kernal 2.4.x and Mac OS X.
+
+
+
+
