@@ -15,5 +15,6 @@
 #include "paths/isabsolute.h"
 #include "paths/isrelative.h"
 #include "paths/isnetworkpath.h"
+#include "paths/splitpath.h"
 
 #endif // __EASL_PATHS_H_
