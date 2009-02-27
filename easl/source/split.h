@@ -26,7 +26,7 @@ namespace easl
 *       Empty strings are never added to the list.
 */
 template <typename T>
-void split(T *str, const T *delimiter, std::vector<reference_string<T>> &list, bool includeDelimiter = true,
+void split(T *str, const T *delimiter, std::vector<reference_string<T> > &list, bool includeDelimiter = true,
            size_t strLength = -1, size_t delLength = -1)
 {
     assert(str != NULL);
@@ -45,7 +45,7 @@ void split(T *str, const T *delimiter, std::vector<reference_string<T>> &list, b
     while (strLength > 0 && (temp = findfirst(str, delimiter, strLength, delLength)) != NULL)
     {
         cur_string.start = str;
-        
+
         // If we're not including the delimiter, the end will simply be equal to 'temp'. Otherwise, it
         // will be equal to 'temp' + length of delimiter.
         if (!includeDelimiter)

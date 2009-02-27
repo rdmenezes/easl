@@ -33,7 +33,7 @@ inline size_t length(const T *str)
 
     const T *temp = str;
 
-    while (*temp != NULL)
+    while (*temp != '\0')
     {
         ++temp;
     }

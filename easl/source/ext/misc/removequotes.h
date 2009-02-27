@@ -61,10 +61,10 @@ void removequotes(T *str, const T *quotes, uchar32_t escape = '\\', size_t strLe
         // The last character we've retrieved. We use this to determine if the character
         // has been escaped.
         uchar32_t last_ch = '\0';
-        
+
         // Now we need to loop through each character and watch for a matching quote character.
         uchar32_t ch;
-        while (strLength > 0 && (ch = nextchar(temp)) != NULL)
+        while (strLength > 0 && (ch = nextchar(temp)) != '\0')
         {
             if (ch == quote_ch && last_ch != escape)
             {

@@ -29,7 +29,7 @@ inline T * findfirst(T *str, uchar32_t character, size_t strLength = -1)
     T *temp = str;
 
     uchar32_t ch;
-    while (strLength > 0 && (ch = nextchar(temp)) != NULL)
+    while (strLength > 0 && (ch = nextchar(temp)) != '\0')
     {
         if (ch == character)
         {
@@ -90,7 +90,7 @@ inline const T * findfirst(const T *str1, const T *str2, size_t str1Length = -1,
     }
 
     // We need to know the length of the second string.
-    if (str2Length == -1)
+    if (str2Length == (size_t)-1)
     {
         str2Length = length(str2);
     }

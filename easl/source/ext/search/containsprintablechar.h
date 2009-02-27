@@ -6,8 +6,8 @@
 #ifndef __EASL_SEARCH_CONTAINSPRINTABLECHAR
 #define __EASL_SEARCH_CONTAINSPRINTABLECHAR
 
-#include "nextchar.h"
-#include "length.h"
+#include "../../nextchar.h"
+#include "../../length.h"
 
 namespace easl
 {

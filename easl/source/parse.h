@@ -12,6 +12,11 @@
 #include "types.h"
 #include "findfirst.h"
 #include "equal.h"
+#include "copysize.h"
+
+#if (COMPILER & COMPILER_GCC)
+#include <wchar.h>
+#endif
 
 namespace easl
 {
@@ -190,13 +195,13 @@ template <> inline float parse(const wchar_t *str, size_t strLength)
 {
     (void)strLength;
 
-    return static_cast<float>(::_wtof(str));
+    return static_cast<float>(::wcstod(str, NULL));
 }
 template <> inline double parse(const wchar_t *str, size_t strLength)
 {
     (void)strLength;
 
-    return ::_wtof(str);
+    return static_cast<float>(::wcstod(str, NULL));
 }
 
 template <> inline bool parse(const wchar_t *str, size_t strLength)

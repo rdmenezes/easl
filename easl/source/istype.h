@@ -46,7 +46,7 @@ bool _istype_fd(const T *str, size_t strLength, uchar32_t suffix)
             }
             else if (ch == '-')
             {
-                if (prev_ch != NULL)
+                if (prev_ch != '\0')
                 {
                     return false;
                 }
@@ -63,14 +63,14 @@ bool _istype_fd(const T *str, size_t strLength, uchar32_t suffix)
                         {
                             return true;
                         }
-                        
+
                         return false;
                     }
                     else
                     {
                         const T *temp = str;
                         uchar32_t ch2 = nextchar(temp);
-                        if (ch2 == NULL)
+                        if (ch2 == '\0')
                         {
                             if (prev_ch != '.')
                             {
@@ -150,7 +150,7 @@ struct _istype<__int64, T>
             // internationalisation.
             if (!((uchar32_t)(ch - '0') <= 9))
             {
-                if (!(prev_ch == NULL && ch == '-'))
+                if (!(prev_ch == '\0' && ch == '-'))
                 {
                     return false;
                 }

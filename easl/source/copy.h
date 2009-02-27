@@ -63,7 +63,7 @@ inline size_t copy(T *dest, const T *source, size_t destSize = -1, size_t source
     size_t temp_count = sourceLength;
 
     // Now we loop through and copy character by character.
-    while (destSize > 1 && sourceLength > 0 && *source != NULL)
+    while (destSize > 1 && sourceLength > 0 && *source != '\0')
     {
         *dest = *source;
 
@@ -74,7 +74,7 @@ inline size_t copy(T *dest, const T *source, size_t destSize = -1, size_t source
     }
 
     // Ensure that we have a null terminator.
-    *dest = NULL;
+    *dest = '\0';
 
     return temp_count + 1;
 }
@@ -147,7 +147,7 @@ inline size_t copy(T *dest, const U *source, size_t destSize = -1, size_t source
 
     // Now we need to loop through each character in the source and copy over the character.
     uchar32_t ch;
-    while (destSize > 1 && sourceLength > 0 && (ch = nextchar(source)) != NULL)
+    while (destSize > 1 && sourceLength > 0 && (ch = nextchar(source)) != '\0')
     {
         // Variable that stores the width of the current character.
         size_t char_width;
@@ -179,7 +179,7 @@ inline size_t copy(T *dest, const U *source, size_t destSize = -1, size_t source
     // NULL terminate the destination.
     if (dest != NULL)
     {
-        *dest = NULL;
+        *dest = '\0';
     }
 
     return copy_size;

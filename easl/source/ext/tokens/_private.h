@@ -35,7 +35,7 @@ inline bool _check_token_group(T *&str, T *groups)
     T *temp = groups;
 
     uchar32_t ch;
-    while ((ch = nextchar(temp)) != NULL)
+    while ((ch = nextchar(temp)) != '\0')
     {
         // If we have a space, we can now check if this token is at the start of the string.
         if (ch == ' ')
@@ -100,7 +100,7 @@ inline bool _check_ignore_block_start(T *&str, T *blockStarts, reference_string<
 
 /**
 *   \brief              Retrieves the block at the specified index.
-*   \param  block [out] Reference to the reference string that will recieve the 
+*   \param  block [out] Reference to the reference string that will recieve the
 */
 template <typename T>
 inline void _get_block(reference_string<T> &block, size_t index, T *blocks)
@@ -135,7 +135,7 @@ inline void _get_block(reference_string<T> &block, size_t index, T *blocks)
             }
         }
 
-    } while ((ch = nextchar(temp)) != NULL);
+    } while ((ch = nextchar(temp)) != '\0');
 
     if (block.start != NULL)
     {
@@ -189,7 +189,7 @@ inline bool _check_ignore_block_end(T *&str, const reference_string<T> &start, T
             ++index;
         }
 
-    } while ((ch = nextchar(blockStarts)) != NULL);
+    } while ((ch = nextchar(blockStarts)) != '\0');
 
 
     return false;

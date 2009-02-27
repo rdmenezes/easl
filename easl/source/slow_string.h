@@ -20,6 +20,7 @@
 #include "copysize.h"
 #include "getchar.h"
 #include "equal.h"
+#include "tostring.h"
 
 namespace easl
 {
@@ -103,11 +104,8 @@ public:
     *
     *   \remarks
     *       The returned pointer is always NULL terminated.
-    *       \par
-    *       Because a reference is being returned, a pointer to the pointer can be retrieved with
-    *       the address-of operator.
     */
-    const T * const & c_str() const
+    const T * c_str() const
     {
         return this->m_data;
     }
@@ -153,11 +151,11 @@ public:
         if (str == NULL)
         {
             this->m_data = new T[1];
-            this->m_data[0] = NULL;
+            this->m_data[0] = '\0';
         }
         else
         {
-            if (strLength == -1)
+            if (strLength == (size_t)-1)
             {
                 strLength = easl::length(str);
             }
@@ -221,7 +219,7 @@ public:
         {
             // First we need to determine how much extra space we need to allocate to append
             // the new string.
-            if (strLength == -1)
+            if (strLength == (size_t)-1)
             {
                 strLength = easl::length(str);
             }
@@ -234,7 +232,7 @@ public:
 
             // Now we can allocate some more memory.
             this->m_data = new T[this_size + strLength + 1];
-            
+
             // Copy our old data back into the string.
             easl::copy(this->m_data, old_data, this_size + strLength + 1);
 
@@ -268,7 +266,7 @@ public:
 
             // Now we can allocate some more memory.
             this->m_data = new T[this_size + copy_size];
-            
+
             // Copy our old data back into the string.
             memcpy(this->m_data, old_data, sizeof(T) * this_size);
 
@@ -301,7 +299,7 @@ public:
 
         // Now we can allocate some more memory.
         this->m_data = new T[this_size + added_size + 1];
-        
+
         // Copy our old data back into the string.
         easl::copy(this->m_data, old_data, this_size + added_size + 1);
 
@@ -339,7 +337,7 @@ public:
     {
         if (this->m_data != NULL)
         {
-            return this->m_data[0] == NULL;
+            return this->m_data[0] == '\0';
         }
 
         return true;

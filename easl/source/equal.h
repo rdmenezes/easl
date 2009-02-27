@@ -8,6 +8,7 @@
 
 #include "types.h"
 #include "charcount.h"
+#include <cctype>
 
 namespace easl
 {
@@ -46,7 +47,7 @@ inline bool equal(const T *str1, const U *str2, bool caseSensitive = true, size_
 
     if (caseSensitive)
     {
-        while ((str1Length > 0 && ch1 != NULL) && (str2Length > 0 && ch2 != NULL))
+        while ((str1Length > 0 && ch1 != '\0') && (str2Length > 0 && ch2 != '\0'))
         {
             if (ch1 != ch2)
             {
@@ -62,7 +63,7 @@ inline bool equal(const T *str1, const U *str2, bool caseSensitive = true, size_
     }
     else
     {
-        while ((str1Length > 0 && ch1 != NULL) && (str2Length > 0 && ch2 != NULL))
+        while ((str1Length > 0 && ch1 != '\0') && (str2Length > 0 && ch2 != '\0'))
         {
             if (tolower(ch1) != tolower(ch2))
 		    {
