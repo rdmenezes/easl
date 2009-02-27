@@ -8,6 +8,7 @@
 
 #include "types.h"
 #include "copy.h"
+#include "format.h"
 
 namespace easl
 {

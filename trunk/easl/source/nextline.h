@@ -33,7 +33,7 @@ inline bool nextline(reference_string<T> &line, T *&str)
 {
     assert(str != NULL);
 
-    if (*str == NULL)
+    if (*str == '\0')
     {
         return false;
     }
@@ -44,7 +44,7 @@ inline bool nextline(reference_string<T> &line, T *&str)
     // and new line character.
     T *temp = str;
     uchar32_t ch;
-    while ((ch = nextchar(temp)) != NULL)
+    while ((ch = nextchar(temp)) != '\0')
     {
         // We need to check for both "\r\n" and "\n" lines.
         if (ch == '\r')

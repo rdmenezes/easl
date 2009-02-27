@@ -54,7 +54,7 @@ inline uchar32_t nextchar_utf8(const char *&str)
     // of these bytes. If it is, we need to return 0.
     for (unsigned short i = 1; i <= extra_bytes; ++i)
     {
-        if (*(source + i) == NULL)
+        if (*(source + i) == '\0')
         {
             return 0;
         }
@@ -85,7 +85,7 @@ inline uchar32_t nextchar_utf8(const char *&str)
     ch -= g_offsetsFromUTF8[extra_bytes];
 
     // If the character is a null terminator, we don't want to modify the string.
-    if (ch != NULL)
+    if (ch != '\0')
     {
         str = source;
     }
@@ -116,13 +116,13 @@ inline uchar32_t nextchar_utf16(const char16_t *&str)
     // We need to check if we have a surrogate pair. If we do, we need to do a conversion.
     // We only want to do this if the character we just retrieved wasn't a null terminator,
     // otherwise 'source' is already pointing to an invalid memory address.
-    if (ch != NULL)
+    if (ch != 0)
     {
         if (ch >= UNI_SUR_HIGH_START && ch <= UNI_SUR_LOW_START)
         {
             // Make sure the source isn't at it's null terminator. If it is, we have an
             // error, so we will return 0.
-            if (*source != NULL)
+            if (*source != 0)
             {
                 // Grab our next 16-bits. This must be the low surrogate. If it isn't, we
                 // have an error and need to return 0.
@@ -161,7 +161,7 @@ inline uchar32_t nextchar_utf32(const char32_t *&str)
 
     char32_t ch = *str;
 
-    if (ch != NULL)
+    if (ch != 0)
     {
         ++str;
     }

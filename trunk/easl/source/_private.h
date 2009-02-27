@@ -57,7 +57,7 @@ static const char g_trailingBytesForUTF8[256] = {
  * This table contains as many values as there might be trailing bytes
  * in a UTF-8 sequence.
  */
-static const uchar32_t g_offsetsFromUTF8[6] = {0x00000000UL, 0x00003080UL, 0x000E2080UL, 
+static const uchar32_t g_offsetsFromUTF8[6] = {0x00000000UL, 0x00003080UL, 0x000E2080UL,
 		                                       0x03C82080UL, 0xFA082080UL, 0x82082080UL};
 
 /*
@@ -87,7 +87,7 @@ inline bool is_legal_utf8(const char *str, unsigned short length)
             return false;
         }
 
-    case 4: 
+    case 4:
         {
             a = *--srcptr;
             if (a < 0x80 || a > 0xBF)
@@ -96,7 +96,7 @@ inline bool is_legal_utf8(const char *str, unsigned short length)
             }
         }
 
-    case 3: 
+    case 3:
         {
             a = *--srcptr;
             if (a < 0x80 || a > 0xBF)
@@ -105,7 +105,7 @@ inline bool is_legal_utf8(const char *str, unsigned short length)
             }
         }
 
-    case 2: 
+    case 2:
         {
             a = *--srcptr;
             if (a > 0xBF)
@@ -168,14 +168,14 @@ inline bool is_legal_utf8(const char *str, unsigned short length)
 
     case 1:
         {
-            if (*str >= 0x80 && *str < 0xC2)
+            if ((unsigned char)*str >= 0x80 && (unsigned char)*str < 0xC2)
             {
                 return false;
             }
         }
     }
 
-    if (*str > 0xF4)
+    if ((unsigned char)*str > 0xF4)
     {
         return false;
     }
@@ -194,7 +194,7 @@ inline bool is_legal_utf8(const char *str, unsigned short length)
 *       be returned. If the replacement character can not be used, NULL will be
 *       returned.
 */
-inline uchar32_t validate_utf32_char(char32_t character)
+inline uchar32_t validate_utf32_char(uchar32_t character)
 {
     // We first need to make sure that it is not higher than the 17'th plane.
     if (character <= UNI_MAX_LEGAL_UTF32)
@@ -288,9 +288,9 @@ void _movestrdown(T *source, size_t count, size_t sourceSize)
 
 /*
  * Copyright 2001-2004 Unicode, Inc.
- * 
+ *
  * Disclaimer
- * 
+ *
  * This source code is provided as is by Unicode, Inc. No claims are
  * made as to fitness for any particular purpose. No warranties of any
  * kind are expressed or implied. The recipient agrees to determine
@@ -298,9 +298,9 @@ void _movestrdown(T *source, size_t count, size_t sourceSize)
  * purchased on magnetic or optical media from Unicode, Inc., the
  * sole remedy for any claim will be exchange of defective media
  * within 90 days of receipt.
- * 
+ *
  * Limitations on Rights to Redistribute This Code
- * 
+ *
  * Unicode, Inc. hereby grants the right to freely use the information
  * supplied in this file in the creation of products supporting the
  * Unicode Standard, and to make copies of this file in any form

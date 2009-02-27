@@ -6,8 +6,8 @@
 #ifndef __EASL_SEARCH_CONTAINSNONPRINTABLECHAR
 #define __EASL_SEARCH_CONTAINSNONPRINTABLECHAR
 
-#include "nextchar.h"
-#include "length.h"
+#include "../../nextchar.h"
+#include "../../length.h"
 
 namespace easl
 {
@@ -29,7 +29,7 @@ template <typename T>
 bool containsnonprintablechar(const T *str, size_t strLength = -1)
 {
     uchar32_t ch;
-    while (strLength > 0 && (ch = nextchar(str)) != NULL)
+    while (strLength > 0 && (ch = nextchar(str)) != '\0')
     {
         if (ch <= ' ')
         {

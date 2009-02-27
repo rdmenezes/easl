@@ -70,7 +70,7 @@ inline uchar32_t getchar(const T *str, size_t index, size_t strLength = -1)
     const T *start_of_ch = str;
 
     uchar32_t ch;
-    while (strLength > 0 && (ch = easl::nextchar(temp)) != NULL)
+    while (strLength > 0 && (ch = easl::nextchar(temp)) != '\0')
     {
         size_t cur_pos = temp - str;
 
@@ -93,11 +93,11 @@ inline uchar32_t getchar(const T *str, size_t index, size_t strLength = -1)
 // Optimized case.
 inline uchar32_t getchar(const char32_t *str, size_t index, size_t strLength = -1)
 {
-    if (strLength != -1)
+    if (strLength != (size_t)-1)
     {
         if (index >= strLength)
         {
-            return NULL;
+            return '\0';
         }
     }
 

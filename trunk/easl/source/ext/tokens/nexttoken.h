@@ -25,7 +25,7 @@ struct TOKEN_OPTIONS
     *   \brief  Constructor.
     */
     TOKEN_OPTIONS()
-        : symbolGroups(NULL), quotes(NULL), escapeCharacter(NULL), ignoreBlockStart(NULL), ignoreBlockEnd(NULL)
+        : symbolGroups(NULL), quotes(NULL), escapeCharacter('\0'), ignoreBlockStart(NULL), ignoreBlockEnd(NULL)
     {
     }
 
@@ -160,7 +160,7 @@ inline bool nexttoken(T *&str, reference_string<T> &token, size_t *line, const T
     // loop until we reach the end of the string or we break out of the loop.
     T *temp = str;
     uchar32_t ch;
-    while (strLength > 0 && (ch = nextchar(temp)) != NULL)
+    while (strLength > 0 && (ch = nextchar(temp)) != '\0')
     {
         // We need to check which character we've got. If it's a non-printable character,
         // we want to ignore it and continue to the next character.
@@ -174,7 +174,7 @@ inline bool nexttoken(T *&str, reference_string<T> &token, size_t *line, const T
                 token.end = str;
                 return true;
             }
-            
+
             // If we've made it here, we do not yet have a token. But we need to check if
             // we have a new line. If so, we need to increment our line parameter. We don't
             // need to check for a \r\n pair. We need only look for a \n character.
@@ -223,7 +223,7 @@ inline bool nexttoken(T *&str, reference_string<T> &token, size_t *line, const T
             }
             else
             {
-                // We must have a symbol. 
+                // We must have a symbol.
                 if (type == 0)
                 {
                     token.start = str;
@@ -307,7 +307,7 @@ inline bool nexttoken(T *&str, reference_string<T> &token, size_t *line, const T
                         token.end = str;
                         return true;
                     }
-                    
+
                     if (ch == '.')
                     {
                         found_decimal = true;

@@ -74,7 +74,7 @@ template <> inline int vformat(char *dest, size_t destSize, const char *format, 
     {
         return ::vsprintf_s(dest, destSize, format, args);
     }
-    
+
     return ::_vscprintf(format, args);
 #else
     if (dest != NULL)
@@ -82,7 +82,11 @@ template <> inline int vformat(char *dest, size_t destSize, const char *format, 
         return ::vsprintf(dest, format, args);
     }
 
-    return ::_vscprintf(format, args);
+    // GCC doesn't support vscprintf, so we need to find the size manually. We will use the C99 way of doing it.
+
+    // Our temporary pointer.
+    char temp[2];
+    return vsnprintf(temp, 2, format, args) + 1;
 #endif
 }
 #endif
@@ -101,7 +105,11 @@ template <> inline int vformat(wchar_t *dest, size_t destSize, const wchar_t *fo
         return ::vswprintf(dest, format, args);
     }
 
-    return ::_vscwprintf(format, args);
+    // GCC doesn't support vscprintf, so we need to find the size manually. We will use the C99 way of doing it.
+
+    // Our temporary pointer.
+    wchar_t temp[2];
+    return _vsnwprintf(temp, 2, format, args) + 1;
 #endif
 }
 

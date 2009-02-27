@@ -7,7 +7,6 @@
 #define __EASL_PATHS_SPLITPATH_H_
 
 #include "../../nextchar.h"
-#include "../../length.h"
 
 namespace easl
 {
@@ -27,7 +26,7 @@ void splitpath(T *path, reference_string<T> &folder, reference_string<T> &file, 
 
     // We first need to find the last slash in the path. Once we have that we can output
     // our results.
-    
+
     // Stores the start of the next character. This is used so that we can modify pathLength easily.
     const T *start_of_ch = path;
 
@@ -35,7 +34,7 @@ void splitpath(T *path, reference_string<T> &folder, reference_string<T> &file, 
     folder.start = folder.end = path;
 
     uchar32_t ch;
-    while (pathLength > 0 && (ch = easl::nextchar(path)) != NULL)
+    while (pathLength > 0 && (ch = easl::nextchar(path)) != '\0')
     {
         if (ch == '/' || ch == '\\')
         {
@@ -49,12 +48,6 @@ void splitpath(T *path, reference_string<T> &folder, reference_string<T> &file, 
     // Now we can output our results. The file starts where the folder ends.
     file.start = folder.end;
     file.end = path;
-}
-
-template <typename T>
-void splitpath(const reference_string<T> &path, reference_string<T> &folder, reference_string<T> &file)
-{
-    splitpath(path.start, folder, file, easl::length(path));
 }
 
 }

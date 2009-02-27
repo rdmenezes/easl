@@ -33,7 +33,7 @@ inline void _split_path(reference_string<const T> (&dest)[128], size_t &count, c
 
     const T *temp = path;
     uchar32_t ch;
-    while (pathLength > 0 && (ch = easl::nextchar(temp)) != NULL)
+    while (pathLength > 0 && (ch = easl::nextchar(temp)) != '\0')
     {
         if (ch == '\\' || ch == '/')
         {
@@ -53,7 +53,7 @@ inline void _split_path(reference_string<const T> (&dest)[128], size_t &count, c
             // Now we can start our new string.
             current_pair.start = temp;
         }
-        
+
         pathLength -= temp - path;
         path = temp;
     }

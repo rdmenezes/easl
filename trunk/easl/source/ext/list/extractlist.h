@@ -81,12 +81,12 @@ struct LIST_OPTIONS
 *		If this is not the case, the item will lose it's spacing.
 */
 template <typename T>
-void extractlist(T *str, std::vector<reference_string<T>> &list, const LIST_OPTIONS<T> *options, size_t strLength = -1)
+void extractlist(T *str, std::vector<reference_string<T> > &list, const LIST_OPTIONS<T> *options, size_t strLength = -1)
 {
     // TODO: This whole thing is errorneous. The tokeniser method is completely wrong.
 
     // We need to first extract a list of tokens.
-    std::vector<reference_string<T>> tokens;
+    std::vector<reference_string<T> > tokens;
 
     if (options != NULL)
     {
@@ -147,7 +147,7 @@ void extractlist(T *str, std::vector<reference_string<T>> &list, const LIST_OPTI
 
 
 template <typename T>
-void extractlist(T *str, std::vector<reference_string<T>> &list, size_t strLength = -1)
+void extractlist(T *str, std::vector<reference_string<T> > &list, size_t strLength = -1)
 {
     extractlist(str, list, (const LIST_OPTIONS<T> *)NULL, strLength);
 }

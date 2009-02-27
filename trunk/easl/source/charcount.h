@@ -30,7 +30,7 @@ inline size_t charcount(const T *str, size_t strLength)
 {
     const T *temp = str;
     size_t count = 0;
-    while (static_cast<size_t>(temp - str) < strLength && easl::nextchar(temp) != NULL)
+    while (static_cast<size_t>(temp - str) < strLength && easl::nextchar(temp) != '\0')
     {
         ++count;
     }

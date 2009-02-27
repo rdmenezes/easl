@@ -11,6 +11,7 @@
 #include "nextchar.h"
 #include "length.h"
 #include "reference_string.h"
+#include "charwidth.h"
 
 namespace easl
 {
@@ -43,7 +44,7 @@ inline int compare(const T *str1, const U *str2, size_t str1Length = -1, size_t 
 
         ret = ch1 - ch2;
 
-        if (ret != 0 || ch2 == NULL)
+        if (ret != 0 || ch2 == '\0')
         {
             break;
         }

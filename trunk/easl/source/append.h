@@ -38,7 +38,7 @@ size_t append(T *dest, const T *source, size_t destSize = -1, size_t destLength 
     size_t append_size = 0;
 
     // We need to get to the end of the destination string.
-    while (destSize > 1 && destCount > 0 && *dest != NULL)
+    while (destSize > 1 && destLength > 0 && *dest != NULL)
     {
         ++dest;
         ++append_size;
@@ -75,7 +75,7 @@ size_t append(T *dest, const T *source, size_t destSize = -1, size_t destLength 
 template <typename T>
 inline size_t append(T *dest, const reference_string<T> &source, size_t destSize = -1, size_t destLength = -1)
 {
-    return append(dest, source.start, dest_size, destLength, length(source));
+    return append(dest, source.start, destSize, destLength, length(source));
 }
 
 
