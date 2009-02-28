@@ -114,7 +114,7 @@ inline bool is_legal_utf8(const char *str, unsigned short length)
             }
 
             // Note that there is no fall-throughs with this switch.
-            switch (*str)
+            switch ((unsigned char)*str)
             {
             case 0xE0:
                 {
