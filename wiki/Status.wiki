@@ -8,8 +8,8 @@ This page will discuss the current development status of the project.
 Below is a table summarising the supported platforms and compilers.
 
 || || *VC++ 7.1* || *VC++ 8.0* || *VC++ 9.0* || *GCC 3.x* || *GCC 4.x* || *Borland C++* || *Intel C++* ||
-|| *Windows XP*    || Probably || Yes || Probably || No (MinGW/Cygwin) || No (MinGW/Cygwin) || No || No ||
-|| *Windows Vista* || Probably || Yes || Probably || No (MinGW/Cygwin) || No (MinGW/Cygwin) || No || No ||
+|| *Windows XP*    || Probably || Yes || Probably || Almost (MinGW/Cygwin) || Almost (MinGW/Cygwin) || No || No ||
+|| *Windows Vista* || Probably || Yes || Probably || Almost (MinGW/Cygwin) || Almost (MinGW/Cygwin) || No || No ||
 || *Linux 2.4.x*   || N/A || N/A || N/A || No || No || No || No ||
 || *Linux 2.6.x*   || N/A || N/A || N/A || No || No || No || No ||
 || *Mac OS X*      || N/A || N/A || N/A || No || No || No || No ||
