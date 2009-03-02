@@ -8,16 +8,14 @@ This page will discuss the current development status of the project.
 Below is a table summarising the supported platforms and compilers.
 
 || || *VC++ 7.1* || *VC++ 8.0* || *VC++ 9.0* || *GCC 3.x* || *GCC 4.x* || *Borland C++* || *Intel C++* ||
-|| *Windows XP*    || Probably || Yes || Probably || Almost (MinGW/Cygwin) || Almost (MinGW/Cygwin) || No || No ||
-|| *Windows Vista* || Probably || Yes || Probably || Almost (MinGW/Cygwin) || Almost (MinGW/Cygwin) || No || No ||
-|| *Linux 2.4.x*   || N/A || N/A || N/A || No || No || No || No ||
-|| *Linux 2.6.x*   || N/A || N/A || N/A || No || No || No || No ||
-|| *Mac OS X*      || N/A || N/A || N/A || No || No || No || No ||
+|| *Windows XP*    || Probably || Yes || Probably || Yes (MinGW) || Yes (MinGW) || ? || ? ||
+|| *Windows Vista* || Probably || Yes || Probably || Yes (MinGW) || Yes (MinGW) || ? || ? ||
+|| *Linux 2.4.x*   || N/A || N/A || N/A || ? || ? || ? || ? ||
+|| *Linux 2.6.x*   || N/A || N/A || N/A || ? || ? || ? || ? ||
+|| *Mac OS X*      || N/A || N/A || N/A || ? || ? || ? || ? ||
 
-Currently, only Windows and Visual C++ is supported. The project has only been tested on VC++ 8.0, but should also work with later versions as well as VC++ 7.1.
+The library should work on pretty much everything. Borland C++ and Intel C++ compilers havn't been tested.
 
-Other platforms may work, but none other than Windows and VC++ 8.0 have been tested.
+Support on Linux and OSX is unknown, but should work OK. Like above, Linux and OSX has not been tested yet.
 
-Support for Linux and Mac will come later on. Likewise, support for platforms other than Windows, Linux and Mac may also be included later.
-
-The library will not provide support for operating systems older than Windows XP, Linux kernal 2.4.x and Mac OS X. Likewise, compilers older than VC++ 7.1 and GCC 3.x will not be supported.
+The library will not provide support for operating systems older than Windows XP, Linux kernal 2.4.x and Mac OS X. Likewise, compilers older than VC++ 7.1 and GCC 3.x will not be supported. That said, the library might still work on older platforms and compilers, but no explicit support will be included in EASL.
