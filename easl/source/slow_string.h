@@ -30,14 +30,14 @@ class slow_string
 {
 public:
 
-    // Note: In the constructors, it's important that m_data is assigned to NULL before
-    // assigning the string. This is because assign() always attempts to delete m_data.
+    // Note: In the constructors, it's important that data is assigned to NULL before
+    // assigning the string. This is because assign() always attempts to delete data.
     // Not initialising it to NULL will cause a crash.
 
     /**
     *   \brief  Default constructor.
     */
-    slow_string() : m_data(NULL)
+    slow_string() : data(NULL)
     {
         this->assign((const T *)NULL);
     }
@@ -46,25 +46,25 @@ public:
     *   \brief           Constructor.
     *   \param  str [in] The string to initialise this string to.
     */
-    slow_string(const T *str) : m_data(NULL)
+    slow_string(const T *str) : data(NULL)
     {
         this->assign(str);
     }
 
-    slow_string(const reference_string<T> &str) : m_data(NULL)
+    slow_string(const reference_string<T> &str) : data(NULL)
     {
         this->assign(str.start, easl::length(str));
     }
 
 #ifndef EASL_OPTION_NO_GENERIC_OPERATIONS
     template <typename U>
-    slow_string(const U *str) : m_data(NULL)
+    slow_string(const U *str) : data(NULL)
     {
         this->assign(str);
     }
 
     template <typename U>
-    slow_string(const reference_string<U> &str) : m_data(NULL)
+    slow_string(const reference_string<U> &str) : data(NULL)
     {
         this->assign(str.start, easl::length(str));
     }
@@ -74,14 +74,14 @@ public:
     *   \brief           Constructor.
     *   \param  str [in] The string to initialise this string to.
     */
-    slow_string(const slow_string<T> &str) : m_data(NULL)
+    slow_string(const slow_string<T> &str) : data(NULL)
     {
         this->assign(str.c_str());
     }
 
 #ifndef EASL_OPTION_NO_GENERIC_OPERATIONS
     template <typename U>
-    slow_string(const slow_string<U> &str) : m_data(NULL)
+    slow_string(const slow_string<U> &str) : data(NULL)
     {
         this->assign(str.c_str());
     }
@@ -93,7 +93,7 @@ public:
     */
     virtual ~slow_string()
     {
-        delete [] this->m_data;
+        delete [] this->data;
     }
 
 
@@ -107,7 +107,7 @@ public:
     */
     const T * c_str() const
     {
-        return this->m_data;
+        return this->data;
     }
 
     /**
@@ -124,7 +124,7 @@ public:
     */
     T *& c_str()
     {
-        return this->m_data;
+        return this->data;
     }
 
     /**
@@ -139,19 +139,19 @@ public:
     */
     slow_string<T> & assign(const T *str, size_t strLength = -1)
     {
-        if (this->m_data == (const T *)str && this->m_data != NULL)
+        if (this->data == (const T *)str && this->data != NULL)
         {
             return *this;
         }
 
         // No matter what happens, the data must be deallocated. Therefore, we will do it first.
-        delete [] m_data;
+        delete [] data;
 
         // If the input string is NULL, we will set this string to an empty string.
         if (str == NULL)
         {
-            this->m_data = new T[1];
-            this->m_data[0] = '\0';
+            this->data = new T[1];
+            this->data[0] = '\0';
         }
         else
         {
@@ -161,8 +161,8 @@ public:
             }
 
             // Now we just need to copy the string over.
-            this->m_data = new T[strLength + 1];
-            easl::copy(this->m_data, str, strLength + 1, strLength);
+            this->data = new T[strLength + 1];
+            easl::copy(this->data, str, strLength + 1, strLength);
         }
 
         return *this;
@@ -172,19 +172,19 @@ public:
     template <typename U>
     slow_string<T> & assign(const U *str, size_t strLength = -1)
     {
-        if (this->m_data == (const T *)str && this->m_data != NULL)
+        if (this->data == (const T *)str && this->data != NULL)
         {
             return *this;
         }
 
         // No matter what happens, the data must be deallocated. Therefore, we will do it first.
-        delete [] m_data;
+        delete [] data;
 
         // If the input string is NULL, we will set this string to an empty string.
         if (str == NULL)
         {
-            this->m_data = new T[1];
-            this->m_data[0] = NULL;
+            this->data = new T[1];
+            this->data[0] = NULL;
         }
         else
         {
@@ -194,8 +194,8 @@ public:
             }
 
             // All we're really doing is a simple conversion.
-            this->m_data = new T[strLength];
-            easl::copy(this->m_data, str, strLength);
+            this->data = new T[strLength];
+            easl::copy(this->data, str, strLength);
         }
 
         return *this;
@@ -228,16 +228,16 @@ public:
             size_t this_size = this->length();
 
             // Now grab our current pointer so we can copy it into our new memory space later.
-            T *old_data = this->m_data;
+            T *old_data = this->data;
 
             // Now we can allocate some more memory.
-            this->m_data = new T[this_size + strLength + 1];
+            this->data = new T[this_size + strLength + 1];
 
             // Copy our old data back into the string.
-            easl::copy(this->m_data, old_data, this_size + strLength + 1);
+            easl::copy(this->data, old_data, this_size + strLength + 1);
 
             // Now we copy our input string into our new buffer.
-            easl::copy(this->m_data + this_size, str, strLength + 1);
+            easl::copy(this->data + this_size, str, strLength + 1);
 
             // Delete our previous data.
             delete [] old_data;
@@ -262,16 +262,16 @@ public:
             size_t this_size = this->length();
 
             // Now grab our current pointer so we can copy it into our new memory space later.
-            T *old_data = this->m_data;
+            T *old_data = this->data;
 
             // Now we can allocate some more memory.
-            this->m_data = new T[this_size + copy_size];
+            this->data = new T[this_size + copy_size];
 
             // Copy our old data back into the string.
-            memcpy(this->m_data, old_data, sizeof(T) * this_size);
+            memcpy(this->data, old_data, sizeof(T) * this_size);
 
             // Now we copy our input string into our new buffer.
-            easl::copy(this->m_data + this_size, str, copy_size);
+            easl::copy(this->data + this_size, str, copy_size);
 
             // Delete our previous data.
             delete [] old_data;
@@ -295,19 +295,19 @@ public:
         size_t this_size = this->length();
 
         // Now grab our current pointer so we can copy it into our new memory space later.
-        T *old_data = this->m_data;
+        T *old_data = this->data;
 
         // Now we can allocate some more memory.
-        this->m_data = new T[this_size + added_size + 1];
+        this->data = new T[this_size + added_size + 1];
 
         // Copy our old data back into the string.
-        easl::copy(this->m_data, old_data, this_size + added_size + 1);
+        easl::copy(this->data, old_data, this_size + added_size + 1);
 
         // Now we need to write this character to the string.
-        easl::writechar(this->m_data + this_size, character);
+        easl::writechar(this->data + this_size, character);
 
         // Null terminate the string.
-        this->m_data[this_size + added_size] = 0;
+        this->data[this_size + added_size] = 0;
 
         // Delete our previous data.
         delete [] old_data;
@@ -325,7 +325,7 @@ public:
     */
     size_t length() const
     {
-        return easl::length(this->m_data);
+        return easl::length(this->data);
     }
 
 
@@ -335,9 +335,9 @@ public:
     */
     bool empty() const
     {
-        if (this->m_data != NULL)
+        if (this->data != NULL)
         {
-            return this->m_data[0] == '\0';
+            return this->data[0] == '\0';
         }
 
         return true;
@@ -358,7 +358,7 @@ public:
     {
         assert(this->length() > index);
 
-        return easl::getchar(this->m_data, index);
+        return easl::getchar(this->data, index);
     }
 
 
@@ -415,35 +415,35 @@ public:
     */
     bool operator ==(const T *str) const
     {
-        return easl::equal(this->m_data, str);
+        return easl::equal(this->data, str);
     }
     bool operator ==(const slow_string<T> &str) const
     {
-        return easl::equal(this->m_data, str.c_str());
+        return easl::equal(this->data, str.c_str());
     }
     bool operator ==(const reference_string<T> &str) const
     {
-        return easl::equal(this->m_data, str);
+        return easl::equal(this->data, str);
     }
 
 #ifndef EASL_OPTION_NO_GENERIC_OPERATIONS
     template <typename U>
     bool operator ==(const U *str) const
     {
-        return easl::equal(this->m_data, str);
+        return easl::equal(this->data, str);
     }
 
     /// \copydoc    slow_string::operator ==(const U *) const
     template <typename U>
     bool operator ==(const slow_string<U> &str) const
     {
-        return easl::equal(this->m_data, str.c_str());
+        return easl::equal(this->data, str.c_str());
     }
 
     template <typename U>
     bool operator ==(const reference_string<U> &str) const
     {
-        return easl::equal(this->m_data, str);
+        return easl::equal(this->data, str);
     }
 #endif
 
@@ -457,35 +457,35 @@ public:
     */
     bool operator !=(const T *str) const
     {
-        return !easl::equal(this->m_data, str);
+        return !easl::equal(this->data, str);
     }
     bool operator !=(const slow_string<T> &str) const
     {
-        return !easl::equal(this->m_data, str.c_str());
+        return !easl::equal(this->data, str.c_str());
     }
     bool operator !=(const reference_string<T> &str) const
     {
-        return !easl::equal(this->m_data, str);
+        return !easl::equal(this->data, str);
     }
 
 #ifndef EASL_OPTION_NO_GENERIC_OPERATIONS
     template <typename U>
     bool operator !=(const U *str) const
     {
-        return !easl::equal(this->m_data, str);
+        return !easl::equal(this->data, str);
     }
 
     /// \copydoc    slow_string::operator ==(const U *) const
     template <typename U>
     bool operator !=(const slow_string<U> &str) const
     {
-        return !easl::equal(this->m_data, str.c_str());
+        return !easl::equal(this->data, str.c_str());
     }
 
     template <typename U>
     bool operator !=(const reference_string<U> &str) const
     {
-        return !easl::equal(this->m_data, str);
+        return !easl::equal(this->data, str);
     }
 #endif
 
@@ -645,7 +645,7 @@ public:
 private:
 
     /// Pointer to the content of the string.
-    T *m_data;
+    T *data;
 
 };
 
