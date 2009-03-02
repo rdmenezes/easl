@@ -34,7 +34,7 @@ size_t replace(T *str, uchar32_t oldChar, uchar32_t newChar, size_t strSize = -1
     size_t new_width = charwidth<T>(newChar);
 
     bool null_terminated = false;
-    if (old_width != new_width && strLength == -1)
+    if (old_width != new_width && strLength == (size_t)-1)
     {
         strLength = length(str);
         null_terminated = true;
@@ -46,7 +46,7 @@ size_t replace(T *str, uchar32_t oldChar, uchar32_t newChar, size_t strSize = -1
 
     // We need to loop through each character and replace it.
     uchar32_t ch;
-    while (strSize > 1 && strLength > 0 && (ch = nextchar(temp)) != NULL)
+    while (strSize > 1 && strLength > 0 && (ch = nextchar(temp)) != '\0')
     {
         if (ch == oldChar)
         {

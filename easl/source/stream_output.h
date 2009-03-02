@@ -23,7 +23,7 @@ inline std::basic_ostream<T> & operator << (std::basic_ostream<T> &stream, const
     const U *temp = str.c_str();
 
     easl::uchar32_t ch;
-    while ((ch = easl::nextchar(temp)) != NULL)
+    while ((ch = easl::nextchar(temp)) != '\0')
     {
         stream.put((T)ch);
     }
@@ -44,7 +44,7 @@ inline std::basic_ostream<T> & operator << (std::basic_ostream<T> &stream, const
     easl::reference_string<U> temp = str;
 
     easl::uchar32_t ch;
-    while ((ch = easl::nextchar(temp)) != NULL)
+    while ((ch = easl::nextchar(temp)) != '\0')
     {
         stream.put((T)ch);
     }

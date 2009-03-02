@@ -33,7 +33,7 @@ inline uchar32_t nextchar_utf8(const char *&str)
 #ifdef EASL_ONLY_ASCII
     char32_t ch = *str;
 
-    if (ch != NULL)
+    if (ch != '\0')
     {
         ++str;
     }
@@ -101,7 +101,7 @@ inline uchar32_t nextchar_utf16(const char16_t *&str)
 #ifdef EASL_ONLY_ASCII
     char32_t ch = *str;
 
-    if (ch != NULL)
+    if (ch != '\0')
     {
         ++str;
     }

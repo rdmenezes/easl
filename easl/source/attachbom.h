@@ -31,7 +31,7 @@ inline void attachbom(T *str, size_t strSize = -1, size_t strLength = -1)
     // Now we can move all of our character down one spot. First we need to get to
     // the end.
     T *temp = str;
-    while (strLength > 0 && *temp != NULL)
+    while (strLength > 0 && *temp != '\0')
     {
         --strLength;
         ++temp;
