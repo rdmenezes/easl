@@ -27,7 +27,7 @@ bool _istype_fd(const T *str, size_t strLength, uchar32_t suffix)
     bool found_digit = false;
 
     uchar32_t ch;
-    while (strLength > 0 && (ch = nextchar(str)) != NULL)
+    while (strLength > 0 && (ch = nextchar(str)) != '\0')
     {
         // Stole this check from http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2271.html.
         // Apendix - 23 - Algorithmic optimization vs. hardware optimization.
@@ -142,7 +142,7 @@ struct _istype<__int64, T>
         bool found_digit = false;
 
         uchar32_t ch;
-        while (strLength > 0 && (ch = nextchar(str)) != NULL)
+        while (strLength > 0 && (ch = nextchar(str)) != '\0')
         {
             // Stole this check from http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2271.html.
             // Apendix - 23 - Algorithmic optimization vs. hardware optimization.
@@ -177,7 +177,7 @@ struct _istype<unsigned __int64, T>
         bool found_digit = false;
 
         uchar32_t ch;
-        while (strLength > 0 && (ch = nextchar(str)) != NULL)
+        while (strLength > 0 && (ch = nextchar(str)) != '\0')
         {
             // Stole this check from http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2271.html.
             // Apendix - 23 - Algorithmic optimization vs. hardware optimization.

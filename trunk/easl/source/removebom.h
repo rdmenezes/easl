@@ -25,11 +25,11 @@ inline void removebom(T *str)
         // move our string down some spots.
         size_t bom_size = temp - str;
 
-        while (*temp != NULL)
+        while (*temp != '\0')
         {
             for (size_t i = 0; i < bom_size; ++i)
             {
-                if (*temp == NULL)
+                if (*temp == '\0')
                 {
                     break;
                 }

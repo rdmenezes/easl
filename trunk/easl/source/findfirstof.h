@@ -43,7 +43,7 @@ inline const T * findfirstof(const T *str, const T *charSet, size_t strLength = 
     const T *temp = str;
 
     uchar32_t ch;
-    while (strLength > 0 && (ch = nextchar(temp)) != NULL)
+    while (strLength > 0 && (ch = nextchar(temp)) != '\0')
     {
         // Now we need to search through the character set and check if the character
         // is equal to any of those.
@@ -54,7 +54,7 @@ inline const T * findfirstof(const T *str, const T *charSet, size_t strLength = 
 
         size_t temp_length = setLength;
         uchar32_t ch2;
-        while (temp_length > 0 && (ch2 = nextchar(temp_set)) != NULL)
+        while (temp_length > 0 && (ch2 = nextchar(temp_set)) != '\0')
         {
             if (ch2 == ch)
             {

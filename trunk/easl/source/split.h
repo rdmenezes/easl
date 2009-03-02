@@ -27,14 +27,14 @@ namespace easl
 */
 template <typename T>
 void split(T *str, const T *delimiter, std::vector<reference_string<T> > &list, bool includeDelimiter = true,
-           size_t strLength = -1, size_t delLength = -1)
+           size_t strLength = (size_t)-1, size_t delLength = (size_t)-1)
 {
     assert(str != NULL);
 
 	// The current piece.
     reference_string<T> cur_string;
 
-    if (delLength == -1)
+    if (delLength == (size_t)-1)
     {
         delLength = length(delimiter);
     }

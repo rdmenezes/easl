@@ -170,7 +170,7 @@ public:
 
 #ifndef EASL_OPTION_NO_GENERIC_OPERATIONS
     template <typename U>
-    slow_string<T> & assign(const U *str, size_t strLength = -1)
+    slow_string<T> & assign(const U *str, size_t strLength = (size_t)-1)
     {
         if (this->data == (const T *)str && this->data != NULL)
         {
@@ -188,7 +188,7 @@ public:
         }
         else
         {
-            if (strLength == -1)
+            if (strLength == (size_t)-1)
             {
                 strLength = easl::copysize<T>(str);
             }

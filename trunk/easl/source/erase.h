@@ -50,7 +50,7 @@ inline void erase(T *str, size_t start, size_t count, size_t strLength = -1)
 
     // Now we need to write each character after 'end' to the string.
     uchar32_t ch;
-    while (strLength - temp_length > 0 && (ch = nextchar(end)) != NULL)
+    while (strLength - temp_length > 0 && (ch = nextchar(end)) != '\0')
     {
         writechar(str, ch);
     }

@@ -51,7 +51,7 @@ inline size_t getfileext(T *dest, const T *src, size_t srcLength = -1)
     // we reach the end of the file will be the last one.
     const T *last_pos = NULL;
     uchar32_t ch;
-    while (srcLength > 0 && (ch = nextchar(src)) != NULL)
+    while (srcLength > 0 && (ch = nextchar(src)) != '\0')
     {
         if (ch == '.')
         {
