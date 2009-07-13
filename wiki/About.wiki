@@ -24,7 +24,7 @@ Some of the features EASL does not do. If your program needs any of the function
   * Non-Unicode string manipulation
       * No support for UCS-2, etc. Only supports UTF-8, UTF-16 and UTF-32. Conversions between UCS and UTF encodings may be implemented in the future.
 
-EASL does not work with any string encoding other that UTF-8, UTF-16 and UTF-32. So, for example, if you need to convert a UTF-16 string to a UCS-2 string, you will need to perform the conversion either manually or via a separate library such as IBM's ICU. A UCS/UTF converter may be implemented in the future.
+EASL does not work with any string encoding other than UTF-8, UTF-16 and UTF-32. So, for example, if you need to convert a UTF-16 string to a UCS-2 string, you will need to perform the conversion either manually or via a separate library such as IBM's ICU. A UCS/UTF converter may be implemented in the future.
 
 = Who is EASL For? =
 EASL is useful for anyone who needs Unicode support in their applications. Applications can still use EASL for non Unicode functionality. For example, if an application only uses ASCII strings, they can still use EASL for it's miscellaneous string manipulation routines and it's simple interface. UTF-8 strings are fully compatible with ASCII strings, so ASCII-only applications can still make use of EASL.
